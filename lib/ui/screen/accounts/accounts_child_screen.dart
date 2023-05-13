@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../models/accounts_model.dart';
+import '../../../util/dialog.dart';
 import '../../widgets/annotated_region.dart';
 import 'accounts_controller.dart';
 
@@ -23,7 +25,32 @@ class AccountsChildScreen extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        switch (account.accountType) {
+                          case 'BANK':
+                            GoRouter.of(context).pushNamed(
+                                "CREATE-BANK-ACCOUNT",
+                                extra: {'account': account});
+                            break;
+
+                          case 'EXPENDITURE':
+                            GoRouter.of(context).pushNamed(
+                                "CREATE-EXPENSES-ACCOUNT",
+                                extra: {'account': account});
+                            break;
+
+                          case 'INCOME':
+                            GoRouter.of(context).pushNamed(
+                                "CREATE-INCOME-ACCOUNT",
+                                extra: {'account': account});
+                            break;
+                          case 'LIABILITIES':
+                            GoRouter.of(context).pushNamed(
+                                "CREATE-LIABILITY-ACCOUNT",
+                                extra: {'account': account});
+                            break;
+                        }
+                      },
                       icon: const Icon(Iconsax.add_square),
                       label: const Text("ADD NEW"),
                     ),
@@ -87,60 +114,119 @@ class AccountsChildScreen extends StatelessWidget {
                           itemExtent: 78, // I'm forcing item heights
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Theme.of(context).cardColor,
-                                ),
-                                child: ListTile(
-                                  contentPadding: const EdgeInsets.only(
-                                      left: 16, right: 16),
-                                  leading: Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Theme.of(context)
-                                          .secondaryHeaderColor,
+                              return Slidable(
+                                key: ValueKey(index),
+                                endActionPane: ActionPane(
+                                  extentRatio: .45,
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      icon: Iconsax.close_square,
+                                      padding: const EdgeInsets.all(4),
+                                      label: 'Delete',
+                                      onPressed: (context) async {
+                                        AlertAction? action = await confirmDialog(
+                                            context,
+                                            "WARNING\nYou want delete transaction. \nYou will loose all the transaction happend on this account.");
+
+                                        if (action == AlertAction.ok) {
+                                          await ref
+                                              .watch(
+                                                  accountsProvider(account.id)
+                                                      .notifier)
+                                              .delete(id: data[index].id);
+                                        }
+                                      },
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        data[index].name![0],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(
-                                                fontWeight: FontWeight.bold),
+                                    SlidableAction(
+                                      icon: Iconsax.document_upload,
+                                      padding: const EdgeInsets.all(4),
+                                      label: 'Update',
+                                      onPressed: (context) {
+                                        switch (account.accountType) {
+                                          case 'BANK':
+                                            GoRouter.of(context).pushNamed(
+                                                "UPDATE-BANK-ACCOUNT",
+                                                extra: {'account': account});
+                                            break;
+
+                                          case 'EXPENDITURE':
+                                            GoRouter.of(context).pushNamed(
+                                                "UPDATE-EXPENSES-ACCOUNT",
+                                                extra: {'account': account});
+                                            break;
+
+                                          case 'INCOME':
+                                            GoRouter.of(context).pushNamed(
+                                                "UPDATE-INCOME-ACCOUNT",
+                                                extra: {'account': account});
+                                            break;
+                                          case 'LIABILITIES':
+                                            GoRouter.of(context).pushNamed(
+                                                "UPDATE-LIABILITY-ACCOUNT",
+                                                extra: {'account': account});
+                                            break;
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                child: Container(
+                                  margin: const EdgeInsets.only(bottom: 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  child: ListTile(
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 16, right: 16),
+                                    leading: Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Theme.of(context)
+                                            .secondaryHeaderColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          data[index].name![0],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
+                                    title: Text(
+                                      data[index].name!.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
+                                    subtitle: Text(
+                                      data[index].description ??
+                                          "No description found..",
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    trailing: data[index].hasChild == true
+                                        ? const Icon(Iconsax.arrow_21)
+                                        : const SizedBox.shrink(),
+                                    onTap: () {
+                                      if (data[index].hasChild == true) {
+                                        GoRouter.of(context).pushNamed(
+                                            'ACCOUNTS-CHILD',
+                                            extra: {
+                                              'account': data[index],
+                                            });
+                                      } else {
+                                        GoRouter.of(context)
+                                            .pushNamed('ACCOUNT-STATEMENT');
+                                      }
+                                    },
                                   ),
-                                  title: Text(
-                                    data[index].name!.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium,
-                                  ),
-                                  subtitle: Text(
-                                    data[index].description ??
-                                        "No description found..",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                  trailing: data[index].hasChild == true
-                                      ? const Icon(Iconsax.arrow_21)
-                                      : const SizedBox.shrink(),
-                                  onTap: () {
-                                    if (data[index].hasChild == true) {
-                                      GoRouter.of(context)
-                                          .pushNamed('ACCOUNTS-CHILD', extra: {
-                                        'account': data[index],
-                                      });
-                                    } else {
-                                      GoRouter.of(context)
-                                          .pushNamed('ACCOUNT-STATEMENT');
-                                    }
-                                  },
                                 ),
                               );
                             },

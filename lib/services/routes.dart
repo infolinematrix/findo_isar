@@ -95,7 +95,9 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const CreateBankAccount());
+                child: CreateBankAccount(
+                  account: extra['account'],
+                ));
           },
         ),
         GoRoute(
@@ -106,7 +108,9 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const CreateExpensesAccount());
+                child: CreateExpensesAccount(
+                  account: extra['account'],
+                ));
           },
         ),
         GoRoute(
@@ -117,18 +121,22 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const CreateExpensesAccount());
+                child: CreateExpensesAccount(
+                  account: extra['account'],
+                ));
           },
         ),
         GoRoute(
-          path: 'create-liablity-account',
-          name: 'CREATE-LIABLITY-ACCOUNT',
+          path: 'create-liability-account',
+          name: 'CREATE-LIABILITY-ACCOUNT',
           pageBuilder: (context, state) {
             Map extra = state.extra! as Map;
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const CreateLiabilityAccount());
+                child: CreateLiabilityAccount(
+                  account: extra['account'],
+                ));
           },
         ),
 
@@ -141,7 +149,9 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const UpdateBankAccount());
+                child: UpdateBankAccount(
+                  account: extra['account'],
+                ));
           },
         ),
         GoRoute(
@@ -152,7 +162,9 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const UpdateExpensesAccount());
+                child: UpdateExpensesAccount(
+                  account: extra['account'],
+                ));
           },
         ),
         GoRoute(
@@ -163,7 +175,9 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const UpdateExpensesAccount());
+                child: UpdateExpensesAccount(
+                  account: extra['account'],
+                ));
           },
         ),
         GoRoute(
@@ -174,7 +188,9 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const UpdateLiabilityAccount());
+                child: UpdateLiabilityAccount(
+                  account: extra['account'],
+                ));
           },
         ),
       ],

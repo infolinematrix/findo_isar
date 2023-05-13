@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet/ui/screen/accounts/accounts_child_screen.dart';
 import 'package:flutter_wallet/ui/screen/accounts/accounts_parent_screen.dart';
+import 'package:flutter_wallet/ui/screen/accounts/create/create_bank_account.dart';
+import 'package:flutter_wallet/ui/screen/accounts/create/create_expense_account.dart';
+import 'package:flutter_wallet/ui/screen/accounts/create/create_liability_account.dart';
 import 'package:flutter_wallet/ui/screen/onboard/onboard_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/bank_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/cash_book_screen.dart';
@@ -11,6 +14,9 @@ import 'package:flutter_wallet/ui/screen/transactions/expenses_entry.dart';
 import 'package:flutter_wallet/ui/screen/transactions/select_account.dart';
 import 'package:go_router/go_router.dart';
 
+import '../ui/screen/accounts/update/update_bank_account.dart';
+import '../ui/screen/accounts/update/update_expense_account.dart';
+import '../ui/screen/accounts/update/update_liability_account.dart';
 import '../ui/screen/statement/statement_screen.dart';
 import '../ui/screen/transactions/income_entry.dart';
 
@@ -65,6 +71,110 @@ final GoRouter router = GoRouter(
                 account: extra['account'],
               ),
             );
+          },
+        ),
+        GoRoute(
+          path: 'create-',
+          name: 'CREATE-CHILD',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+              context: context,
+              state: state,
+              child: AccountsChildScreen(
+                account: extra['account'],
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path: 'create-bank-account',
+          name: 'CREATE-BANK-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CreateBankAccount());
+          },
+        ),
+        GoRoute(
+          path: 'create-expenses-coount',
+          name: 'CREATE-EXPENSES-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CreateExpensesAccount());
+          },
+        ),
+        GoRoute(
+          path: 'create-income-account',
+          name: 'CREATE-INCOME-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CreateExpensesAccount());
+          },
+        ),
+        GoRoute(
+          path: 'create-liablity-account',
+          name: 'CREATE-LIABLITY-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CreateLiabilityAccount());
+          },
+        ),
+
+        //----MODIFY
+        GoRoute(
+          path: 'update-bank-account',
+          name: 'UPDATE-BANK-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const UpdateBankAccount());
+          },
+        ),
+        GoRoute(
+          path: 'update-expenses-coount',
+          name: 'UPDATE-EXPENSES-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const UpdateExpensesAccount());
+          },
+        ),
+        GoRoute(
+          path: 'update-income-account',
+          name: 'UPDATE-INCOME-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const UpdateExpensesAccount());
+          },
+        ),
+        GoRoute(
+          path: 'update-liablity-account',
+          name: 'UPDATE-LIABLITY-ACCOUNT',
+          pageBuilder: (context, state) {
+            Map extra = state.extra! as Map;
+            return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const UpdateLiabilityAccount());
           },
         ),
       ],

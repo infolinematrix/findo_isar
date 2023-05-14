@@ -8,4 +8,5 @@ The app goes beyond expense tracking, offering powerful financial planning capab
 
 Whether you're a financial novice or an experienced money manager, our Personal Finance Android app for GitHub empowers you to take control of your financial journey, make informed decisions, and pave the way towards a stable and prosperous future.
 
-
+Facebook
+[https://www.facebook.com/profile.php?id=100091993915642]

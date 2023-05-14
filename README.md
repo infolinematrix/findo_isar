@@ -10,3 +10,6 @@ Whether you're a financial novice or an experienced money manager, our Personal 
 
 Facebook
 [https://www.facebook.com/profile.php?id=100091993915642]
+
+Thank you
+Subha Sundar Das

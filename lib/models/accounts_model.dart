@@ -28,7 +28,7 @@ class AccountsModel {
   double openingBalance = 0.00;
 
   @Index()
-  bool isSystem = true;
+  bool isSystem = false;
 
   @Index()
   int status = 51;

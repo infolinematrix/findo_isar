@@ -3,8 +3,6 @@ import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../widgets/txn_item.dart';
-
 class StatementScreen extends StatelessWidget {
   const StatementScreen({Key? key}) : super(key: key);
 
@@ -109,7 +107,9 @@ class StatementScreen extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: 10,
                             itemBuilder: (BuildContext context, int index) {
-                              return txnItem(context);
+                              return null;
+
+                              // return txnItem(context);
                             },
                           ),
                         ],

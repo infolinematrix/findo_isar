@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_wallet/util/file_path.dart';
+import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -8,15 +10,18 @@ import '../../../util/double_back_to_close_app.dart';
 import '../../widgets/annotated_region.dart';
 import '../../widgets/current_month_status.dart';
 import '../../widgets/txn_item.dart';
+import 'home_controller.dart';
 
-class HomePage extends StatefulWidget {
+// class HomePage extends StatelessWidget {
+//   const HomePage({Key? key}) : super(key: key);
+
+//   @override
+//   _HomePageState createState() => _HomePageState();
+// }
+
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotedAppRegion(
@@ -34,7 +39,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _contentHeader(),
+                  _contentHeader(context),
 
                   const SizedBox(height: 16),
 
@@ -44,9 +49,9 @@ class _HomePageState extends State<HomePage> {
                   const CurrentMonthStatus(data: {'a': 34}),
                   const SizedBox(height: 16),
 
-                  _contentOverView(),
+                  _contentOverView(context),
 
-                  const SizedBox(height: 30),
+                  UIHelper.verticalSpaceExtraLarge(),
 
                   //--SHOTCUT
 
@@ -65,11 +70,9 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  _navigation(),
+                  _navigation(context),
 
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  UIHelper.verticalSpaceMedium(),
 
                   //--SERVICES
                   Row(
@@ -85,14 +88,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  UIHelper.verticalSpaceMedium(),
                   _shotcut1(context),
 
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  UIHelper.verticalSpaceMedium(),
 
                   //--UTILITIES
                   Row(
@@ -109,18 +108,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  UIHelper.verticalSpaceMedium(),
+
                   _utilities(context),
 
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  UIHelper.verticalSpaceMedium(),
 
                   //--RECENT
 
-                  _recentTransactions(context),
+                  recentTransactions(context),
                 ],
               ),
             ),
@@ -130,7 +126,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  SizedBox _recentTransactions(BuildContext context) {
+  SizedBox recentTransactions(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -151,16 +147,27 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          ListView.builder(
-            itemCount: 5,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(0),
-            itemBuilder: (context, index) {
-              return txnItem(context);
+          UIHelper.verticalSpaceMedium(),
+          Consumer(
+            builder: (context, ref, child) {
+              final txns = ref.watch(recentTransactionsProvider);
+              return txns.when(
+                error: (error, stackTrace) => ErrorWidget(error),
+                loading: () => const Text("Wait.."),
+                data: (data) {
+                  return data.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: data.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(0),
+                          itemBuilder: (context, index) {
+                            return txnItem(context, data[index]);
+                          },
+                        )
+                      : const SizedBox.shrink();
+                },
+              );
             },
           ),
         ],
@@ -205,7 +212,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _contentHeader() {
+  Widget _contentHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -225,15 +232,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         InkWell(
-          onTap: () {
-            setState(() {
-              // print('call');
-              // xOffset = 240;
-              // yOffset = 180;
-              // scaleFactor = 0.7;
-              // isDrawerOpen = true;
-            });
-          },
+          onTap: () {},
           child: SvgPicture.asset(
             menu,
             width: 16,
@@ -244,7 +243,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _contentOverView() {
+  Widget _contentOverView(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
       decoration: BoxDecoration(
@@ -379,7 +378,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _navigation() {
+  Widget _navigation(BuildContext context) {
     return SizedBox(
       height: 100,
       child: ListView(
@@ -411,7 +410,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () {
               GoRouter.of(context)
-                  .pushNamed('ENTRY', extra: {'entryType': 'EXPENSES-ENTRY'});
+                  .pushNamed('ENTRY', extra: {'accountType': 'EXPENDITURE'});
             },
             child: Container(
               margin: const EdgeInsets.only(right: 10),

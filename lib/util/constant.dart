@@ -41,9 +41,11 @@ ThemeData lightTheme = ThemeData(
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.transparent, width: 0.0),
     ),
-    disabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.transparent, width: 0.0),
-    ),
+    // disabledBorder: OutlineInputBorder(
+    //   borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+    // ),
+
+    disabledBorder: InputBorder.none,
   ),
   textTheme: TextTheme(
     labelLarge: GoogleFonts.poppins(
@@ -199,7 +201,7 @@ ThemeData darkTheme = ThemeData(
 
 TextStyle inputStyle = const TextStyle(
   fontWeight: FontWeight.bold,
-  fontSize: 14.0,
+  fontSize: 15.0,
 );
 
 double inputHeight = 50.0;
@@ -223,4 +225,26 @@ final List<Map<String, dynamic>> currencies = [
 final yesNo = [
   {'key': true, 'value': 'Yes'},
   {'key': false, 'value': 'No'}
+];
+
+final List randomColor = [
+  0xFFffebee,
+  0xFFfce4ec,
+  0xFFf3e5f5,
+  0xFFede7f6,
+  0xFFe8eaf6,
+  0xFFe3f2fd,
+  0xFFe1f5fe,
+  0xFFe0f7fa,
+  0xFFe0f2f1,
+  0xFFe8f5e9,
+  0xFFf1f8e9,
+  0xFFf9fbe7,
+  0xFFfffde7,
+  0xFFfff8e1,
+  0xFFfff3e0,
+  0xFFfbe9e7,
+  0xFFefebe9,
+  0xFFfafafa,
+  0xFFeceff1,
 ];

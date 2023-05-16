@@ -69,7 +69,7 @@ class BudgetReportScreen extends StatelessWidget {
                           shrinkWrap: true,
                           separatorBuilder: (context, index) => const Divider(),
                           itemBuilder: (BuildContext context, int index) {
-                            return txnItem(context);
+                            // return txnItem(context);
                           },
                         ),
                       ),

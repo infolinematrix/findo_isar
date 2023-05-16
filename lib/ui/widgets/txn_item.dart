@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_wallet/models/transactions_model.dart';
+import 'package:flutter_wallet/util/ui_helpers.dart';
 
-Widget txnItem(BuildContext context) {
+import '../../util/format_currency.dart';
+import 'date_widget.dart';
+
+Widget txnItem(BuildContext context, TransactionsModel txn) {
   return Container(
     padding: const EdgeInsets.only(left: 18, right: 18, top: 16, bottom: 16),
     margin: const EdgeInsets.only(bottom: 12),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       color: Theme.of(context).cardColor,
-      // color: const Color(0xffF1F3F6),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -20,76 +23,9 @@ Widget txnItem(BuildContext context) {
             Flexible(
               fit: FlexFit.tight,
               flex: 2,
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        clipBehavior: Clip.hardEdge,
-                        width: 60,
-                        height: 60,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).highlightColor,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              "24",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(fontSize: 18),
-                            ),
-                            Text(
-                              "APRIL",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(fontSize: 10, height: 1.0),
-                            ),
-                            Text(
-                              "2003",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(fontSize: 7),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // const SizedBox(
-                      //   height: 8,
-                      // ),
-                      // Text(
-                      //   "April 2023",
-                      //   textAlign: TextAlign.center,
-                      //   style: Theme.of(context).textTheme.bodyLarge,
-                      // ),
-                      const SizedBox(
-                        height: 14,
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: 0,
-                    child: SvgPicture.asset(
-                      "assets/svg/income.svg",
-                      width: 18,
-                    ),
-                  ),
-                ],
-              ),
+              child: DateWidget(txnData: txn),
             ),
-            const SizedBox(
-              width: 16,
-            ),
+            UIHelper.verticalSpaceMedium(),
             Flexible(
               fit: FlexFit.tight,
               flex: 4,
@@ -99,7 +35,7 @@ Widget txnItem(BuildContext context) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "# 123 - ICICI Bank",
+                    "# ${txn.id} - ${txn.onAccountName}",
                     maxLines: 1,
                     style: Theme.of(context)
                         .textTheme
@@ -107,24 +43,21 @@ Widget txnItem(BuildContext context) {
                         .copyWith(fontWeight: FontWeight.normal),
                   ),
                   Text(
-                    "Vegitable Purchased by Cash",
+                    txn.accountName!,
                     maxLines: 1,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium!
-                        .copyWith(fontWeight: FontWeight.normal),
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          fontWeight: FontWeight.normal,
+                        ),
                   ),
                   Text(
-                    "Househole Expenses Purchased by Cash",
+                    txn.description!,
                     maxLines: 1,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              width: 16,
-            ),
+            UIHelper.verticalSpaceMedium(),
             Flexible(
               fit: FlexFit.tight,
               flex: 2,
@@ -136,10 +69,13 @@ Widget txnItem(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "12,500.00",
+                      "${formatCurrency(txn.amount.toString())}",
                       style:
                           Theme.of(context).textTheme.headlineMedium!.copyWith(
                                 fontWeight: FontWeight.normal,
+                                // color: txn.txnType == TxnType.CR
+                                //     ? Theme.of(context).primaryColorDark
+                                //     : Theme.of(context).primaryColorLight,
                               ),
                     ),
                   ],
@@ -148,11 +84,8 @@ Widget txnItem(BuildContext context) {
             ),
           ],
         ),
-        const SizedBox(
-          height: 1,
-        ),
         Text(
-          "Vegitable Purchased by Cash",
+          txn.accountName!,
           maxLines: 1,
           style: Theme.of(context)
               .textTheme

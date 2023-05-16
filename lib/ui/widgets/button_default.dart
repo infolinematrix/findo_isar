@@ -11,19 +11,31 @@ class ButtonDefault extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => onTap!(),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(color),
-        elevation: MaterialStateProperty.all<double>(0.25),
-        textStyle: MaterialStateProperty.resolveWith((states) {
-          return const TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.0,
-          );
-        }),
+    return SizedBox(
+      height: 48,
+      child: ElevatedButton(
+        onPressed: () => onTap!(),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+              color ?? Theme.of(context).colorScheme.primary),
+          elevation: MaterialStateProperty.all<double>(0.25),
+          textStyle: MaterialStateProperty.resolveWith((states) {
+            return const TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.0,
+            );
+          }),
+        ),
+        // style: ElevatedButton.styleFrom(
+        //   textStyle: const TextStyle(
+        //     fontSize: 16,
+        //     letterSpacing: 1.25,
+        //     height: 3.5,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
+        child: text,
       ),
-      child: text,
     );
   }
 }

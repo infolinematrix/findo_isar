@@ -39,4 +39,4 @@ class TransactionsModel {
 
 enum TxnType { DR, CR }
 
-enum ScrollType { HC, HD, TC, TD }
+enum ScrollType { HC, BC, HD, BD, TC, TD }

@@ -3,13 +3,16 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
+import '../../../models/accounts_model.dart';
 import '../../../util/constant.dart';
 import '../../widgets/annotated_region.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/input_container.dart';
 
 class IncomeEntry extends StatelessWidget {
-  const IncomeEntry({Key? key}) : super(key: key);
+  const IncomeEntry({Key? key, required this.account}) : super(key: key);
+
+  final AccountsModel account;
 
   @override
   Widget build(BuildContext context) {

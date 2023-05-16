@@ -3,6 +3,7 @@ import 'package:flutter_wallet/ui/screen/accounts/accounts_child_screen.dart';
 import 'package:flutter_wallet/ui/screen/accounts/accounts_parent_screen.dart';
 import 'package:flutter_wallet/ui/screen/accounts/create/create_bank_account.dart';
 import 'package:flutter_wallet/ui/screen/accounts/create/create_expense_account.dart';
+import 'package:flutter_wallet/ui/screen/accounts/create/create_income_account.dart';
 import 'package:flutter_wallet/ui/screen/accounts/create/create_liability_account.dart';
 import 'package:flutter_wallet/ui/screen/onboard/onboard_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/bank_book_screen.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_wallet/ui/screen/reports/report_screen.dart';
 import 'package:flutter_wallet/ui/screen/settings/settings_screen.dart';
 import 'package:flutter_wallet/ui/screen/statement/select_account_screen.dart';
 import 'package:flutter_wallet/ui/screen/transactions/expenses_entry.dart';
-import 'package:flutter_wallet/ui/screen/transactions/select_account.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../ui/screen/accounts/update/update_bank_account.dart';
@@ -19,6 +20,7 @@ import '../ui/screen/accounts/update/update_expense_account.dart';
 import '../ui/screen/accounts/update/update_liability_account.dart';
 import '../ui/screen/statement/statement_screen.dart';
 import '../ui/screen/transactions/income_entry.dart';
+import '../ui/screen/transactions/selectable_account.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
@@ -121,7 +123,7 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: CreateExpensesAccount(
+                child: CreateIncomeAccount(
                   account: extra['account'],
                 ));
           },
@@ -205,8 +207,8 @@ final GoRouter router = GoRouter(
           return buildPageWithDefaultTransition<void>(
             context: context,
             state: state,
-            child: SelectAccount(
-              entryType: extra['entryType'],
+            child: SelectableAccount(
+              accountType: extra['accountType'],
             ),
           );
         },
@@ -215,12 +217,14 @@ final GoRouter router = GoRouter(
             path: 'expenses-entry',
             name: 'EXPENSES-ENTRY',
             pageBuilder: (context, state) {
-              // Map extra = state.extra! as Map;
+              Map extra = state.extra! as Map;
 
               return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const ExpensesEntry(),
+                child: ExpensesEntry(
+                  account: extra['account'],
+                ),
               );
             },
           ),
@@ -228,12 +232,14 @@ final GoRouter router = GoRouter(
             path: 'income-entry',
             name: 'INCOME-ENTRY',
             pageBuilder: (context, state) {
-              // Map extra = state.extra! as Map;
+              Map extra = state.extra! as Map;
 
               return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: const IncomeEntry(),
+                child: IncomeEntry(
+                  account: extra['account'],
+                ),
               );
             },
           ),

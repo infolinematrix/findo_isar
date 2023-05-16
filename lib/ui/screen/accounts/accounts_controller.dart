@@ -6,6 +6,10 @@ import 'package:isar/isar.dart';
 
 import '../../../services/isar_database.dart';
 
+//--Has Child
+final hasChildProvider = StateProvider.autoDispose<bool>((ref) => false);
+
+//--Accounts
 final accountsProvider = StateNotifierProvider.autoDispose
     .family<AccountState, AsyncValue<List<AccountsModel>>, int>(
         (ref, parentId) {
@@ -37,23 +41,25 @@ class AccountState extends StateNotifier<AsyncValue<List<AccountsModel>>> {
       required Map<String, dynamic> formData}) async {
     try {
       switch (parent.accountType) {
-        case 'CASH': //--BANK
-          await createBankAccount(formData: formData, parentId: parent.id);
-          getAccounts(parentId);
-          break;
-
         case 'BANK': //--BANK
-          await createBankAccount(formData: formData, parentId: parent.id);
+          await createBankAccount(formData: formData, parentAccount: parent);
           getAccounts(parentId);
           break;
 
         case 'INCOME': //--Income Account
-          // await createIncomeAccount(formData: formData, parent: parent);
+          await createIncomeAccount(formData: formData, parentAccount: parent);
           getAccounts(parentId);
           break;
 
         case 'EXPENDITURE': //--Expenses Account
-          await createExpensesAccount(formData: formData, parent: parent);
+          await createExpensesAccount(
+              formData: formData, parentAccount: parent);
+          getAccounts(parentId);
+          break;
+
+        case 'LIABILITIES': //--Expenses Account
+          await createLiabilitiesAccount(
+              formData: formData, parentAccount: parent);
           getAccounts(parentId);
           break;
       }
@@ -117,9 +123,9 @@ class AccountState extends StateNotifier<AsyncValue<List<AccountsModel>>> {
 }
 
 //--CREATE EXPENSES ACCOUNT
-Future createExpensesAccount(
+Future createIncomeAccount(
     {required Map<String, dynamic> formData,
-    required AccountsModel parent}) async {
+    required AccountsModel parentAccount}) async {
   try {
     final accountExist = await IsarHelper.instance.db!.accountsModels
         .filter()
@@ -130,13 +136,48 @@ Future createExpensesAccount(
       int status = formData['isActive'] == true ? 51 : 0;
 
       final account = AccountsModel()
-        ..accountType = parent.accountType
+        ..accountType = parentAccount.accountType
+        ..name = formData['name'].toString().trim()
+        ..hasChild = formData['hasChild'] as bool
+        // ..openingBalance =
+        //     double.parse(formData['openingBalance'] ?? 0.toString()).toDouble()
+        ..parent = parentAccount.id
+        ..description = formData['description'].toString().trim()
+        ..status = status
+        ..isSystem = false;
+
+      await IsarHelper.instance.db!.writeTxn(() async {
+        await IsarHelper.instance.db!.accountsModels.put(account);
+      });
+    } else {
+      EasyLoading.showToast("Account already exist!");
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
+
+//--CREATE EXPENSES ACCOUNT
+Future createExpensesAccount(
+    {required Map<String, dynamic> formData,
+    required AccountsModel parentAccount}) async {
+  try {
+    final accountExist = await IsarHelper.instance.db!.accountsModels
+        .filter()
+        .nameEqualTo(formData['name'].toString().trim())
+        .count();
+
+    if (accountExist == 0) {
+      int status = formData['isActive'] == true ? 51 : 0;
+
+      final account = AccountsModel()
+        ..accountType = parentAccount.accountType
         ..budget = double.parse(formData['budget'] ?? 0.toString()).toDouble()
         ..name = formData['name'].toString().trim()
         ..hasChild = formData['hasChild'] as bool
-        ..openingBalance =
-            double.parse(formData['openingBalance'] ?? 0.toString()).toDouble()
-        ..parent = parent.id
+        // ..openingBalance =
+        //     double.parse(formData['openingBalance'] ?? 0.toString()).toDouble()
+        ..parent = parentAccount.id
         ..description = formData['description'].toString().trim()
         ..status = status
         ..isSystem = false;
@@ -154,7 +195,8 @@ Future createExpensesAccount(
 
 //--CREATE BANK ACCOUNT
 Future createBankAccount(
-    {required Map<String, dynamic> formData, required int parentId}) async {
+    {required Map<String, dynamic> formData,
+    required AccountsModel parentAccount}) async {
   try {
     final accountExist = await IsarHelper.instance.db!.accountsModels
         .filter()
@@ -165,15 +207,49 @@ Future createBankAccount(
       int status = formData['isActive'] == true ? 51 : 0;
 
       final account = AccountsModel()
-        ..accountType = "CASH"
+        ..accountType = parentAccount.accountType
         ..bankAccountNo =
             int.parse(formData['bankAccountNo'].toString()).toInt()
         ..name = formData['name'].toString().trim()
-        ..hasChild = false
+        ..hasChild = formData['hasChild'] as bool
         ..openingBalance =
             double.parse(formData['openingBalance'].toString()).toDouble()
         ..isSystem = false
-        ..parent = parentId
+        ..parent = parentAccount.id
+        ..status = status;
+
+      await IsarHelper.instance.db!.writeTxn(() async {
+        await IsarHelper.instance.db!.accountsModels.put(account);
+      });
+    } else {
+      EasyLoading.showToast("Account already exist!");
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
+
+//--CREATE LIABILITIES ACCOUNT
+Future createLiabilitiesAccount(
+    {required Map<String, dynamic> formData,
+    required AccountsModel parentAccount}) async {
+  try {
+    final accountExist = await IsarHelper.instance.db!.accountsModels
+        .filter()
+        .nameEqualTo(formData['name'].toString().trim())
+        .count();
+
+    if (accountExist == 0) {
+      int status = formData['isActive'] == true ? 51 : 0;
+
+      final account = AccountsModel()
+        ..accountType = parentAccount.accountType
+        ..name = formData['name'].toString().trim()
+        ..hasChild = formData['hasChild'] as bool
+        ..openingBalance =
+            double.parse(formData['openingBalance'].toString()).toDouble()
+        ..isSystem = false
+        ..parent = parentAccount.id
         ..status = status;
 
       await IsarHelper.instance.db!.writeTxn(() async {

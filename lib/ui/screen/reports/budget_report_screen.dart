@@ -3,8 +3,6 @@ import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../widgets/txn_item.dart';
-
 class BudgetReportScreen extends StatelessWidget {
   const BudgetReportScreen({Key? key}) : super(key: key);
 
@@ -69,6 +67,8 @@ class BudgetReportScreen extends StatelessWidget {
                           shrinkWrap: true,
                           separatorBuilder: (context, index) => const Divider(),
                           itemBuilder: (BuildContext context, int index) {
+                            return null;
+
                             // return txnItem(context);
                           },
                         ),

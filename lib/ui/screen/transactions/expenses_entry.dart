@@ -68,7 +68,9 @@ class ExpensesEntry extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           subtitle: Text(
-                            account.description!,
+                            account.description != null
+                                ? account.description!
+                                : 'No description found',
                           ),
                         ),
                         UIHelper.verticalSpaceMedium(),
@@ -349,6 +351,9 @@ class ExpensesEntry extends StatelessWidget {
                                       decoration: const InputDecoration(
                                         labelText: 'Amount',
                                       ),
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                              signed: true, decimal: true),
                                     ),
                                   ),
                                 ),
@@ -370,7 +375,10 @@ class ExpensesEntry extends StatelessWidget {
                                 decoration: const InputDecoration(
                                   labelText: 'Description',
                                 ),
-                                onChanged: (value) {},
+                                keyboardType: TextInputType.name,
+                                textInputAction: TextInputAction.next,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                               ),
                             ),
                           ),

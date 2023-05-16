@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_wallet/models/accounts_model.dart';
+import 'package:flutter_wallet/util/ui_helpers.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
-import '../../../models/accounts_model.dart';
 import '../../../util/constant.dart';
 import '../../widgets/annotated_region.dart';
 import '../../widgets/button_default.dart';
 import '../../widgets/input_container.dart';
+import '../home/home_controller.dart';
+import 'transaction_controller.dart';
 
 class IncomeEntry extends StatelessWidget {
   const IncomeEntry({Key? key, required this.account}) : super(key: key);
 
   final AccountsModel account;
-
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormBuilderState>();
@@ -50,7 +55,7 @@ class IncomeEntry extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                "A",
+                                account.name![0].toString(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
@@ -59,94 +64,18 @@ class IncomeEntry extends StatelessWidget {
                             ),
                           ),
                           title: Text(
-                            "Vegitable Expenses",
+                            account.name!,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          subtitle: const Text(
-                            "A simple way to remove the back button in the AppBar is to set",
+                          subtitle: Text(
+                            account.description!,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 55,
-                                  width: 55,
-                                  decoration: BoxDecoration(
-                                    // color: Theme.of(context).primaryColorDark,
-                                    borderRadius: BorderRadius.circular(80),
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Iconsax.wallet,
-                                    ),
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Budget",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall),
-                                    Text(
-                                      "12,645.52",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  height: 55,
-                                  width: 55,
-                                  decoration: BoxDecoration(
-                                    // color: Theme.of(context).primaryColorDark,
-                                    borderRadius: BorderRadius.circular(80),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Iconsax.export_1,
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Spending",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall),
-                                    Text(
-                                      "12,645.52",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                SliverToBoxAdapter(child: UIHelper.verticalSpaceMedium()),
                 SliverToBoxAdapter(
                   child: FormBuilder(
                     key: formKey,
@@ -169,10 +98,10 @@ class IncomeEntry extends StatelessWidget {
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                               const SizedBox(width: 16),
-                              const Text("By Cash/Bank"),
+                              const Text("To Cash/Bank"),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          UIHelper.verticalSpaceMedium(),
                           SizedBox(
                             height: inputHeight,
                             child: Row(
@@ -203,68 +132,100 @@ class IncomeEntry extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 16),
-                                Expanded(
-                                  child: SizedBox(
-                                    height: inputHeight,
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 16, right: 0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Theme.of(context).canvasColor,
-                                      ),
-                                      child: FormBuilderDropdown<String>(
-                                        name: 'cash_bank',
-                                        decoration: const InputDecoration(
-                                          labelText: 'Payment By',
-                                          hintText: 'Select',
+                                Consumer(
+                                  builder: (context, ref, child) {
+                                    return Expanded(
+                                      child: SizedBox(
+                                        height: inputHeight,
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 16, right: 0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color:
+                                                Theme.of(context).canvasColor,
+                                          ),
+                                          child: FormBuilderDropdown<String>(
+                                            name: 'cash_bank',
+                                            initialValue:
+                                                ref.watch(txnModeProvider),
+                                            decoration: const InputDecoration(
+                                              labelText: 'Payment By',
+                                              hintText: 'Select',
+                                            ),
+                                            onChanged: (value) {
+                                              ref
+                                                  .watch(
+                                                      txnModeProvider.notifier)
+                                                  .update((state) =>
+                                                      value.toString());
+                                            },
+                                            items: ['Cash', 'Bank']
+                                                .map(
+                                                  (pType) => DropdownMenuItem(
+                                                    value: pType,
+                                                    child: Text(
+                                                      pType,
+                                                      style: inputStyle,
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
                                         ),
-                                        onChanged: (value) {},
-                                        items: ['Cash', 'Bank']
-                                            .map(
-                                              (pType) => DropdownMenuItem(
-                                                value: pType,
-                                                child: Text(
-                                                  pType,
-                                                  style: inputStyle,
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                    );
+                                  },
+                                )
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: SizedBox(
-                              height: inputHeight,
-                              child: InputContainer(
-                                child: FormBuilderDropdown<String>(
-                                  name: 'cash_bank',
-                                  decoration: const InputDecoration(
-                                    labelText: 'Select Bank',
-                                  ),
-                                  onChanged: (value) {},
-                                  items: ['Cash', 'Bank']
-                                      .map(
-                                        (pType) => DropdownMenuItem(
-                                          value: pType,
-                                          child: Text(
-                                            pType,
-                                            style: inputStyle,
+                          Consumer(builder: (context, ref, child) {
+                            final banks = ref.watch(bankAccountsProvider);
+
+                            return banks.when(
+                              loading: () => const CircularProgressIndicator(),
+                              error: (error, stackTrace) => const Text("Error"),
+                              data: (banks) {
+                                return ref.watch(txnModeProvider) == 'Bank'
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(top: 16),
+                                        child: InputContainer(
+                                          child: SizedBox(
+                                            height: inputHeight,
+                                            child: FormBuilderDropdown<int>(
+                                              name: 'bank',
+                                              initialValue: banks[0].id,
+                                              decoration: const InputDecoration(
+                                                labelText: 'Select Bank',
+                                              ),
+                                              items: banks
+                                                  .map(
+                                                    (item) => DropdownMenuItem(
+                                                      alignment:
+                                                          AlignmentDirectional
+                                                              .centerStart,
+                                                      value: item.id,
+                                                      child: Text(
+                                                        item.name!,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
                                           ),
                                         ),
                                       )
-                                      .toList(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
+                                    : const SizedBox.shrink();
+                              },
+                            );
+                          }),
+                          UIHelper.verticalSpaceMedium(),
                           SizedBox(
                             height: inputHeight,
                             child: Row(
@@ -274,7 +235,7 @@ class IncomeEntry extends StatelessWidget {
                                     child: FormBuilderTextField(
                                       name: 'type',
                                       enabled: false,
-                                      initialValue: "EXPENSES",
+                                      initialValue: "INCOME",
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .primaryColorLight),
@@ -294,13 +255,16 @@ class IncomeEntry extends StatelessWidget {
                                       decoration: const InputDecoration(
                                         labelText: 'Amount',
                                       ),
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                              signed: true, decimal: true),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          UIHelper.verticalSpaceMedium(),
                           SizedBox(
                             height: inputHeight,
                             child: Container(
@@ -315,19 +279,54 @@ class IncomeEntry extends StatelessWidget {
                                 decoration: const InputDecoration(
                                   labelText: 'Description',
                                 ),
-                                onChanged: (value) {},
+                                keyboardType: TextInputType.name,
+                                textInputAction: TextInputAction.next,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 32),
-                          SizedBox(
-                            height: inputHeight,
-                            child: ButtonDefault(
-                              text: const Text("SUBMIT"),
-                              onTap: () {},
+                          UIHelper.verticalSpaceLarge(),
+                          Consumer(
+                            builder: (context, ref, child) => SizedBox(
+                              height: inputHeight,
+                              child: ButtonDefault(
+                                text: const Text("SUBMIT"),
+                                onTap: () async {
+                                  if (formKey.currentState?.saveAndValidate() ??
+                                      false) {
+                                    EasyLoading.show(status: 'wait');
+
+                                    final data = {
+                                      'data': formKey.currentState!.value,
+                                      'account': {
+                                        'accountNo': account.id,
+                                        'accountName': account.name,
+                                        'accountType': account.accountType
+                                      },
+                                      'txnMode': ref.read(txnModeProvider)
+                                    };
+
+                                    await ref
+                                        .watch(incomeEntryProvider(data).future)
+                                        .then((value) {
+                                      //--Reload Home Data
+                                      ref.invalidate(
+                                          recentTransactionsProvider);
+                                      EasyLoading.showSuccess("Done!");
+                                      GoRouter.of(context).pop();
+                                    });
+
+                                    EasyLoading.dismiss();
+                                  } else {
+                                    EasyLoading.dismiss();
+                                    EasyLoading.showToast("Validation fail");
+                                  }
+                                },
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          UIHelper.verticalSpaceMedium(),
                         ],
                       ),
                     ),

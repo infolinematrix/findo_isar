@@ -449,7 +449,7 @@ class HomePage extends StatelessWidget {
           GestureDetector(
             onTap: () {
               GoRouter.of(context)
-                  .pushNamed('ENTRY', extra: {'entryType': 'INCOME-ENTRY'});
+                  .pushNamed('ENTRY', extra: {'accountType': 'INCOME'});
             },
             child: Container(
               margin: const EdgeInsets.only(right: 10),

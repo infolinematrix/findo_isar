@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/scroll_model.dart';
@@ -123,7 +124,7 @@ final expenditureEntryProvider = FutureProvider.family
     .autoDispose((ref, Map<String, dynamic> formData) async {
   try {
     if (ref.read(txnModeProvider) != formData['txnMode']) {
-      print("INVALID TXN MODE");
+      debugPrint("INVALID TXN MODE");
       return null;
     }
 
@@ -176,6 +177,87 @@ final expenditureEntryProvider = FutureProvider.family
         ..description = formData['data']['description'].toString().trim()
         ..narration = "Paid.."
         ..narration = "By ${bank!.name.toString().trim()}"
+        ..status = 51
+        ..onAccount = bank.id
+        ..onAccountName = bank.name.toString().trim();
+
+      final scrollUpdate = await IsarHelper.instance.db!.scrollModels
+          .filter()
+          .idEqualTo(1)
+          .findFirst();
+      await IsarHelper.instance.db!.writeTxn(() async {
+        await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+        await IsarHelper.instance.db!.scrollModels.put(
+          scrollUpdate!..scrollNo = updatedScroll,
+        );
+      });
+    }
+
+    return true;
+  } catch (e) {
+    EasyLoading.dismiss();
+    rethrow;
+  }
+});
+
+//--INCOME ENTRY
+final incomeEntryProvider = FutureProvider.family
+    .autoDispose((ref, Map<String, dynamic> formData) async {
+  try {
+    if (ref.read(txnModeProvider) != formData['txnMode']) {
+      debugPrint("INVALID TXN MODE");
+      return null;
+    }
+
+    final updatedScroll =
+        await ref.watch(getScrollNoProvider.future).then((value) => value) + 1;
+    if (formData['txnMode'] == 'Cash') {
+      final txn = TransactionsModel()
+        ..txnDate = formData['data']['txnDate']
+        ..scrollType = ScrollType.HD
+        ..txnType = TxnType.CR
+        ..accountNo = formData['account']['accountNo'] //--CASH
+        ..accountName = formData['account']['accountName'].toString().trim()
+        ..scrollNo = updatedScroll
+        ..scrollSlNo = 1
+        ..amount =
+            double.parse(formData['data']['amount'].toString()).toDouble()
+        ..description = formData['data']['description'].toString().trim()
+        ..narration = "Cash"
+        ..narration = formData['account']['accountName'].toString().trim()
+        ..status = 51
+        ..onAccount = 1
+        ..onAccountName = 'CASH';
+
+      final scrollUpdate = await IsarHelper.instance.db!.scrollModels
+          .filter()
+          .idEqualTo(1)
+          .findFirst();
+      await IsarHelper.instance.db!.writeTxn(() async {
+        await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+        await IsarHelper.instance.db!.scrollModels
+            .put(scrollUpdate!..scrollNo = updatedScroll);
+      });
+    }
+
+    if (formData['txnMode'] == 'Bank') {
+      final bank = await IsarHelper.instance.db!.accountsModels
+          .filter()
+          .idEqualTo(formData['data']['bank'])
+          .findFirst();
+      final txn = TransactionsModel()
+        ..txnDate = formData['data']['txnDate']
+        ..scrollType = ScrollType.HD
+        ..txnType = TxnType.CR
+        ..accountNo = formData['account']['accountNo'] //--CASH
+        ..accountName = formData['account']['accountName'].toString().trim()
+        ..scrollNo = updatedScroll
+        ..scrollSlNo = 1
+        ..amount =
+            double.parse(formData['data']['amount'].toString()).toDouble()
+        ..description = formData['data']['description'].toString().trim()
+        ..narration = "Paid.."
+        ..narration = "To ${bank!.name.toString().trim()}"
         ..status = 51
         ..onAccount = bank.id
         ..onAccountName = bank.name.toString().trim();

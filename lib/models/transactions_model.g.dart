@@ -323,15 +323,19 @@ P _transactionsModelDeserializeProp<P>(
 
 const _TransactionsModelscrollTypeEnumValueMap = {
   'HC': 0,
-  'HD': 1,
-  'TC': 2,
-  'TD': 3,
+  'BC': 1,
+  'HD': 2,
+  'BD': 3,
+  'TC': 4,
+  'TD': 5,
 };
 const _TransactionsModelscrollTypeValueEnumMap = {
   0: ScrollType.HC,
-  1: ScrollType.HD,
-  2: ScrollType.TC,
-  3: ScrollType.TD,
+  1: ScrollType.BC,
+  2: ScrollType.HD,
+  3: ScrollType.BD,
+  4: ScrollType.TC,
+  5: ScrollType.TD,
 };
 const _TransactionsModeltxnTypeEnumValueMap = {
   'DR': 0,

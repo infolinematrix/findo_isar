@@ -38,12 +38,12 @@ const SettingsModelSchema = CollectionSchema(
       id: -1360757079954853123,
       name: r'variable',
       unique: true,
-      replace: true,
+      replace: false,
       properties: [
         IndexPropertySchema(
           name: r'variable',
           type: IndexType.hash,
-          caseSensitive: false,
+          caseSensitive: true,
         )
       ],
     )

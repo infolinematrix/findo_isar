@@ -128,8 +128,9 @@ class SelectableAccount extends StatelessWidget {
                                       .headlineMedium,
                                 ),
                                 subtitle: Text(
-                                  data[index].description!,
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  data[index].description != null
+                                      ? data[index].description!
+                                      : 'No description found..',
                                 ),
                                 // trailing: const Icon(Iconsax.arrow_21),
                               ),

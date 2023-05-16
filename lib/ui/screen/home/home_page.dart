@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_wallet/models/transactions_model.dart';
 import 'package:flutter_wallet/util/file_path.dart';
+import 'package:flutter_wallet/util/format_currency.dart';
 import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../util/date_utils.dart';
 import '../../../util/double_back_to_close_app.dart';
 import '../../widgets/annotated_region.dart';
-import '../../widgets/current_month_status.dart';
 import '../../widgets/pie_chart2.dart';
 import '../../widgets/txn_item.dart';
 import 'home_controller.dart';
@@ -37,87 +39,104 @@ class HomePage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 18, right: 18, top: 40),
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _contentHeader(context),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final homeData = ref.watch(inttHomeProvider);
 
-                  UIHelper.verticalSpaceMedium(),
-                  _userHeader(context),
+                  return homeData.when(
+                    loading: () => const LinearProgressIndicator(),
+                    error: (error, stackTrace) => ErrorWidget(error),
+                    data: (data) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _contentHeader(context),
 
-                  UIHelper.verticalSpaceMedium(),
-                  _contentOverView(context),
+                          UIHelper.verticalSpaceMedium(),
+                          _userHeader(context),
 
-                  UIHelper.verticalSpaceLarge(),
+                          UIHelper.verticalSpaceMedium(),
+                          _currentMonthOverView(
+                              context, data.monthIncomeExpenditure),
 
-                  //--SHOTCUT
+                          UIHelper.verticalSpaceLarge(),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Navigation',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      SvgPicture.asset(
-                        scan,
-                        // color: Theme.of(context).iconTheme.color,
-                        width: 18,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  _navigation(context),
+                          //--SHOTCUT
 
-                  UIHelper.verticalSpaceLarge(),
-                  const CurrentMonthStatus(data: {'a': 34}),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Navigation',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              SvgPicture.asset(
+                                scan,
+                                // color: Theme.of(context).iconTheme.color,
+                                width: 18,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _navigation(context),
 
-                  UIHelper.verticalSpaceMedium(),
+                          UIHelper.verticalSpaceLarge(),
 
-                  //--NAVIGATION
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Shotcuts',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      SvgPicture.asset(
-                        filter,
-                        width: 18,
-                      ),
-                    ],
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                  _shotcut1(context),
+                          _todaysSummary(context, data.monthIncomeExpenditure),
 
-                  UIHelper.verticalSpaceMedium(),
+                          UIHelper.verticalSpaceMedium(),
 
-                  //--UTILITIES
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Utilities',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      SvgPicture.asset(
-                        filter,
-                        // color: Theme.of(context).iconTheme.color,
-                        width: 18,
-                      ),
-                    ],
-                  ),
-                  UIHelper.verticalSpaceMedium(),
+                          //--NAVIGATION
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Shotcuts',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              SvgPicture.asset(
+                                filter,
+                                width: 18,
+                              ),
+                            ],
+                          ),
+                          UIHelper.verticalSpaceMedium(),
+                          _shotcut1(context),
 
-                  _utilities(context),
+                          UIHelper.verticalSpaceMedium(),
 
-                  UIHelper.verticalSpaceMedium(),
+                          //--UTILITIES
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Utilities',
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              SvgPicture.asset(
+                                filter,
+                                // color: Theme.of(context).iconTheme.color,
+                                width: 18,
+                              ),
+                            ],
+                          ),
+                          UIHelper.verticalSpaceMedium(),
 
-                  //--RECENT
+                          _utilities(context),
 
-                  recentTransactions(context),
-                ],
+                          UIHelper.verticalSpaceMedium(),
+
+                          //--RECENT
+
+                          recentTransactions(context, data.recentTransactions),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ),
@@ -126,7 +145,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  SizedBox recentTransactions(BuildContext context) {
+  SizedBox recentTransactions(
+      BuildContext context, List<TransactionsModel> txn) {
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -148,28 +168,39 @@ class HomePage extends StatelessWidget {
             ],
           ),
           UIHelper.verticalSpaceMedium(),
-          Consumer(
-            builder: (context, ref, child) {
-              final txns = ref.watch(recentTransactionsProvider);
-              return txns.when(
-                error: (error, stackTrace) => ErrorWidget(error),
-                loading: () => const Text("Wait.."),
-                data: (data) {
-                  return data.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: data.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(0),
-                          itemBuilder: (context, index) {
-                            return txnItem(context, data[index]);
-                          },
-                        )
-                      : const SizedBox.shrink();
-                },
-              );
-            },
-          ),
+          // Consumer(
+          //   builder: (context, ref, child) {
+          //     final txns = ref.watch(recentTransactionsProvider);
+          //     return txns.when(
+          //       error: (error, stackTrace) => ErrorWidget(error),
+          //       loading: () => const Text("Wait.."),
+          //       data: (data) {
+          //         return data.isNotEmpty
+          //             ? ListView.builder(
+          //                 itemCount: data.length,
+          //                 shrinkWrap: true,
+          //                 physics: const NeverScrollableScrollPhysics(),
+          //                 padding: const EdgeInsets.all(0),
+          //                 itemBuilder: (context, index) {
+          //                   return txnItem(context, data[index]);
+          //                 },
+          //               )
+          //             : const SizedBox.shrink();
+          //       },
+          //     );
+          //   },
+          // ),
+          txn.isNotEmpty
+              ? ListView.builder(
+                  itemCount: txn.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(0),
+                  itemBuilder: (context, index) {
+                    return txnItem(context, txn[index]);
+                  },
+                )
+              : const SizedBox.shrink()
         ],
       ),
     );
@@ -243,7 +274,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _contentOverView(BuildContext context) {
+  Widget _currentMonthOverView(
+      BuildContext context, Map<String, dynamic> data) {
     return Container(
       padding: const EdgeInsets.only(left: 18, right: 18, top: 22, bottom: 22),
       decoration: BoxDecoration(
@@ -271,11 +303,11 @@ class HomePage extends StatelessWidget {
                 //     color: Theme.of(context).secondaryHeaderColor,
                 //   ),
                 // ),
-                child: const SizedBox.square(
+                child: SizedBox.square(
                     dimension: 100,
                     child: PicChart(chartData: {
-                      'expenditure': 4000.00,
-                      'income': 10000.00
+                      'expenditure': data['totalDebitMonth'],
+                      'income': data['totalCreditMonth']
                     })),
               ),
               UIHelper.verticalSpaceSmall(),
@@ -287,7 +319,7 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '45,20,600.45',
+                        formatCurrency(data['totalCreditMonth'].toString()),
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
@@ -307,7 +339,7 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        '20,600.45',
+                        formatCurrency(data['totalDebitMonth'].toString()),
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
@@ -892,6 +924,117 @@ class HomePage extends StatelessWidget {
     //     }).toList(),
     //   ),
     // );
+  }
+
+  Widget _todaysSummary(BuildContext context, Map<String, dynamic> data) {
+    return Container(
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).cardColor,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Text(
+              strToDate(DateTime.now()),
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ),
+          IntrinsicHeight(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        Text(
+                          "Expenses",
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              formatCurrency(data['totalDebitDay'].toString()),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            const Icon(
+                              Iconsax.export_1,
+                              color: Colors.red,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Flexible(
+                    fit: FlexFit.loose,
+                    child: SizedBox(
+                      width: 50,
+                      // child: DateWidget(
+                      //   strDate: DateTime.now().toString(),
+                      // ),
+                      child: VerticalDivider(
+                        thickness: 0.8,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Wrap(
+                      direction: Axis.vertical,
+                      children: [
+                        Text(
+                          "Income",
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(
+                              Iconsax.import_1,
+                              color: Colors.green,
+                            ),
+                            UIHelper.horizontalSpaceSmall(),
+                            Text(
+                              formatCurrency(data['totalCreditDay'].toString()),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+        ],
+      ),
+    );
   }
 }
 

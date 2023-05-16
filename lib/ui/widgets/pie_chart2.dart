@@ -6,12 +6,12 @@ class PicChart extends StatelessWidget {
   final Map<String, dynamic> chartData;
   @override
   Widget build(BuildContext context) {
-    double exp = 100;
-    double save = 0;
-    if (chartData['income'] != 0) {
-      exp = chartData['expenditure'] / chartData['income'] * 100;
-      save = 100 - exp;
-    }
+    // double exp = 100;
+    // double save = 0;
+    // if (chartData['income'] != 0) {
+    //   exp = chartData['expenditure'] / chartData['income'] * 100;
+    //   save = 100 - exp;
+    // }
 
     return Placeholder(
       color: Colors.transparent,
@@ -22,14 +22,14 @@ class PicChart extends StatelessWidget {
           sectionsSpace: 2,
           sections: [
             PieChartSectionData(
-              value: exp.roundToDouble(),
+              value: chartData['expenditure'].roundToDouble(),
               color: Theme.of(context).primaryColor,
               radius: 60,
               titleStyle: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.w100),
             ),
             PieChartSectionData(
-              value: save.roundToDouble(),
+              value: chartData['savings'].roundToDouble(),
               color: Theme.of(context).primaryColorDark,
               radius: 60,
               titleStyle: const TextStyle(

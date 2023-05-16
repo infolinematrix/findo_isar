@@ -15,13 +15,6 @@ import '../../widgets/pie_chart2.dart';
 import '../../widgets/txn_item.dart';
 import 'home_controller.dart';
 
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key}) : super(key: key);
-
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -291,23 +284,11 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(top: 8, left: 16),
-                // height: 55,
-                // width: 55,
-                // decoration: BoxDecoration(
-                //   color: Theme.of(context).primaryColorDark,
-                //   borderRadius: BorderRadius.circular(80),
-                // ),
-                // child: Center(
-                //   child: Icon(
-                //     Iconsax.settings,
-                //     color: Theme.of(context).secondaryHeaderColor,
-                //   ),
-                // ),
                 child: SizedBox.square(
                     dimension: 100,
                     child: PicChart(chartData: {
-                      'expenditure': data['totalDebitMonth'],
-                      'income': data['totalCreditMonth']
+                      'expenditure': data['expenditurePercentage'],
+                      'savings': data['savingsPercentage']
                     })),
               ),
               UIHelper.verticalSpaceSmall(),
@@ -365,14 +346,14 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "20% SPENDINGS",
+                    "${data['expenditurePercentage']}% SPENDINGS",
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
                         .copyWith(fontWeight: FontWeight.normal),
                   ),
                   Text(
-                    "80% SAVINGS",
+                    "${data['savingsPercentage']}% SAVINGS",
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
@@ -391,7 +372,7 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.error,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),

@@ -74,11 +74,20 @@ final currentMonthSummaryProvider =
       }
     }
 
+    double exp = 100;
+    double save = 0;
+    if (totalcrMonth != 0) {
+      exp = totaldrMonth / totalcrMonth * 100;
+      save = 100 - exp;
+    }
+
     return {
       'totalDebitMonth': totaldrMonth,
       'totalCreditMonth': totalcrMonth,
       'totalDebitDay': totaldrDay,
       'totalCreditDay': totalcrDay,
+      'expenditurePercentage': exp.roundToDouble(),
+      'savingsPercentage': save.roundToDouble()
     };
   } catch (e) {
     rethrow;

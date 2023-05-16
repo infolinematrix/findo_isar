@@ -9,6 +9,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../util/double_back_to_close_app.dart';
 import '../../widgets/annotated_region.dart';
 import '../../widgets/current_month_status.dart';
+import '../../widgets/pie_chart2.dart';
 import '../../widgets/txn_item.dart';
 import 'home_controller.dart';
 
@@ -41,17 +42,13 @@ class HomePage extends StatelessWidget {
                 children: <Widget>[
                   _contentHeader(context),
 
-                  const SizedBox(height: 16),
-
+                  UIHelper.verticalSpaceMedium(),
                   _userHeader(context),
 
-                  const SizedBox(height: 16),
-                  const CurrentMonthStatus(data: {'a': 34}),
-                  const SizedBox(height: 16),
-
+                  UIHelper.verticalSpaceMedium(),
                   _contentOverView(context),
 
-                  UIHelper.verticalSpaceExtraLarge(),
+                  UIHelper.verticalSpaceLarge(),
 
                   //--SHOTCUT
 
@@ -72,9 +69,12 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   _navigation(context),
 
+                  UIHelper.verticalSpaceLarge(),
+                  const CurrentMonthStatus(data: {'a': 34}),
+
                   UIHelper.verticalSpaceMedium(),
 
-                  //--SERVICES
+                  //--NAVIGATION
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -257,68 +257,75 @@ class HomePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '20,600',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  Text(
-                    'Expenditure',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                width: 8,
-              ),
               Container(
-                height: 55,
-                width: 55,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
-                  borderRadius: BorderRadius.circular(80),
-                ),
-                child: Center(
-                  child: Icon(
-                    Iconsax.settings,
-                    color: Theme.of(context).secondaryHeaderColor,
-                  ),
-                ),
+                margin: const EdgeInsets.only(top: 8, left: 16),
+                // height: 55,
+                // width: 55,
+                // decoration: BoxDecoration(
+                //   color: Theme.of(context).primaryColorDark,
+                //   borderRadius: BorderRadius.circular(80),
+                // ),
+                // child: Center(
+                //   child: Icon(
+                //     Iconsax.settings,
+                //     color: Theme.of(context).secondaryHeaderColor,
+                //   ),
+                // ),
+                child: const SizedBox.square(
+                    dimension: 100,
+                    child: PicChart(chartData: {
+                      'expenditure': 4000.00,
+                      'income': 10000.00
+                    })),
               ),
-              // const Icon(
-              //   Iconsax.arrow_2,
-              //   size: 30,
-              // ),
-              const SizedBox(
-                width: 8,
-              ),
+              UIHelper.verticalSpaceSmall(),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    '20,600',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '45,20,600.45',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Income',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    height: 4,
+                  UIHelper.verticalSpaceMedium(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '20,600.45',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Expenditure',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Income',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
-                  )
                 ],
               ),
             ],
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          UIHelper.verticalSpaceLarge(),
           Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -341,11 +348,9 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
-              const SizedBox(
-                height: 8,
-              ),
+              UIHelper.verticalSpaceSmall(),
               SizedBox(
-                height: 10,
+                height: 8,
                 child: Row(
                   children: [
                     Flexible(
@@ -364,7 +369,7 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).dialogBackgroundColor,
+                          color: Colors.green,
                         ),
                       ),
                     ),

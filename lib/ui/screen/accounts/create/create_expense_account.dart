@@ -166,10 +166,6 @@ class CreateExpensesAccount extends StatelessWidget {
                                             ref.watch(hasChildProvider) == true
                                                 ? false
                                                 : true,
-                                        validator:
-                                            FormBuilderValidators.compose([
-                                          FormBuilderValidators.required(),
-                                        ]),
                                         decoration: const InputDecoration(
                                             labelText: 'Monthly Budget'),
                                         keyboardType: const TextInputType

@@ -45,14 +45,8 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                   Text(
                     txn.accountName!,
                     maxLines: 1,
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontWeight: FontWeight.normal,
-                        ),
-                  ),
-                  Text(
-                    txn.description!,
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style:
+                        Theme.of(context).textTheme.headlineMedium!.copyWith(),
                   ),
                 ],
               ),
@@ -70,13 +64,12 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                   children: [
                     Text(
                       "${formatCurrency(txn.amount.toString())}",
-                      style:
-                          Theme.of(context).textTheme.headlineMedium!.copyWith(
-                                fontWeight: FontWeight.normal,
-                                // color: txn.txnType == TxnType.CR
-                                //     ? Theme.of(context).primaryColorDark
-                                //     : Theme.of(context).primaryColorLight,
-                              ),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          // fontWeight: FontWeight.normal,
+                          // color: txn.txnType == TxnType.CR
+                          //     ? Theme.of(context).primaryColorDark
+                          //     : Theme.of(context).primaryColorLight,
+                          ),
                     ),
                   ],
                 ),
@@ -85,7 +78,7 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
           ],
         ),
         Text(
-          txn.accountName!,
+          txn.description != null ? txn.description! : 'No description found.',
           maxLines: 1,
           style: Theme.of(context)
               .textTheme

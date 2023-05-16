@@ -31,7 +31,7 @@ final getScrollNoProvider = FutureProvider.autoDispose<int>((ref) async {
 
 //--SELECTABLE ACCOUNTS
 final selectableAccountsProvider =
-    FutureProvider.family((ref, String accountType) async {
+    FutureProvider.family.autoDispose((ref, String accountType) async {
   List<AccountsModel>? accounts;
   try {
     switch (accountType) {
@@ -71,7 +71,7 @@ final selectableAccountsProvider =
 
 //--ACCOUNT STATUS
 final accountStatusOftheMonth =
-    FutureProvider.family((ref, int accountNo) async {
+    FutureProvider.family.autoDispose((ref, int accountNo) async {
   double totDr = 0;
   double totCr = 0;
 

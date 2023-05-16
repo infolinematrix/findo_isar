@@ -4,9 +4,6 @@ import 'package:flutter_wallet/models/transactions_model.dart';
 import 'package:flutter_wallet/util/date_utils.dart';
 import 'package:flutter_wallet/util/ui_helpers.dart';
 
-import '../../util/constant.dart';
-import '../../util/functions.dart';
-
 class DateWidget extends StatelessWidget {
   const DateWidget({Key? key, required this.txnData}) : super(key: key);
 
@@ -29,33 +26,34 @@ class DateWidget extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                // color: Theme.of(context).highlightColor,
-                color: Color(randomColor[
-                    randomNumber(min: 0, max: randomColor.length - 1)]),
+                color: Theme.of(context).highlightColor,
+                // color: Color(randomColor[
+                //     randomNumber(min: 0, max: randomColor.length - 1)]),
               ),
               child: Column(
                 children: [
                   Text(
                     date['day'],
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        fontSize: 18,
-                        color: Theme.of(context).primaryColorDark),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Theme.of(context).primaryColorDark),
                   ),
                   Text(
                     date['month'],
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 10, height: 1.0),
+                        .titleSmall!
+                        .copyWith(fontSize: 12, height: 1.00),
                   ),
                   Text(
                     date['year'],
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 7),
+                        .titleLarge!
+                        .copyWith(fontSize: 8, height: 1.0),
                   ),
                 ],
               ),
@@ -69,16 +67,18 @@ class DateWidget extends StatelessWidget {
                 top: 0,
                 child: SvgPicture.asset(
                   "assets/svg/income.svg",
+                  colorFilter:
+                      const ColorFilter.mode(Colors.green, BlendMode.srcIn),
                   width: 18,
                 ),
               )
             : Positioned(
                 right: 15,
                 top: 0,
-                child: SvgPicture.asset(
-                  "assets/svg/payment.svg",
-                  width: 18,
-                ),
+                child: SvgPicture.asset("assets/svg/payment.svg",
+                    width: 18,
+                    colorFilter:
+                        const ColorFilter.mode(Colors.red, BlendMode.srcIn)),
               ),
       ],
     );

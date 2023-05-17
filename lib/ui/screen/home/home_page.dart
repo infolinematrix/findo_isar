@@ -52,34 +52,13 @@ class HomePage extends StatelessWidget {
                           _currentMonthOverView(
                               context, data.monthIncomeExpenditure),
 
-                          UIHelper.verticalSpaceLarge(),
-
-                          //--SHOTCUT
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Navigation',
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              SvgPicture.asset(
-                                scan,
-                                // color: Theme.of(context).iconTheme.color,
-                                width: 18,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          _navigation(context),
-
-                          UIHelper.verticalSpaceLarge(),
-
+                          UIHelper.verticalSpaceMedium(),
                           _todaysSummary(context, data.monthIncomeExpenditure),
 
-                          UIHelper.verticalSpaceMedium(),
+                          UIHelper.verticalSpaceLarge(),
+                          _navigation(context),
 
+                          UIHelper.verticalSpaceMedium(),
                           //--NAVIGATION
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,28 +140,6 @@ class HomePage extends StatelessWidget {
             ],
           ),
           UIHelper.verticalSpaceMedium(),
-          // Consumer(
-          //   builder: (context, ref, child) {
-          //     final txns = ref.watch(recentTransactionsProvider);
-          //     return txns.when(
-          //       error: (error, stackTrace) => ErrorWidget(error),
-          //       loading: () => const Text("Wait.."),
-          //       data: (data) {
-          //         return data.isNotEmpty
-          //             ? ListView.builder(
-          //                 itemCount: data.length,
-          //                 shrinkWrap: true,
-          //                 physics: const NeverScrollableScrollPhysics(),
-          //                 padding: const EdgeInsets.all(0),
-          //                 itemBuilder: (context, index) {
-          //                   return txnItem(context, data[index]);
-          //                 },
-          //               )
-          //             : const SizedBox.shrink();
-          //       },
-          //     );
-          //   },
-          // ),
           txn.isNotEmpty
               ? ListView.builder(
                   itemCount: txn.length,
@@ -397,177 +354,212 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _navigation(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          Container(
-            width: 100,
-            padding: const EdgeInsets.only(
-              left: 18,
-              right: 18,
-              top: 28,
-              bottom: 28,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              'Navigation',
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            child: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  Iconsax.add,
-                  color: Theme.of(context).secondaryHeaderColor,
+            SvgPicture.asset(
+              scan,
+              // color: Theme.of(context).iconTheme.color,
+              width: 18,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        SizedBox(
+          height: 100,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              Container(
+                width: 100,
+                padding: const EdgeInsets.only(
+                  left: 18,
+                  right: 18,
+                  top: 28,
+                  bottom: 28,
                 ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              GoRouter.of(context)
-                  .pushNamed('ENTRY', extra: {'accountType': 'EXPENDITURE'});
-            },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.all(16),
-              width: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).cardColor,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        border: Border.all(color: const Color(0xffD8D9E4))),
-                    child: CircleAvatar(
-                      radius: 24.0,
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      child: Icon(
-                        Iconsax.direct_send5,
-                        color: Theme.of(context).primaryColor,
-                        size: 34,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    'Payment',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  )
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              GoRouter.of(context)
-                  .pushNamed('ENTRY', extra: {'accountType': 'INCOME'});
-            },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.all(16),
-              width: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).cardColor,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xffD8D9E4))),
-                    child: CircleAvatar(
-                      radius: 24.0,
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      child: Icon(
-                        Iconsax.direct_inbox5,
-                        color: Theme.of(context).primaryColorDark,
-                        size: 34,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    'Receive',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  )
-                ],
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.all(16),
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
+                child: Container(
+                  height: 10,
+                  width: 10,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xffD8D9E4))),
-                  child: CircleAvatar(
-                    radius: 24.0,
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    color: Theme.of(context).primaryColorDark,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
                     child: Icon(
-                      Iconsax.repeat_circle5,
-                      color: Theme.of(context).colorScheme.inverseSurface,
-                      size: 34,
+                      Iconsax.add,
+                      color: Theme.of(context).secondaryHeaderColor,
                     ),
                   ),
                 ),
-                Text(
-                  'Withdrawl',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                )
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.all(16),
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
+              ),
+              GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).pushNamed('ENTRY',
+                      extra: {'accountType': 'EXPENDITURE'});
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(16),
+                  width: 100,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xffD8D9E4))),
-                  child: CircleAvatar(
-                    radius: 24.0,
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    child: Icon(
-                      Iconsax.repeat_circle5,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      size: 34,
-                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            border: Border.all(color: const Color(0xffD8D9E4))),
+                        child: CircleAvatar(
+                          radius: 24.0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          child: Icon(
+                            Iconsax.direct_send5,
+                            color: Theme.of(context).primaryColor,
+                            size: 34,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Payment',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )
+                    ],
                   ),
                 ),
-                Text(
-                  'Deposit',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  GoRouter.of(context)
+                      .pushNamed('ENTRY', extra: {'accountType': 'INCOME'});
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(16),
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: const Color(0xffD8D9E4))),
+                        child: CircleAvatar(
+                          radius: 24.0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          child: Icon(
+                            Iconsax.direct_inbox5,
+                            color: Theme.of(context).primaryColorDark,
+                            size: 34,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Receive',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).pushNamed('WITHDRAWAL-ENTRY');
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(16),
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: const Color(0xffD8D9E4))),
+                        child: CircleAvatar(
+                          radius: 24.0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          child: Icon(
+                            Iconsax.repeat_circle5,
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                            size: 34,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Withdrawl',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).pushNamed('DEPOSIT-ENTRY');
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(16),
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: const Color(0xffD8D9E4))),
+                        child: CircleAvatar(
+                          radius: 24.0,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          child: Icon(
+                            Iconsax.repeat_circle5,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            size: 34,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Deposit',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -909,7 +901,7 @@ class HomePage extends StatelessWidget {
 
   Widget _todaysSummary(BuildContext context, Map<String, dynamic> data) {
     return Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 1, bottom: 1),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).cardColor,

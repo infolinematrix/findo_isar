@@ -11,6 +11,8 @@ import 'package:flutter_wallet/ui/screen/reports/cash_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/report_screen.dart';
 import 'package:flutter_wallet/ui/screen/settings/settings_screen.dart';
 import 'package:flutter_wallet/ui/screen/statement/select_account_screen.dart';
+import 'package:flutter_wallet/ui/screen/transactions/cash_deposit_screen.dart';
+import 'package:flutter_wallet/ui/screen/transactions/cash_withdrawal_screen.dart';
 import 'package:flutter_wallet/ui/screen/transactions/expenses_entry.dart';
 
 import 'package:go_router/go_router.dart';
@@ -240,6 +242,34 @@ final GoRouter router = GoRouter(
                 child: IncomeEntry(
                   account: extra['account'],
                 ),
+              );
+            },
+          ),
+          //--Cash Withdrawal
+          GoRoute(
+            path: 'withdrawal-entry',
+            name: 'WITHDRAWAL-ENTRY',
+            pageBuilder: (context, state) {
+              // Map extra = state.extra! as Map;
+
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CashWithdrawalScreen(),
+              );
+            },
+          ),
+          //--Cash Deposit
+          GoRoute(
+            path: 'deposit-entry',
+            name: 'DEPOSIT-ENTRY',
+            pageBuilder: (context, state) {
+              // Map extra = state.extra! as Map;
+
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CashDepositScreen(),
               );
             },
           ),

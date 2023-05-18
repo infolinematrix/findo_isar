@@ -142,60 +142,113 @@ ThemeData darkTheme = ThemeData(
       borderSide: BorderSide(color: Colors.transparent, width: 0.0),
     ),
   ),
-  // textTheme: TextTheme(
-  //   bodyMedium: GoogleFonts.poppins(
-  //     fontSize: 12,
-  //     color: const Color(0xffffffff),
-  //     fontWeight: FontWeight.w500,
-  //   ),
-  //   bodyLarge: GoogleFonts.poppins(
-  //     height: 1.6,
-  //     fontSize: 12,
-  //     color: const Color(0xff7b7f9e),
-  //     fontWeight: FontWeight.w400,
-  //   ),
-  //   labelLarge: GoogleFonts.poppins(
-  //     fontSize: 15,
-  //     height: 1.6,
-  //     color: const Color(0xff212330),
-  //     fontWeight: FontWeight.w600,
-  //   ),
-  //   displayMedium: GoogleFonts.poppins(
-  //     fontSize: 24,
-  //     color: const Color(0xFFFFFFFF),
-  //     fontWeight: FontWeight.w600,
-  //   ),
-  //   displaySmall: GoogleFonts.poppins(
-  //     fontSize: 22,
-  //     color: const Color(0xFFFFFFFF),
-  //     fontWeight: FontWeight.w800,
-  //   ),
-  //   headlineMedium: GoogleFonts.poppins(
-  //     fontSize: 15,
-  //     color: const Color(0xFFF1F3F6),
-  //     fontWeight: FontWeight.w600,
-  //   ),
-  //   headlineSmall: GoogleFonts.poppins(
-  //     fontSize: 22,
-  //     color: Colors.white,
-  //     fontWeight: FontWeight.w600,
-  //   ),
-  //   titleLarge: GoogleFonts.poppins(
-  //     fontSize: 20,
-  //     color: Colors.white,
-  //     fontWeight: FontWeight.w500,
-  //   ),
-  //   titleMedium: GoogleFonts.poppins(
-  //     fontSize: 16,
-  //     color: Colors.white,
-  //     fontWeight: FontWeight.w700,
-  //   ),
-  //   titleSmall: GoogleFonts.poppins(
-  //     fontSize: 14,
-  //     color: Colors.white,
-  //     fontWeight: FontWeight.w700,
-  //   ),
-  // ),
+  textTheme: const TextTheme(
+    //   bodyMedium: GoogleFonts.poppins(
+    //     fontSize: 12,
+    //     color: const Color(0xffffffff),
+    //     fontWeight: FontWeight.w500,
+    //   ),
+    //   bodyLarge: GoogleFonts.poppins(
+    //     height: 1.6,
+    //     fontSize: 12,
+    //     color: const Color(0xff7b7f9e),
+    //     fontWeight: FontWeight.w400,
+    //   ),
+    //   labelLarge: GoogleFonts.poppins(
+    //     fontSize: 15,
+    //     height: 1.6,
+    //     color: const Color(0xff212330),
+    //     fontWeight: FontWeight.w600,
+    //   ),
+    //   displayMedium: GoogleFonts.poppins(
+    //     fontSize: 24,
+    //     color: const Color(0xFFFFFFFF),
+    //     fontWeight: FontWeight.w600,
+    //   ),
+    //   displaySmall: GoogleFonts.poppins(
+    //     fontSize: 22,
+    //     color: const Color(0xFFFFFFFF),
+    //     fontWeight: FontWeight.w800,
+    //   ),
+    //   headlineMedium: GoogleFonts.poppins(
+    //     fontSize: 15,
+    //     color: const Color(0xFFF1F3F6),
+    //     fontWeight: FontWeight.w600,
+    //   ),
+    //   headlineSmall: GoogleFonts.poppins(
+    //     fontSize: 22,
+    //     color: Colors.white,
+    //     fontWeight: FontWeight.w600,
+    //   ),
+    //   titleLarge: GoogleFonts.poppins(
+    //     fontSize: 20,
+    //     color: Colors.white,
+    //     fontWeight: FontWeight.w500,
+    //   ),
+    //   titleMedium: GoogleFonts.poppins(
+    //     fontSize: 16,
+    //     color: Colors.white,
+    //     fontWeight: FontWeight.w700,
+    //   ),
+    //   titleSmall: GoogleFonts.poppins(
+    //     fontSize: 14,
+    //     color: Colors.white,
+    //     fontWeight: FontWeight.w700,
+    //   ),
+    labelLarge: TextStyle(
+      fontSize: 15,
+      height: 1.6,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w600,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 12,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w500,
+    ),
+    bodyLarge: TextStyle(
+      height: 1.6,
+      fontSize: 12,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w400,
+    ),
+    displayMedium: TextStyle(
+      fontSize: 24,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w600,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 22,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w800,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 15,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w600,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 22,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w600,
+    ),
+    titleLarge: TextStyle(
+      fontSize: 20,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w500,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w700,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.w700,
+    ),
+  ),
+
   // colorScheme: ColorScheme(background: COLOR_BACKGROUND_DARK),
 );
 

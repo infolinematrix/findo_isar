@@ -8,7 +8,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/util/constant.dart';
-import 'package:flutter_wallet/util/theme.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -16,6 +15,7 @@ import 'firebase_options.dart';
 import 'services/isar_database.dart';
 import 'services/logger.dart';
 import 'services/routes.dart';
+import 'util/theme_mode.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ void main() async {
   runApp(
     ProviderScope(observers: [
       RiverpodLogger(),
-    ], child: const MyApp()),
+    ], child: const App()),
   );
 }
 
@@ -39,36 +39,12 @@ Future<void> initApp() async {
   // await AwasomeNotification.initializeLocalNotifications();
 }
 
-ThemeManager _themeManager = ThemeManager();
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends ConsumerWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    _themeManager.addListener(themeListener);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _themeManager.removeListener(themeListener);
-    super.dispose();
-  }
-
-  themeListener() {
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themMode = ref.watch(themeModeProvider);
     return MaterialApp.router(
       title: 'Findo - Flutter App',
       debugShowCheckedModeBanner: false,
@@ -77,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       routerDelegate: router.routerDelegate,
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: themMode,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -87,3 +63,52 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+// ThemeManager _themeManager = ThemeManager();
+
+// class MyApp extends StatefulWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   void initState() {
+//     _themeManager.addListener(themeListener);
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     _themeManager.removeListener(themeListener);
+//     super.dispose();
+//   }
+
+//   themeListener() {
+//     if (mounted) {
+//       setState(() {});
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp.router(
+//       title: 'Findo - Flutter App',
+//       debugShowCheckedModeBanner: false,
+//       routeInformationProvider: router.routeInformationProvider,
+//       routeInformationParser: router.routeInformationParser,
+//       routerDelegate: router.routerDelegate,
+//       theme: lightTheme,
+//       darkTheme: darkTheme,
+//       themeMode: ThemeMode.light,
+//       localizationsDelegates: const [
+//         GlobalMaterialLocalizations.delegate,
+//         GlobalWidgetsLocalizations.delegate,
+//         FormBuilderLocalizations.delegate,
+//       ],
+//       builder: EasyLoading.init(),
+//     );
+//   }
+// }

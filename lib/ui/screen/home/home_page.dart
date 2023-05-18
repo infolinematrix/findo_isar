@@ -8,6 +8,7 @@ import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../util/theme_mode.dart';
 import '../../../util/date_utils.dart';
 import '../../../util/double_back_to_close_app.dart';
 import '../../widgets/annotated_region.dart';
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
             content: const Text('Tap back again to leave'),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 18, right: 18, top: 40),
+            padding: const EdgeInsets.only(left: 18, right: 18, top: 30),
             child: SingleChildScrollView(
               child: Consumer(
                 builder: (context, ref, child) {
@@ -175,11 +176,6 @@ class HomePage extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: const Icon(Iconsax.notification),
-          tooltip: "Notifications",
-          onPressed: () {},
-        ),
-        IconButton(
           icon: const Icon(Iconsax.math),
           tooltip: "Calculator",
           onPressed: () {},
@@ -194,33 +190,59 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _contentHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            SvgPicture.asset(
-              logo,
-              width: 34,
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Text(
-              'eWalle',
-              style: Theme.of(context).textTheme.displaySmall,
-            )
-          ],
-        ),
-        InkWell(
-          onTap: () {},
-          child: SvgPicture.asset(
-            menu,
-            width: 16,
-            // color: Theme.of(context).iconTheme.color,
+    return Container(
+      color: Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              SvgPicture.asset(
+                logo,
+                width: 34,
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Text(
+                'eWalle',
+                style: Theme.of(context).textTheme.displaySmall,
+              )
+            ],
           ),
-        ),
-      ],
+          // InkWell(
+          //   onTap: () {},
+          //   child: SvgPicture.asset(
+          //     menu,
+          //     width: 16,
+          //     // color: Theme.of(context).iconTheme.color,
+          //   ),
+          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Iconsax.notification),
+                tooltip: "Notifications",
+                onPressed: () {},
+              ),
+              Consumer(builder: (context, ref, child) {
+                final theme = ref.watch(themeModeProvider);
+                return IconButton(
+                    onPressed: () {
+                      ref.read(themeModeProvider.notifier).state =
+                          theme == ThemeMode.light
+                              ? ThemeMode.dark
+                              : ThemeMode.light;
+                    },
+                    icon: Icon(theme == ThemeMode.dark
+                        ? Icons.light_mode
+                        : Icons.dark_mode));
+              }),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -329,7 +351,7 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.redAccent,
                         ),
                       ),
                     ),
@@ -339,7 +361,7 @@ class HomePage extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.green,
+                          color: Colors.blueAccent,
                         ),
                       ),
                     ),
@@ -388,8 +410,8 @@ class HomePage extends StatelessWidget {
                 child: Container(
                   height: 10,
                   width: 10,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorDark,
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -420,14 +442,16 @@ class HomePage extends StatelessWidget {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
-                            border: Border.all(color: const Color(0xffD8D9E4))),
+                            border: Border.all(
+                                color:
+                                    Theme.of(context).colorScheme.background)),
                         child: CircleAvatar(
                           radius: 24.0,
                           backgroundColor:
                               Theme.of(context).colorScheme.background,
-                          child: Icon(
+                          child: const Icon(
                             Iconsax.direct_send5,
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.redAccent,
                             size: 34,
                           ),
                         ),
@@ -459,14 +483,16 @@ class HomePage extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xffD8D9E4))),
+                            border: Border.all(
+                                color:
+                                    Theme.of(context).colorScheme.background)),
                         child: CircleAvatar(
                           radius: 24.0,
                           backgroundColor:
                               Theme.of(context).colorScheme.background,
-                          child: Icon(
+                          child: const Icon(
                             Iconsax.direct_inbox5,
-                            color: Theme.of(context).primaryColorDark,
+                            color: Colors.blueAccent,
                             size: 34,
                           ),
                         ),
@@ -497,7 +523,9 @@ class HomePage extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xffD8D9E4))),
+                            border: Border.all(
+                                color:
+                                    Theme.of(context).colorScheme.background)),
                         child: CircleAvatar(
                           radius: 24.0,
                           backgroundColor:
@@ -535,7 +563,9 @@ class HomePage extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xffD8D9E4))),
+                            border: Border.all(
+                                color:
+                                    Theme.of(context).colorScheme.background)),
                         child: CircleAvatar(
                           radius: 24.0,
                           backgroundColor:

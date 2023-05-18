@@ -40,8 +40,8 @@ final accountsProvider = FutureProvider.autoDispose((ref) async {
 final transactionsProvider = FutureProvider.family((ref, int accountNo) async {
   try {
     final txns = await IsarHelper.instance.db!.transactionsModels
-        .where()
-        .txnDateBetween(ref.read(endDateProvider), ref.read(endDateProvider))
+        // .where()
+        // .txnDateBetween(ref.read(endDateProvider), ref.read(endDateProvider))
         .filter()
         .accountNoEqualTo(accountNo)
         .and()

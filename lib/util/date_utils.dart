@@ -159,13 +159,13 @@ DateTime lastDayOfWeek() {
 }
 
 DateTime firstDayOfMonth(DateTime dt) {
-  final a = DateTime(dt.year, dt.month, 1);
-  return a;
+  final firstDayOfMonth = DateTime(dt.year, dt.month);
+  return firstDayOfMonth;
 }
 
 DateTime lastDayOfMonth(DateTime dt) {
-  final a = DateTime(dt.year, dt.month + 1, 0);
-  return a;
+  final lastDayOfMonth = DateTime(dt.year, dt.month + 1, 0);
+  return lastDayOfMonth;
 }
 
 DateTime firstDayOfYear() {

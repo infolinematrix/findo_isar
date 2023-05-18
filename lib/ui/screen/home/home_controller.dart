@@ -53,6 +53,11 @@ final currentMonthSummaryProvider =
         .txnDateBetween(startDate, endDate)
         .filter()
         .statusEqualTo(51)
+        .and()
+        .group((q) => q
+            .scrollTypeEqualTo(ScrollType.HC)
+            .or()
+            .scrollTypeEqualTo(ScrollType.HD))
         .findAll();
 
     double totaldrMonth = 0.00;

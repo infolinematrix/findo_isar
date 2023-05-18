@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+
+import 'statement_controller.dart';
 
 class SelectAccountStatementScreen extends StatelessWidget {
   const SelectAccountStatementScreen({Key? key}) : super(key: key);
@@ -51,53 +54,71 @@ class SelectAccountStatementScreen extends StatelessWidget {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: Container(
-                    // margin: const EdgeInsets.only(top: 16),
-                    padding: const EdgeInsets.only(
-                        left: 0, right: 0, top: 18, bottom: 16),
-                    child: ListView.builder(
-                      itemCount: 10,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).cardColor,
-                          ),
-                          child: ListTile(
-                            onTap: () => GoRouter.of(context)
-                                .pushNamed('ACCOUNT-STATEMENT'),
-                            leading: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Theme.of(context).secondaryHeaderColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "A",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                              ),
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final data = ref.watch(accountsProvider);
+                      return data.when(
+                        error: (error, stackTrace) => ErrorWidget(error),
+                        loading: () => const LinearProgressIndicator(),
+                        data: (accounts) {
+                          return Container(
+                            margin: const EdgeInsets.only(top: 16),
+                            child: ListView.builder(
+                              itemCount: accounts.length,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  child: ListTile(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    onTap: () => GoRouter.of(context).pushNamed(
+                                        'ACCOUNT-STATEMENT',
+                                        extra: {'account': accounts[index]}),
+                                    leading: Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Theme.of(context)
+                                            .secondaryHeaderColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          accounts[index].name![0],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                    title: Text(
+                                      accounts[index].name!,
+                                      maxLines: 1,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                    subtitle: Text(
+                                      accounts[index].description ??
+                                          'No description found',
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            title: Text(
-                              "Account Head",
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                            subtitle: Text(
-                              "Short description of account",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            trailing: const Icon(Iconsax.arrow_21),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ],

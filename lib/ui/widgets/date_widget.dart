@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_wallet/models/transactions_model.dart';
 import 'package:flutter_wallet/util/date_utils.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+import 'package:iconsax/iconsax.dart';
 
 class DateWidget extends StatelessWidget {
   const DateWidget({Key? key, required this.txnData}) : super(key: key);
@@ -58,28 +57,89 @@ class DateWidget extends StatelessWidget {
                 ],
               ),
             ),
-            UIHelper.verticalSpaceMedium(),
           ],
         ),
-        txnData.txnType == TxnType.CR
-            ? Positioned(
-                right: 15,
-                top: 0,
-                child: SvgPicture.asset(
-                  "assets/svg/income.svg",
-                  colorFilter:
-                      const ColorFilter.mode(Colors.green, BlendMode.srcIn),
-                  width: 18,
-                ),
-              )
-            : Positioned(
-                right: 15,
-                top: 0,
-                child: SvgPicture.asset("assets/svg/payment.svg",
-                    width: 18,
-                    colorFilter:
-                        const ColorFilter.mode(Colors.red, BlendMode.srcIn)),
-              ),
+        // txnData.txnType == TxnType.CR
+        //     ? const Positioned(
+        //         right: 15,
+        //         top: 0,
+        //         // child: SvgPicture.asset(
+        //         //   "assets/svg/income.svg",
+        //         //   colorFilter:
+        //         //       const ColorFilter.mode(Colors.green, BlendMode.srcIn),
+        //         //   width: 18,
+        //         // ),
+        //         child: Icon(
+        //           Iconsax.import_25,
+        //           color: Colors.green,
+        //         ),
+        //       )
+        //     : const Positioned(
+        //         right: 15,
+        //         top: 0,
+        //         // child: SvgPicture.asset("assets/svg/payment.svg",
+        //         //     width: 18,
+        //         //     colorFilter:
+        //         //         const ColorFilter.mode(Colors.red, BlendMode.srcIn)),
+        //         child: Icon(
+        //           Iconsax.export_25,
+        //           color: Colors.red,
+        //           size: 18,
+        //         ),
+        //       ),
+
+        if (txnData.scrollType == ScrollType.HC)
+          const Positioned(
+            right: 20,
+            top: 0,
+            // child: SvgPicture.asset(
+            //   "assets/svg/income.svg",
+            //   colorFilter:
+            //       const ColorFilter.mode(Colors.green, BlendMode.srcIn),
+            //   width: 18,
+            // ),
+            child: Icon(
+              Iconsax.minus_square5,
+              color: Colors.red,
+              size: 18,
+            ),
+          )
+        else if (txnData.scrollType == ScrollType.HD)
+          const Positioned(
+            right: 20,
+            top: 0,
+            // child: SvgPicture.asset(
+            //   "assets/svg/income.svg",
+            //   colorFilter:
+            //       const ColorFilter.mode(Colors.green, BlendMode.srcIn),
+            //   width: 18,
+            // ),
+            child: Icon(
+              Iconsax.add_square5,
+              color: Colors.green,
+              size: 18,
+            ),
+          )
+        else if (txnData.scrollType == ScrollType.TD)
+          const Positioned(
+            right: 10,
+            top: 0,
+            child: Icon(
+              Iconsax.arrange_square_25,
+              color: Colors.green,
+              size: 18,
+            ),
+          )
+        else if (txnData.scrollType == ScrollType.TC)
+          const Positioned(
+            right: 10,
+            top: 0,
+            child: Icon(
+              Iconsax.arrange_square_25,
+              color: Colors.blue,
+              size: 18,
+            ),
+          )
       ],
     );
   }

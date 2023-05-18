@@ -280,3 +280,85 @@ final incomeEntryProvider = FutureProvider.family
     rethrow;
   }
 });
+
+//--CASH WITHDRAWAL
+
+final cashWithdrawalProvider = FutureProvider.family
+    .autoDispose((ref, Map<String, dynamic> formData) async {
+  try {
+    final updatedScroll =
+        await ref.watch(getScrollNoProvider.future).then((value) => value) + 1;
+
+    final bank =
+        await IsarHelper.instance.db!.accountsModels.get(formData['bank']);
+
+    final txn = TransactionsModel()
+      ..txnDate = formData['txnDate']
+      ..scrollType = ScrollType.TC
+      ..txnType = TxnType.DR
+      ..accountNo = formData['bank'] //--CASH
+      ..accountName = bank!.name
+      ..scrollNo = updatedScroll
+      ..scrollSlNo = 1
+      ..amount = double.parse(formData['amount'].toString()).toDouble()
+      ..description = formData['description'].toString().trim()
+      ..narration = "Cash Withdrawal"
+      ..status = 51
+      ..onAccount = 1
+      ..onAccountName = 'CASH';
+
+    final scrollUpdate = await IsarHelper.instance.db!.scrollModels
+        .filter()
+        .idEqualTo(1)
+        .findFirst();
+    await IsarHelper.instance.db!.writeTxn(() async {
+      await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+      await IsarHelper.instance.db!.scrollModels.put(
+        scrollUpdate!..scrollNo = updatedScroll,
+      );
+    });
+  } catch (e) {
+    rethrow;
+  }
+});
+
+//--CASH DEPOSIT
+
+final cashDepositProvider = FutureProvider.family
+    .autoDispose((ref, Map<String, dynamic> formData) async {
+  try {
+    final updatedScroll =
+        await ref.watch(getScrollNoProvider.future).then((value) => value) + 1;
+
+    final bank =
+        await IsarHelper.instance.db!.accountsModels.get(formData['bank']);
+
+    final txn = TransactionsModel()
+      ..txnDate = formData['txnDate']
+      ..scrollType = ScrollType.TD
+      ..txnType = TxnType.CR
+      ..accountNo = formData['bank'] //--CASH
+      ..accountName = bank!.name
+      ..scrollNo = updatedScroll
+      ..scrollSlNo = 1
+      ..amount = double.parse(formData['amount'].toString()).toDouble()
+      ..description = formData['description'].toString().trim()
+      ..narration = "Cash Withdrawal"
+      ..status = 51
+      ..onAccount = 1
+      ..onAccountName = 'CASH';
+
+    final scrollUpdate = await IsarHelper.instance.db!.scrollModels
+        .filter()
+        .idEqualTo(1)
+        .findFirst();
+    await IsarHelper.instance.db!.writeTxn(() async {
+      await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+      await IsarHelper.instance.db!.scrollModels.put(
+        scrollUpdate!..scrollNo = updatedScroll,
+      );
+    });
+  } catch (e) {
+    rethrow;
+  }
+});

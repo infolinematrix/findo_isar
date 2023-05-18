@@ -286,14 +286,18 @@ final GoRouter router = GoRouter(
       ),
       routes: [
         GoRoute(
-          path: 'account-statement',
-          name: 'ACCOUNT-STATEMENT',
-          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-            context: context,
-            state: state,
-            child: const StatementScreen(),
-          ),
-        ),
+            path: 'account-statement',
+            name: 'ACCOUNT-STATEMENT',
+            pageBuilder: (context, state) {
+              Map extra = state.extra! as Map;
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: StatementScreen(
+                  account: extra['account'],
+                ),
+              );
+            }),
       ],
     ),
 

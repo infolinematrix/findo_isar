@@ -7,7 +7,7 @@ import 'date_widget.dart';
 
 Widget txnItem(BuildContext context, TransactionsModel txn) {
   return Container(
-    padding: const EdgeInsets.only(left: 18, right: 18, top: 16, bottom: 16),
+    padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
     margin: const EdgeInsets.only(bottom: 12),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
@@ -43,10 +43,28 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                         .copyWith(fontWeight: FontWeight.normal),
                   ),
                   Text(
+                    // txn.accountName!,
+                    txn.description!,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+                  ),
+                  // Text(
+                  //   txn.description != null
+                  //       ? txn.description!
+                  //       : 'No description found.',
+                  //   maxLines: 1,
+                  //   style: Theme.of(context)
+                  //       .textTheme
+                  //       .bodyLarge!
+                  //       .copyWith(fontWeight: FontWeight.normal),
+                  // ),
+                  Text(
                     txn.accountName!,
                     maxLines: 1,
-                    style:
-                        Theme.of(context).textTheme.headlineMedium!.copyWith(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -76,14 +94,6 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
               ),
             ),
           ],
-        ),
-        Text(
-          txn.description != null ? txn.description! : 'No description found.',
-          maxLines: 1,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontWeight: FontWeight.normal),
         ),
       ],
     ),

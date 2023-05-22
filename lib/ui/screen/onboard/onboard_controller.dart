@@ -103,6 +103,10 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
         ..variable = 'email'
         ..value = 'infolinematrix@gmail.com';
 
+      final startDate = SettingsModel()
+        ..variable = 'start_date'
+        ..value = DateTime.now().toString();
+
       final name = SettingsModel()
         ..variable = 'name'
         ..value = 'Your Name';
@@ -116,8 +120,15 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
         ..value = defaultCurrency;
 
       await IsarHelper.instance.db!.writeTxn(() async {
-        await IsarHelper.instance.db!.settingsModels.putAll(
-            [appName, supportEmail, developer, dateFormat, dCurrency, name]);
+        await IsarHelper.instance.db!.settingsModels.putAll([
+          appName,
+          supportEmail,
+          startDate,
+          developer,
+          dateFormat,
+          dCurrency,
+          name
+        ]);
       });
 
       //--UPDATE LOCAL STORAGE

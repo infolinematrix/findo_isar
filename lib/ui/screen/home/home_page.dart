@@ -81,22 +81,6 @@ class HomePage extends StatelessWidget {
                           UIHelper.verticalSpaceMedium(),
 
                           //--UTILITIES
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Utilities',
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              SvgPicture.asset(
-                                filter,
-                                // color: Theme.of(context).iconTheme.color,
-                                width: 18,
-                              ),
-                            ],
-                          ),
-                          UIHelper.verticalSpaceMedium(),
 
                           _utilities(context),
 
@@ -759,122 +743,147 @@ class HomePage extends StatelessWidget {
       onTap: () {
         // print('${value.title}');
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                width: 50,
-                height: 50,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).cardColor,
-                ),
-                child: SvgPicture.asset(
-                  listServices[0].img,
-                  // color: Theme.of(context).iconTheme.color,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
               Text(
-                listServices[0].title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
+                'Utilities',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(
-                height: 14,
+              SvgPicture.asset(
+                filter,
+                // color: Theme.of(context).iconTheme.color,
+                width: 18,
               ),
             ],
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 50,
-                height: 50,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).cardColor,
-                ),
-                child: SvgPicture.asset(
-                  listServices[1].img,
-                  // color: Theme.of(context).iconTheme.color,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                listServices[1].title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 14,
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 50,
-                height: 50,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).cardColor,
-                ),
-                child: SvgPicture.asset(
-                  listServices[2].img,
-                  // color: Theme.of(context).iconTheme.color,
+          UIHelper.verticalSpaceMedium(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () => GoRouter.of(context).pushNamed('CASH-BOOK'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 50,
+                      height: 50,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).cardColor,
+                      ),
+                      child: SvgPicture.asset(
+                        listServices[0].img,
+                        // color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Cash Book",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                listServices[2].title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 14,
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 50,
-                height: 50,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).cardColor,
+              GestureDetector(
+                onTap: () => GoRouter.of(context).pushNamed('BANK-BOOK'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 50,
+                      height: 50,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).cardColor,
+                      ),
+                      child: SvgPicture.asset(
+                        listServices[1].img,
+                        // color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Bank Book",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                  ],
                 ),
-                child: SvgPicture.asset(
-                  listServices[3].img,
-                  // color: Theme.of(context).iconTheme.color,
-                ),
               ),
-              const SizedBox(
-                height: 8,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    height: 50,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).cardColor,
+                    ),
+                    child: SvgPicture.asset(
+                      listServices[2].img,
+                      // color: Theme.of(context).iconTheme.color,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    "Budget",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                ],
               ),
-              Text(
-                listServices[3].title,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 14,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    height: 50,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).cardColor,
+                    ),
+                    child: SvgPicture.asset(
+                      listServices[3].img,
+                      // color: Theme.of(context).iconTheme.color,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    "Analytics",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                ],
               ),
             ],
           ),

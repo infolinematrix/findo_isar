@@ -52,7 +52,7 @@ class App extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       theme: lightTheme,
-      darkTheme: darkTheme,
+      darkTheme: lightTheme,
       themeMode: themMode,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

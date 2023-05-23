@@ -15,7 +15,6 @@ final txnModeProvider = StateProvider.autoDispose<String>((ref) {
 });
 
 //--SCROLL NO
-//--Scroll
 final getScrollNoProvider = FutureProvider.autoDispose<int>((ref) async {
   try {
     final scroll = await IsarHelper.instance.db!.scrollModels.count();
@@ -358,6 +357,19 @@ final cashDepositProvider = FutureProvider.family
         scrollUpdate!..scrollNo = updatedScroll,
       );
     });
+  } catch (e) {
+    rethrow;
+  }
+});
+
+//--DELETE TXN
+
+final deleteTxnProvider = FutureProvider.family((ref, int txnId) async {
+  try {
+    await IsarHelper.instance.db!.writeTxn(() async {
+      await IsarHelper.instance.db!.transactionsModels.delete(txnId);
+    });
+    return true;
   } catch (e) {
     rethrow;
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter_wallet/util/ui_helpers.dart';
 
 import 'package:intl/intl.dart';
 
@@ -18,70 +20,19 @@ class SignInPageState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotedAppRegion(
+    return const AnnotedAppRegion(
       child: Scaffold(
-        backgroundColor: const Color(0XFFf5f7fe),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0XFFecebff), Color(0XFFc9d2ff)],
-            ),
-          ),
-          child: Container(
-            // height: 50,
-            margin: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-                bottomLeft: Radius.circular(30),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("REGISTER"),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("LOGIN"),
-                )
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                // _topContent(),
+                // _centerContent(),
+                // _bottomContent()
               ],
             ),
-          ),
-        ),
-        body: SafeArea(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              // Expanded(
-              //   flex: 1,
-              //   child: Align(
-              //     alignment: Alignment.centerLeft,
-              //     child: SvgPicture.asset(mainBanner),
-              //   ),
-              // ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      _topContent(),
-                      _centerContent(),
-                      _bottomContent()
-                    ],
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),
@@ -89,93 +40,103 @@ class SignInPageState extends State<SplashScreen> {
   }
 
   Widget _topContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SizedBox(
-          height: 18.0,
-        ),
-        Row(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              formattedTime,
-              style: Theme.of(context).textTheme.displaySmall,
+            const SizedBox(
+              height: 18.0,
             ),
-            // SizedBox(
-            //   width: 30.0.w,
-            // ),
-            // SvgPicture.asset(cloud),
-            // const SizedBox(
-            //   width: 8,
-            // ),
-            // Text(
-            //   '34° C',
-            //   style: Theme.of(context).textTheme.subtitle1,
-            // ),
+            Row(
+              children: <Widget>[
+                Text(
+                  formattedTime,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                // const SizedBox(
+                //   width: 30.0,
+                // ),
+                // SvgPicture.asset(cloud),
+                // const SizedBox(
+                //   width: 8,
+                // ),
+                // Text(
+                //   '34° C',
+                //   style: Theme.of(context).textTheme.titleMedium,
+                // ),
+              ],
+            ),
+            const SizedBox(
+              height: 2.0,
+            ),
+            Text(
+              formattedDate,
+              style: Theme.of(context).textTheme.bodyMedium,
+            )
           ],
         ),
-        const SizedBox(
-          height: 2.0,
-        ),
-        Text(
-          formattedDate,
-          style: Theme.of(context).textTheme.bodyMedium,
-        )
       ],
     );
   }
 
   Widget _centerContent() {
     return Align(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.center,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'A Marketplace of Millions of Buyers.',
-            style: Theme.of(context).textTheme.bodyMedium,
+          SizedBox.square(
+            dimension: 80,
+            child: SvgPicture.asset("assets/svg/logo.svg"),
           ),
           Text(
-            'Grow Your Business with Us',
+            'Smart Money Manager',
             style: Theme.of(context)
                 .textTheme
-                .displaySmall!
-                .copyWith(fontWeight: FontWeight.w700),
-          )
+                .bodyMedium!
+                .copyWith(fontWeight: FontWeight.w400),
+          ),
+          UIHelper.verticalSpaceSmall(),
+          const SizedBox(
+            width: 100,
+            height: 4,
+            child: LinearProgressIndicator(),
+          ),
         ],
       ),
     );
   }
 
-  Widget _bottomContent() {
-    return Column(
-      children: <Widget>[
-        MaterialButton(
-          elevation: 0,
-          // color: const Color(0xFFFFAC30),
-          // height: 50.h,
-          // minWidth: 200.w,
-          // shape: RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.circular(12.sp)),
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const DrawerPage(),
-            //   ),
-            // );
-          },
-          // child: Text(
-          //   'Sign in',
-          //   style: Theme.of(context).textTheme.button,
-          // ),
-        ),
-        // UIHelper.verticalSpaceMedium(),
-        // Text(
-        //   'Create an Account',
-        //   style: Theme.of(context).textTheme.bodyText2,
-        // )
-      ],
-    );
-  }
+  // Widget _bottomContent() {
+  //   return Column(
+  //     children: <Widget>[
+  //       MaterialButton(
+  //         elevation: 0,
+  //         // color: const Color(0xFFFFAC30),
+  //         // height: 50.h,
+  //         // minWidth: 200.w,
+  //         // shape: RoundedRectangleBorder(
+  //         //     borderRadius: BorderRadius.circular(12.sp)),
+  //         onPressed: () {
+  //           // Navigator.push(
+  //           //   context,
+  //           //   MaterialPageRoute(
+  //           //     builder: (context) => const DrawerPage(),
+  //           //   ),
+  //           // );
+  //         },
+  //         // child: Text(
+  //         //   'Sign in',
+  //         //   style: Theme.of(context).textTheme.button,
+  //         // ),
+  //       ),
+  //       // UIHelper.verticalSpaceMedium(),
+  //       // Text(
+  //       //   'Create an Account',
+  //       //   style: Theme.of(context).textTheme.bodyText2,
+  //       // )
+  //     ],
+  //   );
+  // }
 }

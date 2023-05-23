@@ -15,12 +15,14 @@ import 'package:flutter_wallet/ui/screen/statement/select_account_screen.dart';
 import 'package:flutter_wallet/ui/screen/transactions/cash_deposit_screen.dart';
 import 'package:flutter_wallet/ui/screen/transactions/cash_withdrawal_screen.dart';
 import 'package:flutter_wallet/ui/screen/transactions/expenses_entry.dart';
+import 'package:flutter_wallet/ui/screen/transactions/transaction_detail.dart';
 
 import 'package:go_router/go_router.dart';
 
 import '../ui/screen/accounts/update/update_bank_account.dart';
 import '../ui/screen/accounts/update/update_expense_account.dart';
 import '../ui/screen/accounts/update/update_liability_account.dart';
+import '../ui/screen/settings/configuration_screen.dart';
 import '../ui/screen/statement/statement_screen.dart';
 import '../ui/screen/transactions/income_entry.dart';
 import '../ui/screen/transactions/selectable_account.dart';
@@ -34,6 +36,7 @@ final GoRouter router = GoRouter(
         context: context,
         state: state,
         child: const OnBoardScreen(),
+        // child: const SplashScreen()
       ),
     ),
 
@@ -47,6 +50,18 @@ final GoRouter router = GoRouter(
               child: const SettingsScreen(),
             ),
         routes: [
+          GoRoute(
+            path: 'config',
+            name: 'CONFIG',
+            pageBuilder: (context, state) {
+              // Map extra = state.extra! as Map;
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ConfigurationScreen(),
+              );
+            },
+          ),
           GoRoute(
             path: 'backup',
             name: 'BACKUP',
@@ -229,6 +244,21 @@ final GoRouter router = GoRouter(
           );
         },
         routes: [
+          GoRoute(
+            path: 'txn-detail',
+            name: 'TXN-DETAIL',
+            pageBuilder: (context, state) {
+              Map extra = state.extra! as Map;
+
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: TransactionDetailScreen(
+                  txn: extra['txn'],
+                ),
+              );
+            },
+          ),
           GoRoute(
             path: 'expenses-entry',
             name: 'EXPENSES-ENTRY',

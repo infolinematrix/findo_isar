@@ -89,12 +89,7 @@ class StatementScreen extends StatelessWidget {
                                             .textTheme
                                             .bodyMedium,
                                       ),
-                                      // Text(
-                                      //   "12,650",
-                                      //   style: Theme.of(context)
-                                      //       .textTheme
-                                      //       .titleMedium,
-                                      // ),
+                                      
                                     ],
                                   ),
                                   UIHelper.horizontalSpaceMedium(),

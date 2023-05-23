@@ -16,19 +16,15 @@ class ReportScreen extends StatelessWidget {
             ),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
                 child: ListView(
                   children: [
                     GestureDetector(
                       onTap: () {
                         GoRouter.of(context).pushNamed('STATEMENT');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Statement of Account",
@@ -39,17 +35,12 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
-                        // GoRouter.of(context).pushNamed('STATEMENT');
+                        GoRouter.of(context).pushNamed('CASH-BOOK');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Cash Book",
@@ -63,14 +54,10 @@ class ReportScreen extends StatelessWidget {
                     const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
-                        // GoRouter.of(context).pushNamed('REPORTS');
+                        GoRouter.of(context).pushNamed('BANK-BOOK');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Bank Book",
@@ -81,17 +68,12 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
                         // GoRouter.of(context).pushNamed('REPORTS');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Budget Report",
@@ -102,17 +84,12 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
                         // GoRouter.of(context).pushNamed('REPORTS');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Receive Book",
@@ -123,17 +100,12 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
                         // GoRouter.of(context).pushNamed('REPORTS');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Payment Book",
@@ -144,17 +116,12 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
                         // GoRouter.of(context).pushNamed('REPORTS');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "My Savings",
@@ -165,17 +132,12 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
                         // GoRouter.of(context).pushNamed('REPORTS');
                       },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).cardColor,
-                        ),
+                      child: Card(
+                        elevation: .25,
                         child: ListTile(
                           title: Text(
                             "Loan & Liabilities",

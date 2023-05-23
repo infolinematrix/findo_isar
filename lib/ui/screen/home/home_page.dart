@@ -22,63 +22,61 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnnotedAppRegion(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
         body: DoubleBackToCloseApp(
           snackBar: SnackBar(
-            margin: const EdgeInsets.all(16),
+            // margin: const EdgeInsets.all(16),
             backgroundColor: Theme.of(context).primaryColor,
             content: const Text('Tap back again to leave'),
           ),
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.only(left: 8, right: 8, top: 30),
-            child: SingleChildScrollView(
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final homeData = ref.watch(inttHomeProvider);
+            child: Consumer(
+              builder: (context, ref, child) {
+                final homeData = ref.watch(inttHomeProvider);
 
-                  return homeData.when(
-                    loading: () => const LinearProgressIndicator(),
-                    error: (error, stackTrace) => ErrorWidget(error),
-                    data: (data) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _contentHeader(context),
+                return homeData.when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stackTrace) => ErrorWidget(error),
+                  data: (data) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _contentHeader(context),
 
-                          UIHelper.verticalSpaceMedium(),
-                          _userHeader(context),
+                        UIHelper.verticalSpaceMedium(),
+                        _userHeader(context),
 
-                          UIHelper.verticalSpaceMedium(),
-                          _currentMonthOverView(
-                              context, data.monthIncomeExpenditure),
+                        UIHelper.verticalSpaceMedium(),
+                        _currentMonthOverView(
+                            context, data.monthIncomeExpenditure),
 
-                          _todaysSummary(context, data.monthIncomeExpenditure),
+                        _todaysSummary(context, data.monthIncomeExpenditure),
 
-                          UIHelper.verticalSpaceLarge(),
-                          _navigation(context),
+                        UIHelper.verticalSpaceLarge(),
+                        _navigation(context),
 
-                          UIHelper.verticalSpaceMedium(),
-                          //--NAVIGATION
+                        UIHelper.verticalSpaceMedium(),
+                        //--NAVIGATION
 
-                          _shotcut1(context),
+                        _shotcut1(context),
 
-                          UIHelper.verticalSpaceMedium(),
+                        UIHelper.verticalSpaceMedium(),
 
-                          //--UTILITIES
+                        //--UTILITIES
 
-                          _utilities(context),
+                        _utilities(context),
 
-                          UIHelper.verticalSpaceMedium(),
+                        UIHelper.verticalSpaceMedium(),
 
-                          //--RECENT
+                        //--RECENT
 
-                          recentTransactions(context, data.recentTransactions),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
+                        recentTransactions(context, data.recentTransactions),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           ),
         ),
@@ -230,7 +228,7 @@ class HomePage extends StatelessWidget {
       BuildContext context, Map<String, dynamic> data) {
     return Card(
       elevation: .25,
-      color: Theme.of(context).primaryColorDark,
+      color: Theme.of(context).primaryColor,
       child: Container(
         padding: const EdgeInsets.all(16),
         child: Column(

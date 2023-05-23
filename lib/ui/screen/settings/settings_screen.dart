@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,7 +7,6 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormBuilderState>();
     return AnnotedAppRegion(
       child: Scaffold(
         appBar: AppBar(
@@ -28,10 +26,10 @@ class SettingsScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     subtitle: const Text("Application settings"),
-                    onTap: () => GoRouter.of(context).pushNamed('SETTINGS'),
+                    onTap: () => GoRouter.of(context).pushNamed('CONFIG'),
                   ),
                 ),
-                Card(
+                Material(
                   elevation: .25,
                   child: ListTile(
                     title: Text(

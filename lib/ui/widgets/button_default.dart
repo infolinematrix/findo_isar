@@ -17,12 +17,14 @@ class ButtonDefault extends StatelessWidget {
         onPressed: () => onTap!(),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
-              color ?? Theme.of(context).colorScheme.primary),
+              color ?? Theme.of(context).primaryColorDark),
           elevation: MaterialStateProperty.all<double>(0.25),
           textStyle: MaterialStateProperty.resolveWith((states) {
-            return const TextStyle(
+            return TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.background,
             );
           }),
         ),

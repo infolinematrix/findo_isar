@@ -15,7 +15,7 @@ class SelectAccountStatementScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
+            padding: const EdgeInsets.only(left: 0, right: 16, top: 16),
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -23,11 +23,7 @@ class SelectAccountStatementScreen extends StatelessWidget {
                   stretch: true,
                   flexibleSpace: Container(
                     padding: const EdgeInsets.only(
-                        left: 18, right: 18, top: 4, bottom: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).primaryColorLight,
-                    ),
+                        left: 16, right: 16, top: 4, bottom: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -36,19 +32,14 @@ class SelectAccountStatementScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 32),
                             child: TextField(
                               decoration: const InputDecoration(
-                                hintText: 'Search..',
-                                border: InputBorder.none,
-                              ),
+                                  hintText: 'Search..',
+                                  border: InputBorder.none,
+                                  suffixIcon:
+                                      Icon(Iconsax.search_normal, size: 24)),
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                         ),
-                        const Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(Iconsax.search_normal, size: 24),
-                          ),
-                        )
                       ],
                     ),
                   ),

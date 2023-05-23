@@ -20,55 +20,77 @@ class SettingsScreen extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                ListTile(
-                  title: Text(
-                    "App Configuration",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "App Configuration",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Application settings"),
+                    onTap: () => GoRouter.of(context).pushNamed('SETTINGS'),
                   ),
-                  subtitle: const Text("Application settings"),
                 ),
-                ListTile(
-                  title: Text(
-                    "Currency Settings",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "Currency Settings",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Application settings"),
                   ),
-                  subtitle: const Text("Application settings"),
                 ),
-                ListTile(
-                  title: Text(
-                    "Date Format",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "Date Format",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Application settings"),
                   ),
-                  subtitle: const Text("Application settings"),
                 ),
-                ListTile(
-                  title: Text(
-                    "Currency Format",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "Currency Format",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Application settings"),
                   ),
-                  subtitle: const Text("Application settings"),
                 ),
-                ListTile(
-                  title: Text(
-                    "Default Language",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "Default Language",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Application settings"),
                   ),
-                  subtitle: const Text("Application settings"),
                 ),
-                ListTile(
-                  title: Text(
-                    "Application Theme",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "Application Theme",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Set Theme more Dar / Light"),
                   ),
-                  subtitle: const Text("Set Theme more Dar / Light"),
                 ),
-                ListTile(
-                  title: Text(
-                    "Backup & Restore",
-                    style: Theme.of(context).textTheme.titleMedium,
+                Card(
+                  elevation: .25,
+                  child: ListTile(
+                    title: Text(
+                      "Backup & Restore",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: const Text("Application settings"),
+                    onTap: () => GoRouter.of(context).pushNamed('BACKUP'),
                   ),
-                  subtitle: const Text("Application settings"),
-                  onTap: () => GoRouter.of(context).pushNamed('BACKUP'),
                 )
               ],
             ),

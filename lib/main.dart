@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/util/constant.dart';
+import 'package:flutter_wallet/ui/themes.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -52,8 +51,13 @@ class App extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       theme: lightTheme,
-      darkTheme: lightTheme,
+      darkTheme: darkTheme,
+      // themeMode: themMode,
+      // The Mandy red, light theme.
+      // theme: FlexThemeData.light(scheme: FlexScheme.deepOrangeM3),
+      // darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
       themeMode: themMode,
+
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

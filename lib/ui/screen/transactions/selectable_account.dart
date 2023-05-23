@@ -30,12 +30,8 @@ class SelectableAccount extends StatelessWidget {
                   stretch: true,
                   automaticallyImplyLeading: false,
                   flexibleSpace: Container(
-                    padding: const EdgeInsets.only(
-                        left: 18, right: 18, top: 4, bottom: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).cardColor,
-                    ),
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -44,23 +40,25 @@ class SelectableAccount extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 0),
                             child: TextField(
                               decoration: const InputDecoration(
-                                hintText: 'Search..',
-                                border: InputBorder.none,
-                              ),
-                              style: Theme.of(context).textTheme.headlineMedium,
+                                  hintText: 'Search..',
+                                  border: InputBorder.none,
+                                  suffixIcon: Icon(
+                                    Iconsax.search_normal,
+                                    size: 24,
+                                  )),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Iconsax.search_normal,
-                              size: 24,
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                          ),
-                        )
+                        // UIHelper.horizontalSpaceSmall(),
+                        // Align(
+                        //   alignment: Alignment.centerRight,
+                        //   child: Icon(
+                        //     Iconsax.search_normal,
+                        //     size: 24,
+                        //     color: Theme.of(context).primaryColorDark,
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -123,14 +121,14 @@ class SelectableAccount extends StatelessWidget {
                                 ),
                                 title: Text(
                                   data[index].name!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
                                 subtitle: Text(
                                   data[index].description != null
                                       ? data[index].description!
                                       : 'No description found..',
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 // trailing: const Icon(Iconsax.arrow_21),
                               ),

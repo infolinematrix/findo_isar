@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
 import 'package:flutter_wallet/ui/screen/statement/statement_controller.dart';
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
-import 'package:flutter_wallet/ui/widgets/input_container.dart';
 import 'package:flutter_wallet/util/constant.dart';
 import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,88 +34,92 @@ class StatementScreen extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: Consumer(
                       builder: (context, ref, child) {
-                        return Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).cardColor,
-                          ),
-                          child: FormBuilder(
-                            key: formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: inputHeight,
-                                  child: InputContainer(
-                                    child: FormBuilderDateRangePicker(
-                                      name: 'date_range',
-                                      firstDate: DateTime(2023),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(days: 1)),
-                                      initialValue: DateTimeRange(
-                                          start: ref.watch(startDateProvider),
-                                          end: ref.watch(endDateProvider)),
-                                      style: inputStyle,
-                                      format: DateFormat('dd-MM-yyyy'),
-                                      // onChanged: _onChanged,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Date Range',
-                                        iconColor: Colors.red,
-                                        suffixIcon: Icon(Iconsax.calendar),
+                        return FormBuilder(
+                          key: formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FormBuilderDateRangePicker(
+                                name: 'date_range',
+                                firstDate: DateTime(2023),
+                                lastDate:
+                                    DateTime.now().add(const Duration(days: 1)),
+                                initialValue: DateTimeRange(
+                                    start: ref.watch(startDateProvider),
+                                    end: ref.watch(endDateProvider)),
+                                style: inputStyle,
+                                format: DateFormat('dd-MM-yyyy'),
+                                // onChanged: _onChanged,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  labelText: 'Date Range',
+                                  iconColor: Colors.red,
+                                  prefixIcon: const Icon(
+                                    Iconsax.calendar,
+                                    size: 28,
+                                  ),
+                                  suffixIcon: Container(
+                                    margin: const EdgeInsets.all(4.0),
+                                    child: IconButton.filled(
+                                      color: Theme.of(context)
+                                          .secondaryHeaderColor,
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Iconsax.search_normal,
                                       ),
                                     ),
                                   ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
                                 ),
-                                const Divider(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Total Amount",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ),
-                                        // Text(
-                                        //   "12,650",
-                                        //   style: Theme.of(context)
-                                        //       .textTheme
-                                        //       .titleMedium,
-                                        // ),
-                                      ],
-                                    ),
-                                    UIHelper.horizontalSpaceMedium(),
-                                    const Icon(Iconsax.import_1),
-                                    UIHelper.horizontalSpaceMedium(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        // Text(
-                                        //   "Total Income",
-                                        //   style: Theme.of(context)
-                                        //       .textTheme
-                                        //       .bodyMedium,
-                                        // ),
-                                        Text(
-                                          "12,650",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              ),
+                              UIHelper.verticalSpaceSmall(),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Total Amount",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                      // Text(
+                                      //   "12,650",
+                                      //   style: Theme.of(context)
+                                      //       .textTheme
+                                      //       .titleMedium,
+                                      // ),
+                                    ],
+                                  ),
+                                  UIHelper.horizontalSpaceMedium(),
+                                  const Icon(Iconsax.import_1),
+                                  UIHelper.horizontalSpaceMedium(),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      // Text(
+                                      //   "Total Income",
+                                      //   style: Theme.of(context)
+                                      //       .textTheme
+                                      //       .bodyMedium,
+                                      // ),
+                                      Text(
+                                        "12,650",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -143,7 +146,6 @@ class StatementScreen extends StatelessWidget {
                           child: LinearProgressIndicator(),
                         ),
                       );
-                      
                     },
                   ),
                 ],

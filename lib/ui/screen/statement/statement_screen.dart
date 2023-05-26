@@ -27,8 +27,8 @@ class StatementScreen extends StatelessWidget {
               title: Text(account.name!.toString().toUpperCase()),
             ),
             body: Padding(
-              padding: const EdgeInsets.only(
-                  top: 8, left: 16, right: 16, bottom: 16),
+              padding:
+                  const EdgeInsets.only(top: 0, left: 8, right: 8, bottom: 16),
               child: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
@@ -75,53 +75,48 @@ class StatementScreen extends StatelessWidget {
                                 ),
                               ),
                               UIHelper.verticalSpaceSmall(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Total Amount",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      ),
-                                      
-                                    ],
-                                  ),
-                                  UIHelper.horizontalSpaceMedium(),
-                                  const Icon(Iconsax.import_1),
-                                  UIHelper.horizontalSpaceMedium(),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      // Text(
-                                      //   "Total Income",
-                                      //   style: Theme.of(context)
-                                      //       .textTheme
-                                      //       .bodyMedium,
-                                      // ),
-                                      Text(
-                                        "12,650",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 8),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Total Amount",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ),
+                                      ],
+                                    ),
+                                    UIHelper.horizontalSpaceMedium(),
+                                    const Icon(Iconsax.import_1),
+                                    UIHelper.horizontalSpaceMedium(),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "12,650",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         );
                       },
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: UIHelper.verticalSpaceMedium(),
                   ),
                   Consumer(
                     builder: (context, ref, child) {

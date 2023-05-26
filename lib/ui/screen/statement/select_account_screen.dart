@@ -94,7 +94,7 @@ class SelectAccountStatementScreen extends StatelessWidget {
                                       maxLines: 1,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleSmall,
+                                          .titleMedium,
                                     ),
                                     subtitle: Text(
                                       accounts[index].description ??

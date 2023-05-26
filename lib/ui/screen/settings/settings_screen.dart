@@ -14,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: ListView(
               shrinkWrap: true,
               children: [
@@ -25,18 +25,22 @@ class SettingsScreen extends StatelessWidget {
                       "App Configuration",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Application settings"),
+                    subtitle: const Text(
+                      "Application settings",
+                    ),
                     onTap: () => GoRouter.of(context).pushNamed('CONFIG'),
                   ),
                 ),
-                Material(
+                Card(
                   elevation: .25,
                   child: ListTile(
                     title: Text(
                       "Currency Settings",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Application settings"),
+                    subtitle: const Text(
+                      "Application settings",
+                    ),
                   ),
                 ),
                 Card(
@@ -46,7 +50,9 @@ class SettingsScreen extends StatelessWidget {
                       "Date Format",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Application settings"),
+                    subtitle: const Text(
+                      "Application settings",
+                    ),
                   ),
                 ),
                 Card(
@@ -56,7 +62,9 @@ class SettingsScreen extends StatelessWidget {
                       "Currency Format",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Application settings"),
+                    subtitle: const Text(
+                      "Application settings",
+                    ),
                   ),
                 ),
                 Card(
@@ -66,7 +74,9 @@ class SettingsScreen extends StatelessWidget {
                       "Default Language",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Application settings"),
+                    subtitle: const Text(
+                      "Application settings",
+                    ),
                   ),
                 ),
                 Card(
@@ -76,7 +86,9 @@ class SettingsScreen extends StatelessWidget {
                       "Application Theme",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Set Theme more Dar / Light"),
+                    subtitle: const Text(
+                      "Set Theme more Dar / Light",
+                    ),
                   ),
                 ),
                 Card(
@@ -86,7 +98,9 @@ class SettingsScreen extends StatelessWidget {
                       "Backup & Restore",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    subtitle: const Text("Application settings"),
+                    subtitle: const Text(
+                      "Application settings",
+                    ),
                     onTap: () => GoRouter.of(context).pushNamed('BACKUP'),
                   ),
                 )

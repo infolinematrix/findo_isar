@@ -8,7 +8,9 @@ import 'package:flutter_wallet/util/format_currency.dart';
 import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../util/dialog.dart';
 import '../home/home_controller.dart';
+import '../statement/statement_controller.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   const TransactionDetailScreen({Key? key, required this.txn})
@@ -134,14 +136,23 @@ class TransactionDetailScreen extends ConsumerWidget {
                             ),
                             TextButton(
                                 onPressed: () async {
-                                  await ref
-                                      .watch(deleteTxnProvider(txn.id).future)
-                                      .then((value) {
-                                    EasyLoading.showToast("Deleted..");
-                                    //--Reload Home Data
-                                    ref.invalidate(recentTransactionsProvider);
-                                    GoRouter.of(context).pop();
-                                  });
+                                  AlertAction? action = await confirmDialog(
+                                      context,
+                                      "WARNING\nDelete Transaction entry?");
+
+                                  if (action == AlertAction.ok) {
+                                    await ref
+                                        .watch(deleteTxnProvider(txn.id).future)
+                                        .then((value) {
+                                      EasyLoading.showToast("Deleted..");
+                                      //--Reload Home Data
+                                      ref.invalidate(
+                                          recentTransactionsProvider);
+                                      ref.invalidate(
+                                          transactionsProvider(txn.accountNo));
+                                      GoRouter.of(context).pop();
+                                    });
+                                  }
                                 },
                                 child: const Text("Delete"))
                           ],

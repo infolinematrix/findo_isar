@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
             content: const Text('Tap back again to leave'),
           ),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 30),
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 32),
             child: Consumer(
               builder: (context, ref, child) {
                 final homeData = ref.watch(inttHomeProvider);
@@ -51,15 +51,16 @@ class HomePage extends StatelessWidget {
                         _currentMonthOverView(
                             context, data.monthIncomeExpenditure),
 
-                        _todaysSummary(context, data.monthIncomeExpenditure),
-
-                        UIHelper.verticalSpaceLarge(),
+                        UIHelper.verticalSpaceMedium(),
                         _navigation(context),
 
                         UIHelper.verticalSpaceMedium(),
                         //--NAVIGATION
 
                         _shotcut1(context),
+
+                        UIHelper.verticalSpaceMedium(),
+                        _todaysSummary(context, data.monthIncomeExpenditure),
 
                         UIHelper.verticalSpaceMedium(),
 
@@ -226,140 +227,144 @@ class HomePage extends StatelessWidget {
 
   Widget _currentMonthOverView(
       BuildContext context, Map<String, dynamic> data) {
-    return Card(
-      elevation: .25,
-      color: Theme.of(context).primaryColor,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      top: 16,
-                      left: 16,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).highlightColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                flex: 2,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    left: 16,
+                  ),
+                  child: SizedBox.square(
+                      dimension: 80,
+                      child: PicChart(chartData: {
+                        'expenditure': data['expenditurePercentage'],
+                        'savings': data['savingsPercentage']
+                      })),
+                ),
+              ),
+              UIHelper.verticalSpaceSmall(),
+              Flexible(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          formatCurrency(data['totalCreditMonth'].toString()),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        Text(
+                          'Income',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).primaryColorDark),
+                        )
+                      ],
                     ),
-                    child: SizedBox.square(
-                        dimension: 80,
-                        child: PicChart(chartData: {
-                          'expenditure': data['expenditurePercentage'],
-                          'savings': data['savingsPercentage']
-                        })),
-                  ),
-                ),
-                UIHelper.verticalSpaceSmall(),
-                Flexible(
-                  flex: 4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            formatCurrency(data['totalCreditMonth'].toString()),
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).canvasColor),
-                          ),
-                          Text(
-                            'Income',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).primaryColorLight),
-                          )
-                        ],
-                      ),
-                      UIHelper.verticalSpaceMedium(),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            formatCurrency(data['totalDebitMonth'].toString()),
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).canvasColor),
-                          ),
-                          Text(
-                            'Expenditure',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).primaryColorLight),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            UIHelper.verticalSpaceLarge(),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("${data['expenditurePercentage']}% SPENDINGS",
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).primaryColorLight)),
-                    Text("${data['savingsPercentage']}% SAVINGS",
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).primaryColorLight))
+                    UIHelper.verticalSpaceMedium(),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          formatCurrency(data['totalDebitMonth'].toString()),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        Text(
+                          'Expenditure',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).primaryColorDark),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                UIHelper.verticalSpaceSmall(),
-                SizedBox(
-                  height: 6,
-                  child: Row(
-                    children: [
-                      Flexible(
-                        flex: 30,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+              ),
+            ],
+          ),
+          UIHelper.verticalSpaceLarge(),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("${data['expenditurePercentage']}% SPENDINGS",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: Theme.of(context).primaryColorDark)),
+                  Text("${data['savingsPercentage']}% SAVINGS",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: Theme.of(context).primaryColorDark))
+                ],
+              ),
+              UIHelper.verticalSpaceSmall(),
+              SizedBox(
+                height: 6,
+                child: Row(
+                  children: [
+                    Flexible(
+                      flex: 30,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).colorScheme.error,
                         ),
                       ),
-                      Flexible(
-                        flex: 70,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                          ),
+                    ),
+                    Flexible(
+                      flex: 70,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                UIHelper.verticalSpaceSmall(),
-              ],
-            ),
-          ],
-        ),
+              ),
+              UIHelper.verticalSpaceSmall(),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -871,6 +876,11 @@ class HomePage extends StatelessWidget {
     listServices.add(ModelServices(title: "Statement", img: mobile));
     listServices.add(ModelServices(title: "Accounts", img: electricity));
 
+    listServices.add(ModelServices(title: "Cash Book", img: send));
+    listServices.add(ModelServices(title: "Bank Book", img: recive));
+    listServices.add(ModelServices(title: "Statement", img: mobile));
+    listServices.add(ModelServices(title: "Accounts", img: electricity));
+
     return GestureDetector(
       onTap: () {
         // print('${value.title}');
@@ -916,16 +926,12 @@ class HomePage extends StatelessWidget {
                         // color: Theme.of(context).iconTheme.color,
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    UIHelper.verticalSpaceSmall(),
                     const Text(
                       "Cash Book",
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(
-                      height: 14,
-                    ),
+                    UIHelper.verticalSpaceMedium(),
                   ],
                 ),
               ),
@@ -947,16 +953,12 @@ class HomePage extends StatelessWidget {
                         // color: Theme.of(context).iconTheme.color,
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    UIHelper.verticalSpaceSmall(),
                     const Text(
                       "Bank Book",
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(
-                      height: 14,
-                    ),
+                    UIHelper.verticalSpaceMedium(),
                   ],
                 ),
               ),
@@ -976,16 +978,12 @@ class HomePage extends StatelessWidget {
                       // color: Theme.of(context).iconTheme.color,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  UIHelper.verticalSpaceSmall(),
                   const Text(
                     "Budget",
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
-                    height: 14,
-                  ),
+                  UIHelper.verticalSpaceMedium(),
                 ],
               ),
               Column(
@@ -1003,16 +1001,124 @@ class HomePage extends StatelessWidget {
                       listServices[3].img,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  UIHelper.verticalSpaceSmall(),
                   const Text(
                     "Analytics",
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
-                    height: 14,
+                  UIHelper.verticalSpaceMedium(),
+                ],
+              ),
+            ],
+          ),
+
+          //#
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () => GoRouter.of(context).pushNamed('CASH-BOOK'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Theme.of(context).highlightColor,
+                        ),
+                        child: SvgPicture.asset(
+                          listServices[4].img,
+                          // color: Theme.of(context).iconTheme.color,
+                        ),
+                      ),
+                    ),
+                    UIHelper.verticalSpaceSmall(),
+                    const Text(
+                      "Speed",
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                    ),
+                    UIHelper.verticalSpaceMedium(),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => GoRouter.of(context).pushNamed('BANK-BOOK'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 50,
+                      height: 50,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).highlightColor,
+                      ),
+                      child: SvgPicture.asset(
+                        listServices[5].img,
+                        // color: Theme.of(context).iconTheme.color,
+                      ),
+                    ),
+                    UIHelper.verticalSpaceSmall(),
+                    const Text(
+                      "Reminder",
+                      textAlign: TextAlign.center,
+                    ),
+                    UIHelper.verticalSpaceMedium(),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    height: 50,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).highlightColor,
+                    ),
+                    child: SvgPicture.asset(
+                      listServices[6].img,
+                      // color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
+                  UIHelper.verticalSpaceSmall(),
+                  const Text(
+                    "Currency",
+                    textAlign: TextAlign.center,
+                  ),
+                  UIHelper.verticalSpaceMedium(),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    height: 50,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).highlightColor,
+                    ),
+                    child: SvgPicture.asset(
+                      listServices[7].img,
+                    ),
+                  ),
+                  UIHelper.verticalSpaceSmall(),
+                  const Text(
+                    "EMI Calc",
+                    textAlign: TextAlign.center,
+                  ),
+                  UIHelper.verticalSpaceMedium(),
                 ],
               ),
             ],

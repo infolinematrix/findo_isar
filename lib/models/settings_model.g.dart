@@ -38,7 +38,7 @@ const SettingsModelSchema = CollectionSchema(
       id: -1360757079954853123,
       name: r'variable',
       unique: true,
-      replace: false,
+      replace: true,
       properties: [
         IndexPropertySchema(
           name: r'variable',

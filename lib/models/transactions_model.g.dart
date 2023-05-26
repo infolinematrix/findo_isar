@@ -52,39 +52,44 @@ const TransactionsModelSchema = CollectionSchema(
       name: r'onAccount',
       type: IsarType.long,
     ),
-    r'onAccountName': PropertySchema(
+    r'onAccountCurrentBalance': PropertySchema(
       id: 7,
+      name: r'onAccountCurrentBalance',
+      type: IsarType.double,
+    ),
+    r'onAccountName': PropertySchema(
+      id: 8,
       name: r'onAccountName',
       type: IsarType.string,
     ),
     r'scrollNo': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'scrollNo',
       type: IsarType.long,
     ),
     r'scrollSlNo': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'scrollSlNo',
       type: IsarType.long,
     ),
     r'scrollType': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'scrollType',
       type: IsarType.byte,
       enumMap: _TransactionsModelscrollTypeEnumValueMap,
     ),
     r'status': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'status',
       type: IsarType.long,
     ),
     r'txnDate': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'txnDate',
       type: IsarType.dateTime,
     ),
     r'txnType': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'txnType',
       type: IsarType.byte,
       enumMap: _TransactionsModeltxnTypeEnumValueMap,
@@ -171,6 +176,19 @@ const TransactionsModelSchema = CollectionSchema(
         )
       ],
     ),
+    r'status': IndexSchema(
+      id: -107785170620420283,
+      name: r'status',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'status',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
     r'onAccount': IndexSchema(
       id: -7877998232683459520,
       name: r'onAccount',
@@ -239,13 +257,14 @@ void _transactionsModelSerialize(
   writer.writeString(offsets[4], object.description);
   writer.writeString(offsets[5], object.narration);
   writer.writeLong(offsets[6], object.onAccount);
-  writer.writeString(offsets[7], object.onAccountName);
-  writer.writeLong(offsets[8], object.scrollNo);
-  writer.writeLong(offsets[9], object.scrollSlNo);
-  writer.writeByte(offsets[10], object.scrollType.index);
-  writer.writeLong(offsets[11], object.status);
-  writer.writeDateTime(offsets[12], object.txnDate);
-  writer.writeByte(offsets[13], object.txnType.index);
+  writer.writeDouble(offsets[7], object.onAccountCurrentBalance);
+  writer.writeString(offsets[8], object.onAccountName);
+  writer.writeLong(offsets[9], object.scrollNo);
+  writer.writeLong(offsets[10], object.scrollSlNo);
+  writer.writeByte(offsets[11], object.scrollType.index);
+  writer.writeLong(offsets[12], object.status);
+  writer.writeDateTime(offsets[13], object.txnDate);
+  writer.writeByte(offsets[14], object.txnType.index);
 }
 
 TransactionsModel _transactionsModelDeserialize(
@@ -263,16 +282,17 @@ TransactionsModel _transactionsModelDeserialize(
   object.id = id;
   object.narration = reader.readStringOrNull(offsets[5]);
   object.onAccount = reader.readLong(offsets[6]);
-  object.onAccountName = reader.readStringOrNull(offsets[7]);
-  object.scrollNo = reader.readLong(offsets[8]);
-  object.scrollSlNo = reader.readLong(offsets[9]);
+  object.onAccountCurrentBalance = reader.readDouble(offsets[7]);
+  object.onAccountName = reader.readStringOrNull(offsets[8]);
+  object.scrollNo = reader.readLong(offsets[9]);
+  object.scrollSlNo = reader.readLong(offsets[10]);
   object.scrollType = _TransactionsModelscrollTypeValueEnumMap[
-          reader.readByteOrNull(offsets[10])] ??
+          reader.readByteOrNull(offsets[11])] ??
       ScrollType.HC;
-  object.status = reader.readLong(offsets[11]);
-  object.txnDate = reader.readDateTimeOrNull(offsets[12]);
+  object.status = reader.readLong(offsets[12]);
+  object.txnDate = reader.readDateTimeOrNull(offsets[13]);
   object.txnType = _TransactionsModeltxnTypeValueEnumMap[
-          reader.readByteOrNull(offsets[13])] ??
+          reader.readByteOrNull(offsets[14])] ??
       TxnType.DR;
   return object;
 }
@@ -299,20 +319,22 @@ P _transactionsModelDeserializeProp<P>(
     case 6:
       return (reader.readLong(offset)) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 8:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
       return (reader.readLong(offset)) as P;
     case 10:
+      return (reader.readLong(offset)) as P;
+    case 11:
       return (_TransactionsModelscrollTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
           ScrollType.HC) as P;
-    case 11:
-      return (reader.readLong(offset)) as P;
     case 12:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 13:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 14:
       return (_TransactionsModeltxnTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
           TxnType.DR) as P;
@@ -408,6 +430,14 @@ extension TransactionsModelQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'accountNo'),
+      );
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterWhere> anyStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'status'),
       );
     });
   }
@@ -1173,6 +1203,99 @@ extension TransactionsModelQueryWhere
         lower: [lowerAccountNo],
         includeLower: includeLower,
         upper: [upperAccountNo],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterWhereClause>
+      statusEqualTo(int status) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'status',
+        value: [status],
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterWhereClause>
+      statusNotEqualTo(int status) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [],
+              upper: [status],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [status],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [status],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'status',
+              lower: [],
+              upper: [status],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterWhereClause>
+      statusGreaterThan(
+    int status, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [status],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterWhereClause>
+      statusLessThan(
+    int status, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [],
+        upper: [status],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterWhereClause>
+      statusBetween(
+    int lowerStatus,
+    int upperStatus, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'status',
+        lower: [lowerStatus],
+        includeLower: includeLower,
+        upper: [upperStatus],
         includeUpper: includeUpper,
       ));
     });
@@ -2027,6 +2150,72 @@ extension TransactionsModelQueryFilter
   }
 
   QueryBuilder<TransactionsModel, TransactionsModel, QAfterFilterCondition>
+      onAccountCurrentBalanceEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'onAccountCurrentBalance',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterFilterCondition>
+      onAccountCurrentBalanceGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'onAccountCurrentBalance',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterFilterCondition>
+      onAccountCurrentBalanceLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'onAccountCurrentBalance',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterFilterCondition>
+      onAccountCurrentBalanceBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'onAccountCurrentBalance',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterFilterCondition>
       onAccountNameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2642,6 +2831,20 @@ extension TransactionsModelQuerySortBy
   }
 
   QueryBuilder<TransactionsModel, TransactionsModel, QAfterSortBy>
+      sortByOnAccountCurrentBalance() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'onAccountCurrentBalance', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterSortBy>
+      sortByOnAccountCurrentBalanceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'onAccountCurrentBalance', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterSortBy>
       sortByOnAccountName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'onAccountName', Sort.asc);
@@ -2854,6 +3057,20 @@ extension TransactionsModelQuerySortThenBy
   }
 
   QueryBuilder<TransactionsModel, TransactionsModel, QAfterSortBy>
+      thenByOnAccountCurrentBalance() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'onAccountCurrentBalance', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterSortBy>
+      thenByOnAccountCurrentBalanceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'onAccountCurrentBalance', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QAfterSortBy>
       thenByOnAccountName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'onAccountName', Sort.asc);
@@ -3004,6 +3221,13 @@ extension TransactionsModelQueryWhereDistinct
   }
 
   QueryBuilder<TransactionsModel, TransactionsModel, QDistinct>
+      distinctByOnAccountCurrentBalance() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'onAccountCurrentBalance');
+    });
+  }
+
+  QueryBuilder<TransactionsModel, TransactionsModel, QDistinct>
       distinctByOnAccountName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'onAccountName',
@@ -3105,6 +3329,13 @@ extension TransactionsModelQueryProperty
   QueryBuilder<TransactionsModel, int, QQueryOperations> onAccountProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'onAccount');
+    });
+  }
+
+  QueryBuilder<TransactionsModel, double, QQueryOperations>
+      onAccountCurrentBalanceProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'onAccountCurrentBalance');
     });
   }
 

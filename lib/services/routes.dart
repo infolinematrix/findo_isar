@@ -21,6 +21,7 @@ import 'package:go_router/go_router.dart';
 
 import '../ui/screen/accounts/update/update_bank_account.dart';
 import '../ui/screen/accounts/update/update_expense_account.dart';
+import '../ui/screen/accounts/update/update_income_account.dart';
 import '../ui/screen/accounts/update/update_liability_account.dart';
 import '../ui/screen/settings/configuration_screen.dart';
 import '../ui/screen/statement/statement_screen.dart';
@@ -208,7 +209,7 @@ final GoRouter router = GoRouter(
             return buildPageWithDefaultTransition<void>(
                 context: context,
                 state: state,
-                child: UpdateExpensesAccount(
+                child: UpdateIncomeAccount(
                   account: extra['account'],
                 ));
           },

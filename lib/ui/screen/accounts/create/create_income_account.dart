@@ -10,7 +10,6 @@ import '../../../../util/constant.dart';
 import '../../../../util/ui_helpers.dart';
 import '../../../widgets/annotated_region.dart';
 import '../../../widgets/button_default.dart';
-import '../../../widgets/input_container.dart';
 import '../accounts_controller.dart';
 
 class CreateIncomeAccount extends StatelessWidget {
@@ -26,22 +25,17 @@ class CreateIncomeAccount extends StatelessWidget {
           title: const Text("CREATE INCOME ACCOUNT"),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          padding: const EdgeInsets.all(8),
+          child: Card(
+            elevation: .25,
             child: FormBuilder(
               key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).cardColor,
-                    ),
-                    child: Column(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -58,127 +52,97 @@ class CreateIncomeAccount extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).cardColor,
-                    ),
-                    child: Column(
+                    UIHelper.verticalSpaceMedium(),
+                    Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(
-                          height: inputHeight,
-                          child: InputContainer(
-                            child: FormBuilderTextField(
-                              name: 'name',
-                              decoration: const InputDecoration(
-                                labelText: 'Account Name',
-                              ),
-                              style: inputStyle,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                              ]),
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                              textCapitalization: TextCapitalization.sentences,
-                            ),
-                          ),
+                        FormBuilderTextField(
+                          name: 'name',
+                          decoration: const InputDecoration(
+                              labelText: 'Account Name', isDense: true),
+                          style: inputStyle,
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          textCapitalization: TextCapitalization.sentences,
                         ),
                         UIHelper.verticalSpaceMedium(),
-                        SizedBox(
-                          height: inputHeight,
-                          child: InputContainer(
-                            child: FormBuilderTextField(
-                              name: 'description',
-                              decoration: const InputDecoration(
-                                labelText: 'Description',
-                              ),
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                              ]),
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                              textCapitalization: TextCapitalization.sentences,
-                            ),
-                          ),
+                        FormBuilderTextField(
+                          name: 'description',
+                          decoration: const InputDecoration(
+                              labelText: 'Description', isDense: true),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          textCapitalization: TextCapitalization.sentences,
                         ),
                         UIHelper.verticalSpaceMedium(),
-                        SizedBox(
-                          height: inputHeight,
-                          child: Row(
-                            children: [
-                              Consumer(
-                                builder: (context, ref, child) {
-                                  return Expanded(
-                                    child: InputContainer(
-                                      child: FormBuilderDropdown<bool>(
-                                        name: 'hasChild',
-                                        style: inputStyle,
-                                        isExpanded: false,
-                                        itemHeight: null,
-                                        dropdownColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Is Group?',
-                                        ),
-                                        validator:
-                                            FormBuilderValidators.compose([
-                                          FormBuilderValidators.required(),
-                                        ]),
-                                        items: yesNo
-                                            .map((yn) => DropdownMenuItem<bool>(
-                                                  alignment:
-                                                      AlignmentDirectional
-                                                          .centerStart,
-                                                  value: yn['key'] as bool,
-                                                  child: Text(
-                                                      yn['value'].toString(),
-                                                      style: TextStyle(
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .primaryColor)),
-                                                ))
-                                            .toList(),
-                                        onChanged: (val) {},
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            Consumer(
+                              builder: (context, ref, child) {
+                                return Expanded(
+                                  child: FormBuilderDropdown<bool>(
+                                    name: 'hasChild',
+                                    style: inputStyle,
+                                    isExpanded: false,
+                                    itemHeight: null,
+                                    dropdownColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Is Group?', isDense: true),
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(),
+                                    ]),
+                                    items: yesNo
+                                        .map((yn) => DropdownMenuItem<bool>(
+                                              alignment: AlignmentDirectional
+                                                  .centerStart,
+                                              value: yn['key'] as bool,
+                                              child: Text(
+                                                  yn['value'].toString(),
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor)),
+                                            ))
+                                        .toList(),
+                                    onChanged: (val) {},
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                         UIHelper.verticalSpaceLarge(),
-                        SizedBox(
-                          height: inputHeight,
-                          child: FormBuilderCheckbox(
-                            name: 'isActive',
-                            initialValue: true,
-                            title: RichText(
-                              text: const TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Yes, Account is active. ',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        'Inactive account does not allow transaction',
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            validator: FormBuilderValidators.equal(
-                              true,
-                              errorText: 'You must accept terms and conditions',
+                        FormBuilderCheckbox(
+                          name: 'isActive',
+                          initialValue: true,
+                          title: RichText(
+                            text: const TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Yes, Account is active. ',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                TextSpan(
+                                  text:
+                                      'Inactive account does not allow transaction',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                              ],
                             ),
                           ),
+                          validator: FormBuilderValidators.equal(
+                            true,
+                            errorText: 'You must accept terms and conditions',
+                          ),
+                          decoration: const InputDecoration(
+                              filled: false, contentPadding: EdgeInsets.all(0)),
                         ),
                         UIHelper.verticalSpaceExtraLarge(),
                         Consumer(
@@ -216,8 +180,8 @@ class CreateIncomeAccount extends StatelessWidget {
                         UIHelper.verticalSpaceLarge(),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

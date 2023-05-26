@@ -30,11 +30,14 @@ class TransactionsModel {
   String? narration;
   double amount = 0.00;
   String? description;
+
+  @Index()
   int status = 51;
 
   @Index()
   int onAccount = 0;
   String? onAccountName;
+  double onAccountCurrentBalance = 0.00;
 }
 
 enum TxnType { DR, CR }

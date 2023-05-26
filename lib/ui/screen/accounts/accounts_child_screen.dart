@@ -67,36 +67,21 @@ class AccountsChildScreen extends StatelessWidget {
                   pinned: false,
                   stretch: true,
                   automaticallyImplyLeading: false,
-                  flexibleSpace: Container(
-                    padding: const EdgeInsets.only(
-                        left: 0, right: 18, top: 4, bottom: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).cardColor,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 32),
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                hintText: 'Search..',
-                                border: InputBorder.none,
-                              ),
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
+                  flexibleSpace: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            isDense: true,
+                            hintText: 'Search..',
+                            border: InputBorder.none,
+                            suffixIcon: Icon(Iconsax.search_normal, size: 24),
                           ),
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
-                        const Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(Iconsax.search_normal, size: 24),
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 16)),
@@ -122,8 +107,9 @@ class AccountsChildScreen extends StatelessWidget {
                                   children: [
                                     SlidableAction(
                                       icon: Iconsax.close_square,
-                                      padding: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(8),
                                       label: 'Delete',
+                                      borderRadius: BorderRadius.circular(10),
                                       onPressed: (context) async {
                                         AlertAction? action = await confirmDialog(
                                             context,
@@ -140,7 +126,8 @@ class AccountsChildScreen extends StatelessWidget {
                                     ),
                                     SlidableAction(
                                       icon: Iconsax.document_upload,
-                                      padding: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(8),
+                                      borderRadius: BorderRadius.circular(10),
                                       label: 'Update',
                                       onPressed: (context) {
                                         switch (account.accountType) {
@@ -171,12 +158,8 @@ class AccountsChildScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Theme.of(context).cardColor,
-                                  ),
+                                child: Card(
+                                  elevation: .25,
                                   child: ListTile(
                                     contentPadding: const EdgeInsets.only(
                                         left: 16, right: 16),
@@ -222,8 +205,11 @@ class AccountsChildScreen extends StatelessWidget {
                                               'account': data[index],
                                             });
                                       } else {
-                                        GoRouter.of(context)
-                                            .pushNamed('ACCOUNT-STATEMENT');
+                                        // GoRouter.of(context).pushNamed(
+                                        //     'ACCOUNT-STATEMENT',
+                                        //     extra: {
+                                        //       'account': data[index],
+                                        //     });
                                       }
                                     },
                                   ),

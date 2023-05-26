@@ -60,6 +60,7 @@ class UpdateBankAccount extends ConsumerWidget {
                         children: [
                           FormBuilderTextField(
                             name: 'name',
+                            initialValue: account.name,
                             decoration: const InputDecoration(
                                 labelText: 'Bank Name', isDense: true),
                             style: inputStyle,
@@ -71,22 +72,14 @@ class UpdateBankAccount extends ConsumerWidget {
                             textCapitalization: TextCapitalization.words,
                           ),
                           UIHelper.verticalSpaceMedium(),
-                          FormBuilderTextField(
-                            name: 'bankAccountNo',
-                            decoration: const InputDecoration(
-                                labelText: 'Account No', isDense: true),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                            ]),
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: true, decimal: false),
-                          ),
-                          UIHelper.verticalSpaceMedium(),
                           Row(
                             children: [
                               Expanded(
                                 child: FormBuilderTextField(
                                   name: 'bankAccountNo',
+                                  initialValue:
+                                      account.bankAccountNo.toString(),
+                                  style: inputStyle,
                                   decoration: const InputDecoration(
                                       labelText: 'Account No', isDense: true),
                                   validator: FormBuilderValidators.compose([
@@ -101,6 +94,8 @@ class UpdateBankAccount extends ConsumerWidget {
                               Expanded(
                                 child: FormBuilderTextField(
                                   name: 'openingBalance',
+                                  initialValue:
+                                      account.openingBalance.toString(),
                                   style: inputStyle,
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(),
@@ -118,6 +113,8 @@ class UpdateBankAccount extends ConsumerWidget {
                           UIHelper.verticalSpaceMedium(),
                           FormBuilderTextField(
                             name: 'description',
+                            style: inputStyle,
+                            initialValue: account.description!,
                             decoration: const InputDecoration(
                                 labelText: 'Description', isDense: true),
                             validator: FormBuilderValidators.compose([
@@ -130,7 +127,7 @@ class UpdateBankAccount extends ConsumerWidget {
                           UIHelper.verticalSpaceMedium(),
                           FormBuilderCheckbox(
                             name: 'isActive',
-                            initialValue: true,
+                            initialValue: account.status == 51 ? true : false,
                             title: RichText(
                               text: const TextSpan(
                                 children: [
@@ -170,20 +167,22 @@ class UpdateBankAccount extends ConsumerWidget {
                                 await ref
                                     .watch(
                                         accountsProvider(account.id).notifier)
-                                    .create(
-                                        parent: account,
-                                        formData: formKey.currentState!.value)
-                                    .then(
-                                  (value) {
-                                    EasyLoading.showSuccess("Account created!");
-                                    GoRouter.of(context).pop();
+                                    .update(
+                                  formData: {
+                                    'account': account,
+                                    'data': formKey.currentState!.value
                                   },
-                                );
+                                ).then((value) {
+                                  ref.invalidate(
+                                      accountsProvider(account.parent));
+                                  EasyLoading.showSuccess("Account Updated!");
+                                  GoRouter.of(context).pop();
+                                });
 
                                 EasyLoading.dismiss();
                               } else {
                                 EasyLoading.dismiss();
-                                EasyLoading.showToast("Validation fail");
+                                EasyLoading.showToast("Error Updating");
                               }
                             },
                           ),

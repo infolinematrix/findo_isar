@@ -61,6 +61,7 @@ class UpdateIncomeAccount extends StatelessWidget {
                             children: [
                               FormBuilderTextField(
                                 name: 'name',
+                                initialValue: account.name,
                                 decoration: const InputDecoration(
                                     labelText: 'Account Name', isDense: true),
                                 style: inputStyle,
@@ -69,12 +70,13 @@ class UpdateIncomeAccount extends StatelessWidget {
                                 ]),
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.next,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
+                                textCapitalization: TextCapitalization.words,
                               ),
                               UIHelper.verticalSpaceMedium(),
                               FormBuilderTextField(
                                 name: 'description',
+                                initialValue: account.description,
+                                style: inputStyle,
                                 decoration: const InputDecoration(
                                     labelText: 'Description', isDense: true),
                                 validator: FormBuilderValidators.compose([
@@ -88,7 +90,8 @@ class UpdateIncomeAccount extends StatelessWidget {
                               UIHelper.verticalSpaceMedium(),
                               FormBuilderCheckbox(
                                 name: 'isActive',
-                                initialValue: true,
+                                initialValue:
+                                    account.status == 51 ? true : false,
                                 decoration: const InputDecoration(
                                     filled: false,
                                     contentPadding: EdgeInsets.all(0)),
@@ -129,20 +132,23 @@ class UpdateIncomeAccount extends StatelessWidget {
                                     await ref
                                         .watch(accountsProvider(account.id)
                                             .notifier)
-                                        .create(
-                                            parent: account,
-                                            formData:
-                                                formKey.currentState!.value)
-                                        .then((value) {
+                                        .update(
+                                      formData: {
+                                        'account': account,
+                                        'data': formKey.currentState!.value
+                                      },
+                                    ).then((value) {
+                                      ref.invalidate(
+                                          accountsProvider(account.parent));
                                       EasyLoading.showSuccess(
-                                          "Account created!");
+                                          "Account Updated!");
                                       GoRouter.of(context).pop();
                                     });
 
                                     EasyLoading.dismiss();
                                   } else {
                                     EasyLoading.dismiss();
-                                    EasyLoading.showToast("Validation fail");
+                                    EasyLoading.showToast("Error Updating");
                                   }
                                 },
                               ),

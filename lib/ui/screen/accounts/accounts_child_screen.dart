@@ -130,28 +130,36 @@ class AccountsChildScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       label: 'Update',
                                       onPressed: (context) {
-                                        switch (account.accountType) {
+                                        switch (data[index].accountType) {
                                           case 'BANK':
                                             GoRouter.of(context).pushNamed(
                                                 "UPDATE-BANK-ACCOUNT",
-                                                extra: {'account': account});
+                                                extra: {
+                                                  'account': data[index]
+                                                });
                                             break;
 
                                           case 'EXPENDITURE':
                                             GoRouter.of(context).pushNamed(
                                                 "UPDATE-EXPENSES-ACCOUNT",
-                                                extra: {'account': account});
+                                                extra: {
+                                                  'account': data[index]
+                                                });
                                             break;
 
                                           case 'INCOME':
                                             GoRouter.of(context).pushNamed(
                                                 "UPDATE-INCOME-ACCOUNT",
-                                                extra: {'account': account});
+                                                extra: {
+                                                  'account': data[index]
+                                                });
                                             break;
                                           case 'LIABILITIES':
                                             GoRouter.of(context).pushNamed(
                                                 "UPDATE-LIABILITY-ACCOUNT",
-                                                extra: {'account': account});
+                                                extra: {
+                                                  'account': data[index]
+                                                });
                                             break;
                                         }
                                       },
@@ -186,7 +194,7 @@ class AccountsChildScreen extends StatelessWidget {
                                       data[index].name!.toString(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headlineMedium,
+                                          .titleMedium,
                                     ),
                                     subtitle: Text(
                                       data[index].description ??

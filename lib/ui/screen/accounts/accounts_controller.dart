@@ -70,26 +70,31 @@ class AccountState extends StateNotifier<AsyncValue<List<AccountsModel>>> {
     }
   }
 
-  //--UPDATE
-  Future<bool> update(
-      {required int id,
-      required String accountType,
-      required Map<String, dynamic> formData}) async {
+  //--UPDATE ACCOUNT
+  Future<bool> update({required Map<String, dynamic> formData}) async {
     try {
-      switch (accountType) {
-        case 'CASH': //--EXPENSES
-          // await updateBankAccount(formData: formData, id: id);
-          getAccounts(parentId);
+      final AccountsModel account = formData['account'];
+      switch (account.accountType) {
+        case 'BANK': //--BANK
+
+          await updateBankAccount(
+            formData: formData['data'],
+            account: account,
+          );
           break;
 
-        case 'EXPENDITURE': //--EXPENSES
-          // await updateExpensesAccount(formData: formData, id: id);
-          getAccounts(parentId);
+        case 'INCOME': //--BANK
+          await updateIncomeAccount(
+            formData: formData['data'],
+            account: account,
+          );
           break;
 
-        case 'INCOME': //--EXPENSES
-          // await updateIncomeAccount(formData: formData, id: id);
-          getAccounts(parentId);
+        case 'EXPENDITURE': //--BANK
+          await updateExpensesAccount(
+            formData: formData['data'],
+            account: account,
+          );
           break;
       }
       return true;
@@ -258,6 +263,61 @@ Future createLiabilitiesAccount(
     } else {
       EasyLoading.showToast("Account already exist!");
     }
+  } catch (e) {
+    rethrow;
+  }
+}
+
+//--UPDATE BANK ACCOUNT
+Future updateBankAccount(
+    {required Map<String, dynamic> formData,
+    required AccountsModel account}) async {
+  try {
+    account.name = formData['name'];
+    account.description = formData['description'];
+    account.bankAccountNo = int.parse(formData['bankAccountNo']).toInt();
+    account.openingBalance =
+        double.parse(formData['openingBalance']).toDouble();
+    account.status = formData['isActive'] == true ? 51 : 0;
+
+    await IsarHelper.instance.db!.writeTxn(() async {
+      await IsarHelper.instance.db!.accountsModels.put(account);
+    });
+  } catch (e) {
+    rethrow;
+  }
+}
+
+//--UPDATE INCOME ACCOUNT
+Future updateIncomeAccount(
+    {required Map<String, dynamic> formData,
+    required AccountsModel account}) async {
+  try {
+    account.name = formData['name'];
+    account.description = formData['description'];
+    account.status = formData['isActive'] == true ? 51 : 0;
+
+    await IsarHelper.instance.db!.writeTxn(() async {
+      await IsarHelper.instance.db!.accountsModels.put(account);
+    });
+  } catch (e) {
+    rethrow;
+  }
+}
+
+//--UPDATE EXPENSES ACCOUNT
+Future updateExpensesAccount(
+    {required Map<String, dynamic> formData,
+    required AccountsModel account}) async {
+  try {
+    account.name = formData['name'];
+    account.description = formData['description'];
+    account.budget = double.parse(formData['budget']).toDouble();
+    account.status = formData['isActive'] == true ? 51 : 0;
+
+    await IsarHelper.instance.db!.writeTxn(() async {
+      await IsarHelper.instance.db!.accountsModels.put(account);
+    });
   } catch (e) {
     rethrow;
   }

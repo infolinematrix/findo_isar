@@ -112,13 +112,9 @@ class ExpensesEntry extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     height: 55,
                                     width: 55,
-                                    decoration: BoxDecoration(
-                                      // color: Theme.of(context).primaryColorDark,
-                                      borderRadius: BorderRadius.circular(80),
-                                    ),
                                     child: Center(
                                       child: Icon(
                                         Iconsax.export_1,
@@ -225,6 +221,7 @@ class ExpensesEntry extends StatelessWidget {
                                         decoration: const InputDecoration(
                                           labelText: 'Payment By',
                                           hintText: 'Select',
+                                          isDense: true,
                                         ),
                                         onChanged: (value) {
                                           ref
@@ -253,8 +250,7 @@ class ExpensesEntry extends StatelessWidget {
                               final banks = ref.watch(bankAccountsProvider);
 
                               return banks.when(
-                                loading: () =>
-                                    const CircularProgressIndicator(),
+                                loading: () => const SizedBox.shrink(),
                                 error: (error, stackTrace) =>
                                     const Text("Error"),
                                 data: (banks) {
@@ -267,6 +263,7 @@ class ExpensesEntry extends StatelessWidget {
                                             initialValue: banks[0].id,
                                             decoration: const InputDecoration(
                                               labelText: 'Select Bank',
+                                              isDense: true,
                                             ),
                                             items: banks
                                                 .map(
@@ -298,6 +295,9 @@ class ExpensesEntry extends StatelessWidget {
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .primaryColorLight),
+                                    decoration: const InputDecoration(
+                                      isDense: true,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -305,12 +305,10 @@ class ExpensesEntry extends StatelessWidget {
                                   child: FormBuilderTextField(
                                     name: 'amount',
                                     textAlign: TextAlign.right,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
+                                    style: inputStyle,
                                     decoration: const InputDecoration(
                                       labelText: 'Amount',
+                                      isDense: true,
                                     ),
                                     keyboardType:
                                         const TextInputType.numberWithOptions(
@@ -324,6 +322,7 @@ class ExpensesEntry extends StatelessWidget {
                               name: 'description',
                               decoration: const InputDecoration(
                                 labelText: 'Description',
+                                isDense: true,
                               ),
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,

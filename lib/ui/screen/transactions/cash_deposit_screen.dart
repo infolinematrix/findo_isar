@@ -4,7 +4,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/ui/screen/transactions/transaction_controller.dart';
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
-import 'package:flutter_wallet/ui/widgets/input_container.dart';
 import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
@@ -50,31 +49,24 @@ class CashDepositScreen extends StatelessWidget {
                       error: (error, stackTrace) => const Text("Error"),
                       data: (banks) {
                         return Padding(
-                          padding: const EdgeInsets.only(top: 16),
-                          child: InputContainer(
-                            child: SizedBox(
-                              height: inputHeight,
-                              child: FormBuilderDropdown<int>(
-                                name: 'bank',
-                                initialValue: banks[0].id,
-                                decoration: const InputDecoration(
-                                  labelText: 'Select Bank',
-                                ),
-                                items: banks
-                                    .map(
-                                      (item) => DropdownMenuItem(
-                                        alignment:
-                                            AlignmentDirectional.centerStart,
-                                        value: item.id,
-                                        child: Text(
-                                          item.name!,
-                                          style: inputStyle,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
+                          padding: const EdgeInsets.only(top: 8),
+                          child: FormBuilderDropdown<int>(
+                            name: 'bank',
+                            initialValue: banks[0].id,
+                            decoration: const InputDecoration(
+                                labelText: 'Select Bank', isDense: true),
+                            items: banks
+                                .map(
+                                  (item) => DropdownMenuItem(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    value: item.id,
+                                    child: Text(
+                                      item.name!,
+                                      style: inputStyle,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         );
                       },
@@ -84,68 +76,48 @@ class CashDepositScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 16, right: 0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Theme.of(context).canvasColor,
-                          ),
-                          child: FormBuilderDateTimePicker(
-                            name: 'txnDate',
-                            format: DateFormat("dd-MM-yyyy"),
-                            style: inputStyle,
-                            initialEntryMode: DatePickerEntryMode.calendarOnly,
-                            initialValue: DateTime.now(),
-                            firstDate: DateTime(2023, 1, 1),
-                            lastDate: DateTime.now(),
-                            inputType: InputType.date,
-                            decoration: const InputDecoration(
-                              labelText: 'Date',
-                              suffixIcon: Icon(Iconsax.calendar),
-                            ),
+                        child: FormBuilderDateTimePicker(
+                          name: 'txnDate',
+                          format: DateFormat("dd-MM-yyyy"),
+                          style: inputStyle,
+                          initialEntryMode: DatePickerEntryMode.calendarOnly,
+                          initialValue: DateTime.now(),
+                          firstDate: DateTime(2023, 1, 1),
+                          lastDate: DateTime.now(),
+                          inputType: InputType.date,
+                          decoration: const InputDecoration(
+                            labelText: 'Date',
+                            isDense: true,
+                            suffixIcon: Icon(Iconsax.calendar),
                           ),
                         ),
                       ),
                       UIHelper.horizontalSpaceMedium(),
                       Expanded(
-                        child: InputContainer(
-                          child: FormBuilderTextField(
-                            name: 'amount',
-                            textAlign: TextAlign.right,
-                            style: inputStyle.copyWith(fontSize: 16),
-                            decoration: const InputDecoration(
-                              labelText: 'Amount',
-                            ),
-                            keyboardType: const TextInputType.numberWithOptions(
-                                signed: true, decimal: true),
-                          ),
+                        child: FormBuilderTextField(
+                          name: 'amount',
+                          textAlign: TextAlign.right,
+                          style: inputStyle.copyWith(fontSize: 16),
+                          decoration: const InputDecoration(
+                              labelText: 'Amount', isDense: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                              signed: true, decimal: true),
                         ),
                       ),
                     ],
                   ),
                   UIHelper.verticalSpaceMedium(),
-                  SizedBox(
-                    height: inputHeight,
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 16, right: 0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Theme.of(context).canvasColor,
-                      ),
-                      child: FormBuilderTextField(
-                        name: 'description',
-                        initialValue: "Cash deposit to Bank",
-                        style: inputStyle,
-                        decoration: const InputDecoration(
-                          labelText: 'Description',
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        textCapitalization: TextCapitalization.sentences,
-                      ),
-                    ),
+                  FormBuilderTextField(
+                    name: 'description',
+                    initialValue: "Cash deposit to Bank",
+                    style: inputStyle,
+                    decoration: const InputDecoration(
+                        labelText: 'Description', isDense: true),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.sentences,
                   ),
-                  UIHelper.verticalSpaceLarge(),
+                  UIHelper.verticalSpaceExtraLarge(),
                   Consumer(
                     builder: (context, ref, child) => SizedBox(
                       height: inputHeight,

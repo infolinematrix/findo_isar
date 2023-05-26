@@ -5,7 +5,7 @@ class UIHelper {
   static const double _verticaleSmall = 8.0;
   static const double _verticalMedium = 16.0;
   static const double _verticalLarge = 24.0;
-  static const double _verticalExtraLarge = 32;
+  static const double _verticalExtraLarge = 42;
   //--
   static const double _horizontalExtraSmall = 4.0;
   static const double _horizontalSmall = 8.0;

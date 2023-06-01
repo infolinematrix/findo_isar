@@ -44,7 +44,6 @@ class HomePage extends StatelessWidget {
                       children: [
                         _contentHeader(context),
 
-                        UIHelper.verticalSpaceMedium(),
                         _userHeader(context),
 
                         UIHelper.verticalSpaceMedium(),
@@ -62,10 +61,8 @@ class HomePage extends StatelessWidget {
                         UIHelper.verticalSpaceMedium(),
                         _todaysSummary(context, data.monthIncomeExpenditure),
 
-                        UIHelper.verticalSpaceMedium(),
-
                         //--UTILITIES
-
+                        UIHelper.verticalSpaceMedium(),
                         _utilities(context),
 
                         UIHelper.verticalSpaceMedium(),
@@ -100,7 +97,7 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'Recent Activities',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SvgPicture.asset(
                   filter,
@@ -165,9 +162,21 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              SvgPicture.asset(
-                logo,
-                width: 45,
+              // SvgPicture.asset(
+              //   logo,
+              //   width: 45,
+              // ),
+              // Image.asset(
+              //   "assets/svg/icon.png",
+              //   width: 36,
+              // ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.asset(
+                  "assets/svg/icon.png",
+                  height: 36.0,
+                  width: 36.0,
+                ),
               ),
               UIHelper.horizontalSpaceSmall(),
               Column(
@@ -182,8 +191,8 @@ class HomePage extends StatelessWidget {
                     'Smart Money Manager',
                     style: Theme.of(context)
                         .textTheme
-                        .labelSmall!
-                        .copyWith(fontWeight: FontWeight.w300, fontSize: 10),
+                        .labelLarge!
+                        .copyWith(fontWeight: FontWeight.w300, fontSize: 12),
                   ),
                 ],
               )
@@ -250,7 +259,9 @@ class HomePage extends StatelessWidget {
                       dimension: 80,
                       child: PicChart(chartData: {
                         'expenditure': data['expenditurePercentage'],
-                        'savings': data['savingsPercentage']
+                        'savings': data['savingsPercentage'],
+                        'totalDebitDay': data['totalDebitDay'],
+                        'totalCreditDay': data['totalCreditDay'],
                       })),
                 ),
               ),
@@ -321,12 +332,14 @@ class HomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("${data['expenditurePercentage']}% SPENDINGS",
+                  Text(
+                      "${data['totalCreditDay'] > 0 ? data['expenditurePercentage'] : '0'}% SPENDINGS",
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall!
                           .copyWith(color: Theme.of(context).primaryColorDark)),
-                  Text("${data['savingsPercentage']}% SAVINGS",
+                  Text(
+                      "${data['totalDebitDay'] > 0 ? data['savingsPercentage'] : '0'}% SAVINGS",
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall!
@@ -335,29 +348,41 @@ class HomePage extends StatelessWidget {
               ),
               UIHelper.verticalSpaceSmall(),
               SizedBox(
-                height: 6,
+                height: 4,
                 child: Row(
                   children: [
                     Flexible(
-                      flex: 30,
+                      flex:
+                          double.parse(data['expenditurePercentage'].toString())
+                              .toDouble()
+                              .round(),
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.error,
+                          color: data['savingsPercentage'] > 0
+                              ? Theme.of(context).colorScheme.error
+                              : Theme.of(context).canvasColor,
                         ),
                       ),
                     ),
-                    Flexible(
-                      flex: 70,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                        ),
-                      ),
-                    ),
+                    data['savingsPercentage'] > 0
+                        ? Flexible(
+                            flex: double.parse(
+                                    data['savingsPercentage'].toString())
+                                .toDouble()
+                                .round(),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                   ],
                 ),
               ),
@@ -395,11 +420,12 @@ class HomePage extends StatelessWidget {
                         direction: Axis.vertical,
                         children: [
                           Text(
-                            "Expenses",
+                            "Cash in Hand",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
-                                .copyWith(),
+                                .copyWith(
+                                    color: Theme.of(context).primaryColorDark),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -412,13 +438,13 @@ class HomePage extends StatelessWidget {
                                     .titleLarge!
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              const Icon(
-                                Iconsax.export_1,
-                                color: Colors.red,
-                              )
+                              // const SizedBox(
+                              //   width: 16,
+                              // ),
+                              // const Icon(
+                              //   Iconsax.export_1,
+                              //   color: Colors.red,
+                              // )
                             ],
                           ),
                         ],
@@ -442,20 +468,21 @@ class HomePage extends StatelessWidget {
                         direction: Axis.vertical,
                         children: [
                           Text(
-                            "Income",
+                            "Cash at Bank",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
-                                .copyWith(),
+                                .copyWith(
+                                    color: Theme.of(context).primaryColorDark),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Icon(
-                                Iconsax.import_1,
-                                color: Colors.green,
-                              ),
-                              UIHelper.horizontalSpaceSmall(),
+                              // const Icon(
+                              //   Iconsax.import_1,
+                              //   color: Colors.green,
+                              // ),
+                              // UIHelper.horizontalSpaceSmall(),
                               Text(
                                 formatCurrency(
                                     data['totalCreditDay'].toString()),
@@ -490,7 +517,7 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Navigation',
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               SvgPicture.asset(
                 scan,
@@ -716,7 +743,7 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Shotcuts',
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
               SvgPicture.asset(
                 filter,
@@ -744,7 +771,10 @@ class HomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       color: Theme.of(context).highlightColor,
                     ),
-                    child: const Icon(Iconsax.wallet_money),
+                    child: Icon(
+                      Iconsax.wallet_money,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
                   ),
                   const SizedBox(
                     height: 8,
@@ -777,7 +807,10 @@ class HomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       color: Theme.of(context).highlightColor,
                     ),
-                    child: const Icon(Iconsax.autobrightness),
+                    child: Icon(
+                      Iconsax.autobrightness,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
                   ),
                   const SizedBox(
                     height: 8,
@@ -811,7 +844,10 @@ class HomePage extends StatelessWidget {
                     //   listServices[2].img,
                     //   // color: Theme.of(context).iconTheme.color,
                     // ),
-                    child: const Icon(Iconsax.book_square),
+                    child: Icon(
+                      Iconsax.book_square,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
                   ),
                   const SizedBox(
                     height: 8,
@@ -845,8 +881,9 @@ class HomePage extends StatelessWidget {
                     //   listServices[3].img,
                     //   // color: Theme.of(context).iconTheme.color,
                     // ),
-                    child: const Icon(
+                    child: Icon(
                       Iconsax.cpu,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   ),
                   const SizedBox(
@@ -894,7 +931,7 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'Utilities',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SvgPicture.asset(
                   filter,

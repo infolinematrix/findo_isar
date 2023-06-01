@@ -51,7 +51,6 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Divider(height: 8),
                     GestureDetector(
                       onTap: () {
                         GoRouter.of(context).pushNamed('BANK-BOOK');

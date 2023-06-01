@@ -46,19 +46,17 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                       Text(
                         txn.description!,
                         maxLines: 1,
-                        // style: Theme.of(context)
-                        //     .textTheme
-                        //     .bodyLarge!
-                        //     .copyWith(fontWeight: FontWeight.w600),
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       Text(
                         txn.accountName!,
                         maxLines: 1,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(fontWeight: FontWeight.normal),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
                       ),
                     ],
                   ),

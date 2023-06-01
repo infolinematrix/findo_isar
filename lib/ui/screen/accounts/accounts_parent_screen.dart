@@ -33,46 +33,51 @@ class AccountsParentScreen extends ConsumerWidget {
                       itemExtent: 78, // I'm forcing item heights
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Theme.of(context).cardColor,
-                            ),
-                            child: ListTile(
-                              contentPadding:
-                                  const EdgeInsets.only(left: 16, right: 16),
-                              leading: Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Theme.of(context).secondaryHeaderColor,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    data[index].name![0],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(fontWeight: FontWeight.bold),
+                          return Card(
+                            elevation: .25,
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context).cardColor,
+                              ),
+                              child: ListTile(
+                                contentPadding:
+                                    const EdgeInsets.only(left: 16, right: 16),
+                                leading: Container(
+                                  width: 45,
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color:
+                                        Theme.of(context).secondaryHeaderColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      data[index].name![0],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              title: Text(
-                                data[index].name!.toString(),
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              subtitle: Text(
-                                data[index].description ??
-                                    "No description found..",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              trailing: const Icon(Iconsax.arrow_21),
-                              onTap: () => GoRouter.of(context).pushNamed(
-                                "ACCOUNTS-CHILD",
-                                extra: {'account': data[index]},
+                                title: Text(
+                                  data[index].name!.toString(),
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                subtitle: Text(
+                                  data[index].description ??
+                                      "No description found..",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                trailing: const Icon(Iconsax.arrow_21),
+                                onTap: () => GoRouter.of(context).pushNamed(
+                                  "ACCOUNTS-CHILD",
+                                  extra: {'account': data[index]},
+                                ),
                               ),
                             ),
                           );

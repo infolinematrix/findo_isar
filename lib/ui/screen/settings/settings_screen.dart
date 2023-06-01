@@ -23,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       "App Configuration",
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: const Text(
                       "Application settings",
@@ -35,36 +35,27 @@ class SettingsScreen extends StatelessWidget {
                   elevation: .25,
                   child: ListTile(
                     title: Text(
-                      "Currency Settings",
-                      style: Theme.of(context).textTheme.titleMedium,
+                      "Cash in Hand",
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: const Text(
-                      "Application settings",
+                      "Update Opening balance of Cash in Hand",
                     ),
+                    onTap: () => GoRouter.of(context).pushNamed('CASH-IN-HAND'),
                   ),
                 ),
                 Card(
                   elevation: .25,
                   child: ListTile(
                     title: Text(
-                      "Date Format",
-                      style: Theme.of(context).textTheme.titleMedium,
+                      "Consistency Check",
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: const Text(
-                      "Application settings",
+                      "It will check transactions on selected account and update closing balance.",
                     ),
-                  ),
-                ),
-                Card(
-                  elevation: .25,
-                  child: ListTile(
-                    title: Text(
-                      "Currency Format",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    subtitle: const Text(
-                      "Application settings",
-                    ),
+                    onTap: () =>
+                        GoRouter.of(context).pushNamed('CONSISTENCY-CHECK'),
                   ),
                 ),
                 Card(
@@ -72,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       "Default Language",
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: const Text(
                       "Application settings",
@@ -84,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       "Application Theme",
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: const Text(
                       "Set Theme more Dar / Light",
@@ -96,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       "Backup & Restore",
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: const Text(
                       "Application settings",

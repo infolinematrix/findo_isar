@@ -127,9 +127,14 @@ final expenditureEntryProvider = FutureProvider.family
       return null;
     }
 
+    //--Scroll No
     final updatedScroll =
         await ref.watch(getScrollNoProvider.future).then((value) => value) + 1;
+
     if (formData['txnMode'] == 'Cash') {
+      //--Closing Balance (CASH)
+      final cbal = await ref.watch(cashBalanceProvider);
+
       final txn = TransactionsModel()
         ..txnDate = formData['data']['txnDate']
         ..scrollType = ScrollType.HC
@@ -145,6 +150,8 @@ final expenditureEntryProvider = FutureProvider.family
         ..narration = formData['account']['accountName'].toString().trim()
         ..status = 51
         ..onAccount = 1
+        ..onAccountCurrentBalance = cbal +
+            double.parse(formData['data']['amount'].toString()).toDouble()
         ..onAccountName = 'CASH';
 
       final scrollUpdate = await IsarHelper.instance.db!.scrollModels
@@ -373,4 +380,25 @@ final deleteTxnProvider = FutureProvider.family((ref, int txnId) async {
   } catch (e) {
     rethrow;
   }
+});
+
+//--CLOCING BALANCE - CASH
+
+final cashBalanceProvider = Provider.autoDispose((ref) async {
+  final txn = await IsarHelper.instance.db!.transactionsModels
+      .filter()
+      .onAccountEqualTo(1)
+      .sortByCreatedAtDesc()
+      .findFirst();
+
+  if (txn == null) {
+    final ac = await IsarHelper.instance.db!.accountsModels
+        .where()
+        .idEqualTo(1)
+        .findFirst();
+
+    return ac!.openingBalance;
+  }
+
+  return txn.onAccountCurrentBalance;
 });

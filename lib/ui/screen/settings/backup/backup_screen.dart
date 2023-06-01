@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/ui/screen/settings/backup_controller.dart';
+
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:flutter_wallet/ui/widgets/button_default.dart';
+
+import 'backup_controller.dart';
 
 class BackupScreen extends StatelessWidget {
   const BackupScreen({Key? key}) : super(key: key);

@@ -194,7 +194,7 @@ class AccountsChildScreen extends StatelessWidget {
                                       data[index].name!.toString(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleMedium,
+                                          .headlineSmall,
                                     ),
                                     subtitle: Text(
                                       data[index].description ??

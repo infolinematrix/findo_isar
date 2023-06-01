@@ -15,16 +15,20 @@ class PicChart extends StatelessWidget {
           sectionsSpace: 2,
           sections: [
             PieChartSectionData(
-              value: chartData['expenditure'].roundToDouble(),
-              color: Theme.of(context).colorScheme.error,
+              value: chartData['expenditure'],
+              color: chartData['totalDebitDay'] != 0
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).canvasColor,
               radius: 50,
               titleStyle: TextStyle(
                   color: Theme.of(context).canvasColor,
                   fontWeight: FontWeight.bold),
             ),
             PieChartSectionData(
-              value: chartData['savings'].roundToDouble(),
-              color: Theme.of(context).primaryColorLight,
+              value: chartData['savings'],
+              color: chartData['totalCreditDay'] != 0
+                  ? Theme.of(context).primaryColorLight
+                  : Theme.of(context).canvasColor,
               radius: 50,
               titleStyle: TextStyle(
                   color: Theme.of(context).canvasColor,

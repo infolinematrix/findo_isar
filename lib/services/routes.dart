@@ -9,7 +9,7 @@ import 'package:flutter_wallet/ui/screen/onboard/onboard_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/bank_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/cash_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/report_screen.dart';
-import 'package:flutter_wallet/ui/screen/settings/backup_screen.dart';
+
 import 'package:flutter_wallet/ui/screen/settings/settings_screen.dart';
 import 'package:flutter_wallet/ui/screen/statement/select_account_screen.dart';
 import 'package:flutter_wallet/ui/screen/transactions/cash_deposit_screen.dart';
@@ -23,6 +23,9 @@ import '../ui/screen/accounts/update/update_bank_account.dart';
 import '../ui/screen/accounts/update/update_expense_account.dart';
 import '../ui/screen/accounts/update/update_income_account.dart';
 import '../ui/screen/accounts/update/update_liability_account.dart';
+import '../ui/screen/consistency_check/consistency_check_screen.dart';
+import '../ui/screen/settings/backup/backup_screen.dart';
+import '../ui/screen/settings/cash_in_hand/cash_in_hand_screen.dart';
 import '../ui/screen/settings/configuration_screen.dart';
 import '../ui/screen/statement/statement_screen.dart';
 import '../ui/screen/transactions/income_entry.dart';
@@ -60,6 +63,28 @@ final GoRouter router = GoRouter(
                 context: context,
                 state: state,
                 child: const ConfigurationScreen(),
+              );
+            },
+          ),
+          GoRoute(
+            path: 'cash-in-hand',
+            name: 'CASH-IN-HAND',
+            pageBuilder: (context, state) {
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const CashInHandScreen(),
+              );
+            },
+          ),
+          GoRoute(
+            path: 'consistency-check',
+            name: 'CONSISTENCY-CHECK',
+            pageBuilder: (context, state) {
+              return buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: const ConsistencyCheckScreen(),
               );
             },
           ),

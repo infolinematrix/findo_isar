@@ -280,6 +280,11 @@ final yesNo = [
   {'key': false, 'value': 'No'}
 ];
 
+final List<Map<String, dynamic>> languages = [
+  {'code': 'eng', 'value': 'English'},
+  {'code': 'hindi', 'value': 'Hindi'}
+];
+
 final List randomColor = [
   0xFFffebee,
   0xFFfce4ec,

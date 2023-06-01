@@ -16,15 +16,15 @@ class ButtonDefault extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => onTap!(),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-              color ?? Theme.of(context).primaryColorDark),
+          backgroundColor:
+              MaterialStateProperty.all(Theme.of(context).primaryColor),
           elevation: MaterialStateProperty.all<double>(0.25),
           textStyle: MaterialStateProperty.resolveWith((states) {
             return TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
-              fontSize: 16,
-              color: Theme.of(context).colorScheme.background,
+              fontSize: 15,
+              color: color ?? Theme.of(context).canvasColor,
             );
           }),
         ),

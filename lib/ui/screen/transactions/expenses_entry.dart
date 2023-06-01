@@ -33,7 +33,7 @@ class ExpensesEntry extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: Card(
-                    elevation: .5,
+                    elevation: .25,
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -54,7 +54,7 @@ class ExpensesEntry extends StatelessWidget {
                                   account.name![0].toString(),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .titleLarge!
+                                      .headlineLarge!
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -71,88 +71,88 @@ class ExpensesEntry extends StatelessWidget {
                             ),
                           ),
                           UIHelper.verticalSpaceMedium(),
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 55,
-                                    width: 55,
-                                    decoration: BoxDecoration(
-                                      // color: Theme.of(context).primaryColorDark,
-                                      borderRadius: BorderRadius.circular(80),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        Iconsax.wallet,
-                                      ),
-                                    ),
-                                  ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Budget",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall),
-                                      Text(
-                                        account.budget > 0
-                                            ? account.budget.toString()
-                                            : "Unlimited",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: 55,
-                                    width: 55,
-                                    child: Center(
-                                      child: Icon(
-                                        Iconsax.export_1,
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      ),
-                                    ),
-                                  ),
-                                  Consumer(
-                                    builder: (context, ref, child) {
-                                      final status = ref.watch(
-                                          accountStatusOftheMonth(account.id));
-                                      return status.when(
-                                        data: (data) => Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text("Spending",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall),
-                                            Text(
-                                              data['totalDr'].toString(),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge,
-                                            ),
-                                          ],
-                                        ),
-                                        error: (error, stackTrace) =>
-                                            ErrorWidget(error),
-                                        loading: () => const Text("loading.."),
-                                      );
-                                    },
-                                  )
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Container(
+                              //       height: 55,
+                              //       width: 55,
+                              //       decoration: BoxDecoration(
+                              //         // color: Theme.of(context).primaryColorDark,
+                              //         borderRadius: BorderRadius.circular(80),
+                              //       ),
+                              //       child: const Center(
+                              //         child: Icon(
+                              //           Iconsax.wallet,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Column(
+                              //       mainAxisSize: MainAxisSize.min,
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.start,
+                              //       children: [
+                              //         Text("Budget",
+                              //             style: Theme.of(context)
+                              //                 .textTheme
+                              //                 .bodySmall),
+                              //         Text(
+                              //           account.budget > 0
+                              //               ? account.budget.toString()
+                              //               : "Unlimited",
+                              //           style: Theme.of(context)
+                              //               .textTheme
+                              //               .titleLarge,
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ],
+                              // ),
+                              // Row(
+                              //   children: [
+                              //     SizedBox(
+                              //       height: 55,
+                              //       width: 55,
+                              //       child: Center(
+                              //         child: Icon(
+                              //           Iconsax.export_1,
+                              //           color:
+                              //               Theme.of(context).colorScheme.error,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Consumer(
+                              //       builder: (context, ref, child) {
+                              //         final status = ref.watch(
+                              //             accountStatusOftheMonth(account.id));
+                              //         return status.when(
+                              //           data: (data) => Column(
+                              //             mainAxisSize: MainAxisSize.min,
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.end,
+                              //             children: [
+                              //               Text("Spending",
+                              //                   style: Theme.of(context)
+                              //                       .textTheme
+                              //                       .bodySmall),
+                              //               Text(
+                              //                 data['totalDr'].toString(),
+                              //                 style: Theme.of(context)
+                              //                     .textTheme
+                              //                     .titleLarge,
+                              //               ),
+                              //             ],
+                              //           ),
+                              //           error: (error, stackTrace) =>
+                              //               ErrorWidget(error),
+                              //           loading: () => const Text("loading.."),
+                              //         );
+                              //       },
+                              //     )
+                              //   ],
+                              // ),
                             ],
                           ),
                           const Row(
@@ -189,7 +189,7 @@ class ExpensesEntry extends StatelessWidget {
                                 const Text("By Cash/Bank"),
                               ],
                             ),
-                            UIHelper.verticalSpaceExtraLarge(),
+                            UIHelper.verticalSpaceMedium(),
                             Row(
                               children: [
                                 Expanded(
@@ -204,7 +204,7 @@ class ExpensesEntry extends StatelessWidget {
                                     lastDate: DateTime.now(),
                                     inputType: InputType.date,
                                     decoration: const InputDecoration(
-                                      labelText: 'Date',
+                                      hintText: 'Date',
                                       suffixIcon: Icon(Iconsax.calendar),
                                     ),
                                   ),
@@ -219,7 +219,6 @@ class ExpensesEntry extends StatelessWidget {
                                         initialValue:
                                             ref.watch(txnModeProvider),
                                         decoration: const InputDecoration(
-                                          labelText: 'Payment By',
                                           hintText: 'Select',
                                           isDense: true,
                                         ),
@@ -262,7 +261,7 @@ class ExpensesEntry extends StatelessWidget {
                                             name: 'bank',
                                             initialValue: banks[0].id,
                                             decoration: const InputDecoration(
-                                              labelText: 'Select Bank',
+                                              hintText: 'Select Bank',
                                               isDense: true,
                                             ),
                                             items: banks
@@ -307,7 +306,7 @@ class ExpensesEntry extends StatelessWidget {
                                     textAlign: TextAlign.right,
                                     style: inputStyle,
                                     decoration: const InputDecoration(
-                                      labelText: 'Amount',
+                                      hintText: 'Amount',
                                       isDense: true,
                                     ),
                                     keyboardType:
@@ -317,11 +316,11 @@ class ExpensesEntry extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            UIHelper.verticalSpaceLarge(),
+                            UIHelper.verticalSpaceMedium(),
                             FormBuilderTextField(
                               name: 'description',
                               decoration: const InputDecoration(
-                                labelText: 'Description',
+                                hintText: 'Description',
                                 isDense: true,
                               ),
                               keyboardType: TextInputType.name,

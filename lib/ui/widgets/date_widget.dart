@@ -33,10 +33,7 @@ class DateWidget extends StatelessWidget {
                 children: [
                   Text(
                     date['day'],
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: Theme.of(context).primaryColorDark),
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(),
                   ),
                   Text(
                     date['month'],
@@ -49,10 +46,10 @@ class DateWidget extends StatelessWidget {
                   Text(
                     date['year'],
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(fontSize: 8, height: 1.0),
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        fontSize: 8,
+                        height: 1.0,
+                        color: Theme.of(context).primaryColorDark),
                   ),
                 ],
               ),

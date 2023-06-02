@@ -6,6 +6,8 @@ import 'package:flutter_wallet/ui/screen/accounts/create/create_expense_account.
 import 'package:flutter_wallet/ui/screen/accounts/create/create_income_account.dart';
 import 'package:flutter_wallet/ui/screen/accounts/create/create_liability_account.dart';
 import 'package:flutter_wallet/ui/screen/onboard/onboard_screen.dart';
+import 'package:flutter_wallet/ui/screen/pages/about_screen.dart';
+import 'package:flutter_wallet/ui/screen/pages/pages_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/bank_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/cash_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/report_screen.dart';
@@ -24,6 +26,7 @@ import '../ui/screen/accounts/update/update_expense_account.dart';
 import '../ui/screen/accounts/update/update_income_account.dart';
 import '../ui/screen/accounts/update/update_liability_account.dart';
 import '../ui/screen/consistency_check/consistency_check_screen.dart';
+import '../ui/screen/home/home_page.dart';
 import '../ui/screen/settings/backup/backup_screen.dart';
 import '../ui/screen/settings/cash_in_hand/cash_in_hand_screen.dart';
 import '../ui/screen/settings/configuration/configuration_screen.dart';
@@ -43,7 +46,15 @@ final GoRouter router = GoRouter(
         // child: const SplashScreen()
       ),
     ),
-
+    GoRoute(
+      path: '/home',
+      name: 'HOME',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+        context: context,
+        state: state,
+        child: const HomePage(),
+      ),
+    ),
     //==SETTINGS
     GoRoute(
         path: '/settings',
@@ -398,6 +409,33 @@ final GoRouter router = GoRouter(
             state: state,
             child: const BankBookScreen(),
           ),
+        ),
+      ],
+    ),
+
+    //==PAGES
+    GoRoute(
+      path: '/pages',
+      name: 'PAGES',
+      pageBuilder: (context, state) {
+        // Map extra = state.extra! as Map;
+        return buildPageWithDefaultTransition<void>(
+          context: context,
+          state: state,
+          child: const PagesScreen(),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: 'about',
+          name: 'ABOUT',
+          pageBuilder: (context, state) {
+            return buildPageWithDefaultTransition<void>(
+              context: context,
+              state: state,
+              child: const AboutScreen(),
+            );
+          },
         ),
       ],
     ),

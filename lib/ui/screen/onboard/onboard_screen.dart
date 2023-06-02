@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/ui/screen/home/home_page.dart';
 import 'package:flutter_wallet/ui/screen/onboard/settings_screen.dart';
 
-import '../accounts/accounts_parent_screen.dart';
 import 'onboard_controller.dart';
 import 'splash_screen.dart';
 
@@ -24,10 +23,6 @@ class OnBoardScreen extends ConsumerWidget {
             return const BasicSettingsScreen();
           }
 
-          //--Has accounts
-          if (data.hasSystemAccounts == false) {
-            return const AccountsParentScreen(parent: 0, title: "CATEGORIES");
-          }
           //--Goto Home
           return const HomePage();
           // return const SplashScreen();

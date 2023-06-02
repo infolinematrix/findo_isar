@@ -14,10 +14,12 @@ class InitAppModel {
   final List<SettingsModel> settings;
   final bool isLoggedin;
   final bool scrollNo;
+  final bool checkProfileExist;
   InitAppModel(
       {required this.hasSystemAccounts,
       required this.settings,
       required this.isLoggedin,
+      required this.checkProfileExist,
       required this.scrollNo});
 }
 
@@ -26,10 +28,12 @@ final inttAppProvider = FutureProvider.autoDispose<InitAppModel>((ref) async {
   final settings = await ref.watch(settingsProvider);
   final accounts = await ref.watch(hasSystemAccountsProvider);
   final scrollNo = await ref.watch(scrollProvider);
+  final checkProfile = await ref.watch(checkProfileProvider);
   return InitAppModel(
       isLoggedin: isLoggedin,
       settings: settings,
       hasSystemAccounts: accounts,
+      checkProfileExist: checkProfile,
       scrollNo: scrollNo);
 });
 
@@ -217,6 +221,21 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
     return true;
   } catch (e) {
     debugPrint(e.toString());
+    return false;
+  }
+});
+
+//--Check profile
+final checkProfileProvider = Provider.autoDispose((ref) async {
+  try {
+    final List<SettingsModel> settings =
+        await Storage.instance.box.read('settings');
+    var data =
+        settings.where((row) => (row.variable == 'name' && row.value != null));
+
+    if (data.isEmpty) return false;
+    return true;
+  } catch (e) {
     return false;
   }
 });

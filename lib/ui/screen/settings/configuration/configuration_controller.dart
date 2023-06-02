@@ -61,7 +61,12 @@ final saveConfigurationProvider = FutureProvider.family
         .valueIsNotEmpty()
         .findAll();
 
-    Storage.instance.box.writeInMemory('settings', settings);
+    //--List to Map
+    final Map<String, dynamic> result = {
+      for (var v in settings) v.variable!: v.value!
+    };
+
+    Storage.instance.box.writeInMemory('settings', result);
 
     return true;
   } catch (e) {

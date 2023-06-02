@@ -27,14 +27,11 @@ class ConfigurationScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: CustomScrollView(
               slivers: [
-                const SliverToBoxAdapter(child: SizedBox(height: 0)),
                 SliverToBoxAdapter(child: Consumer(
                   builder: (context, ref, child) {
                     final settings = ref.watch(configurationProvider);
                     return settings.when(
                       data: (data) {
-                        final d = data['defaultLanguage'];
-
                         return FormBuilder(
                           key: formKey,
                           child: Card(
@@ -68,6 +65,9 @@ class ConfigurationScreen extends StatelessWidget {
                                             color: Theme.of(context)
                                                 .primaryColorDark),
                                   ),
+                                  UIHelper.verticalSpaceMedium(),
+                                  const Text(
+                                      "Please restart app after updating configuration to take effect of update."),
                                   UIHelper.verticalSpaceExtraLarge(),
                                   FormBuilderTextField(
                                     name: 'name',

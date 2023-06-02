@@ -245,7 +245,6 @@ class BasicSettingsScreen extends StatelessWidget {
                                               .future)
                                           .then((value) {
                                         if (value == true) {
-                                          // return const HomePage();
                                           GoRouter.of(context)
                                               .pushNamed('HOME');
                                         } else {

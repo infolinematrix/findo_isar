@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         _contentHeader(context),
 
-                        _userHeader(context),
+                        _userHeader(context, data.settings),
 
                         UIHelper.verticalSpaceMedium(),
                         _currentMonthOverView(
@@ -124,7 +124,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Row _userHeader(BuildContext context) {
+  Row _userHeader(BuildContext context, Map<String, dynamic> settings) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -134,21 +134,25 @@ class HomePage extends StatelessWidget {
               const Icon(Iconsax.user_tag),
               UIHelper.horizontalSpaceSmall(),
               Text(
-                'Hi, Subha',
+                "Hi, ${settings['name']}",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
           ),
         ),
         IconButton(
-          icon: const Icon(Iconsax.math),
-          tooltip: "Calculator",
-          onPressed: () {},
+          icon: const Icon(Iconsax.receipt_add),
+          tooltip: "Pages",
+          onPressed: () {
+            GoRouter.of(context).pushNamed('PAGES');
+          },
         ),
         IconButton(
           icon: const Icon(Iconsax.cpu_setting),
           tooltip: "Settings",
-          onPressed: () {},
+          onPressed: () {
+            GoRouter.of(context).pushNamed('SETTINGS');
+          },
         )
       ],
     );

@@ -4,37 +4,31 @@ import 'package:isar/isar.dart';
 
 import '../../../models/transactions_model.dart';
 import '../../../services/isar_database.dart';
+import '../../../services/storage_service.dart';
 
 //========= HOME DATA MODEL
 class InitHomeModel {
   final List<TransactionsModel> recentTransactions;
-  // final Map<String, dynamic> todaysIncomeExpenditure;
+  final Map<String, dynamic> settings;
   final Map<String, dynamic> monthIncomeExpenditure;
-  // final bool updateAvailable;
-  InitHomeModel({
-    required this.recentTransactions,
-    // required this.todaysIncomeExpenditure,
-    required this.monthIncomeExpenditure,
-    // required this.updateAvailable
-    //
-  });
+
+  InitHomeModel(
+      {required this.recentTransactions,
+      required this.monthIncomeExpenditure,
+      required this.settings});
 }
 
 final inttHomeProvider = FutureProvider.autoDispose<InitHomeModel>((ref) async {
   try {
     final txnRecent = await ref.watch(recentTransactionsProvider.future);
-    // final todaysIncomeExpenditure =
-    //     await ref.watch(todaysIncomeExpenditureProvider);
+    final settingsData = await ref.watch(settingsProvider.future);
     final monthIncomeExpenditure =
         await ref.watch(currentMonthSummaryProvider.future);
-    // final updateAvailabale = await ref.watch(updateAvailableProvider);
 
     return InitHomeModel(
-      recentTransactions: txnRecent,
-      // todaysIncomeExpenditure: todaysIncomeExpenditure,
-      monthIncomeExpenditure: monthIncomeExpenditure,
-      // updateAvailable: updateAvailabale,
-    );
+        recentTransactions: txnRecent,
+        monthIncomeExpenditure: monthIncomeExpenditure,
+        settings: settingsData);
   } catch (e) {
     rethrow;
   }
@@ -116,6 +110,17 @@ final recentTransactionsProvider = FutureProvider.autoDispose((ref) async {
             .findAll();
 
     return data;
+  } catch (e) {
+    rethrow;
+  }
+});
+
+//-- Settings
+final settingsProvider = FutureProvider((ref) async {
+  try {
+    final Map<String, dynamic> settings =
+        await Storage.instance.box.read('settings') as Map<String, dynamic>;
+    return settings;
   } catch (e) {
     rethrow;
   }

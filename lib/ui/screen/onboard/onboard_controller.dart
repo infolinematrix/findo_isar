@@ -86,11 +86,18 @@ final settingsProvider = Provider.autoDispose((ref) async {
       });
     }
 
-    final settings = await IsarHelper.instance.db!.settingsModels
+    final List<SettingsModel> settings = await IsarHelper
+        .instance.db!.settingsModels
         .filter()
         .valueIsNotEmpty()
         .findAll();
-    Storage.instance.box.writeInMemory('settings', settings);
+
+    //--List to Map
+    final Map<String, dynamic> result = {
+      for (var v in settings) v.variable!: v.value!
+    };
+
+    Storage.instance.box.writeInMemory('settings', result);
 
     return settings;
   } catch (e) {
@@ -228,12 +235,13 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
 //--Check profile
 final checkProfileProvider = Provider.autoDispose((ref) async {
   try {
-    final List<SettingsModel> settings =
+    final Map<String, dynamic> settings =
         await Storage.instance.box.read('settings');
-    var data =
-        settings.where((row) => (row.variable == 'name' && row.value != null));
 
-    if (data.isEmpty) return false;
+    if (settings['name'] == null || settings['name'] == '') {
+      return false;
+    }
+
     return true;
   } catch (e) {
     return false;

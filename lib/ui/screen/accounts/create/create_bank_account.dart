@@ -145,16 +145,18 @@ class CreateBankAccount extends ConsumerWidget {
                             name: 'isActive',
                             initialValue: true,
                             title: RichText(
-                              text: const TextSpan(
-                                children: [
+                              text: TextSpan(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(),
+                                children: const [
                                   TextSpan(
                                     text: 'Yes, Account is active. ',
-                                    style: TextStyle(color: Colors.black),
                                   ),
                                   TextSpan(
                                     text:
                                         'Inactive account does not allow transaction',
-                                    style: TextStyle(color: Colors.blue),
                                   ),
                                 ],
                               ),
@@ -164,20 +166,23 @@ class CreateBankAccount extends ConsumerWidget {
                                 contentPadding: EdgeInsets.all(0)),
                             validator: FormBuilderValidators.equal(
                               true,
-                              errorText: 'You must accept terms and conditions',
                             ),
                           ),
                           UIHelper.verticalSpaceLarge(),
                           ButtonDefault(
-                            text: Text(
-                              "SUBMIT",
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
+                            text: "SUBMIT",
                             onTap: () async {
                               if (formKey.currentState?.saveAndValidate() ??
                                   false) {
+                                if (double.parse(formKey.currentState!
+                                            .value['openingBalance']
+                                            .toString())
+                                        .toDouble() >
+                                    0) {
+                                  EasyLoading.showToast(
+                                      "Opening balance must be nagative");
+                                  return;
+                                }
                                 EasyLoading.show(status: 'wait');
 
                                 await ref

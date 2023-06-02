@@ -45,19 +45,14 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themMode = ref.watch(themeModeProvider);
     return MaterialApp.router(
-      title: 'Findo - Flutter App',
+      title: 'Findo - Smart Money Manager',
       debugShowCheckedModeBanner: false,
       routeInformationProvider: router.routeInformationProvider,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       theme: lightTheme,
       darkTheme: darkTheme,
-      // themeMode: themMode,
-      // The Mandy red, light theme.
-      // theme: FlexThemeData.light(scheme: FlexScheme.deepOrangeM3),
-      // darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
       themeMode: themMode,
-
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -67,52 +62,3 @@ class App extends ConsumerWidget {
     );
   }
 }
-
-// ThemeManager _themeManager = ThemeManager();
-
-// class MyApp extends StatefulWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   void initState() {
-//     _themeManager.addListener(themeListener);
-//     super.initState();
-//   }
-
-//   @override
-//   void dispose() {
-//     _themeManager.removeListener(themeListener);
-//     super.dispose();
-//   }
-
-//   themeListener() {
-//     if (mounted) {
-//       setState(() {});
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp.router(
-//       title: 'Findo - Flutter App',
-//       debugShowCheckedModeBanner: false,
-//       routeInformationProvider: router.routeInformationProvider,
-//       routeInformationParser: router.routeInformationParser,
-//       routerDelegate: router.routerDelegate,
-//       theme: lightTheme,
-//       darkTheme: darkTheme,
-//       themeMode: ThemeMode.light,
-//       localizationsDelegates: const [
-//         GlobalMaterialLocalizations.delegate,
-//         GlobalWidgetsLocalizations.delegate,
-//         FormBuilderLocalizations.delegate,
-//       ],
-//       builder: EasyLoading.init(),
-//     );
-//   }
-// }

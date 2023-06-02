@@ -87,14 +87,8 @@ class DateWidget extends StatelessWidget {
 
         if (txnData.scrollType == ScrollType.HC)
           const Positioned(
-            right: 20,
+            right: 30,
             top: 0,
-            // child: SvgPicture.asset(
-            //   "assets/svg/income.svg",
-            //   colorFilter:
-            //       const ColorFilter.mode(Colors.green, BlendMode.srcIn),
-            //   width: 18,
-            // ),
             child: Icon(
               Iconsax.minus_square5,
               color: Colors.red,
@@ -103,14 +97,8 @@ class DateWidget extends StatelessWidget {
           )
         else if (txnData.scrollType == ScrollType.HD)
           const Positioned(
-            right: 20,
+            right: 30,
             top: 0,
-            // child: SvgPicture.asset(
-            //   "assets/svg/income.svg",
-            //   colorFilter:
-            //       const ColorFilter.mode(Colors.green, BlendMode.srcIn),
-            //   width: 18,
-            // ),
             child: Icon(
               Iconsax.add_square5,
               color: Colors.green,

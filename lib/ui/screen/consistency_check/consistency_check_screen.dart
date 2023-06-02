@@ -146,12 +146,7 @@ class ConsistencyCheckScreen extends StatelessWidget {
                                     ),
                                     UIHelper.verticalSpaceExtraLarge(),
                                     ButtonDefault(
-                                      text: Text(
-                                        "RE-CALULATE",
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).canvasColor),
-                                      ),
+                                      text: "CALCULATE",
                                       onTap: () async {
                                         await ref
                                             .watch(calculateProvider.future)

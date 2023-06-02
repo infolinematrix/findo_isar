@@ -49,7 +49,11 @@ class UpdateBankAccount extends ConsumerWidget {
                           ),
                           Text(
                             "Add your Bank accounts with available balance, it will  help you to calculate & show the current balance.",
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: Theme.of(context).disabledColor),
                           ),
                         ],
                       ),
@@ -114,9 +118,9 @@ class UpdateBankAccount extends ConsumerWidget {
                           FormBuilderTextField(
                             name: 'description',
                             style: inputStyle,
-                            initialValue: account.description!,
+                            initialValue: account.description ?? '',
                             decoration: const InputDecoration(
-                                labelText: 'Description', isDense: true),
+                                hintText: 'Description', isDense: true),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
                             ]),
@@ -129,16 +133,18 @@ class UpdateBankAccount extends ConsumerWidget {
                             name: 'isActive',
                             initialValue: account.status == 51 ? true : false,
                             title: RichText(
-                              text: const TextSpan(
-                                children: [
+                              text: TextSpan(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(),
+                                children: const [
                                   TextSpan(
                                     text: 'Yes, Account is active. ',
-                                    style: TextStyle(color: Colors.black),
                                   ),
                                   TextSpan(
                                     text:
                                         'Inactive account does not allow transaction',
-                                    style: TextStyle(color: Colors.blue),
                                   ),
                                 ],
                               ),
@@ -153,15 +159,19 @@ class UpdateBankAccount extends ConsumerWidget {
                           ),
                           UIHelper.verticalSpaceLarge(),
                           ButtonDefault(
-                            text: Text(
-                              "SUBMIT",
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
+                            text: "SUBMIT",
                             onTap: () async {
                               if (formKey.currentState?.saveAndValidate() ??
                                   false) {
+                                if (double.parse(formKey.currentState!
+                                            .value['openingBalance']
+                                            .toString())
+                                        .toDouble() >
+                                    0) {
+                                  EasyLoading.showToast(
+                                      "Opening balance must be nagative");
+                                  return;
+                                }
                                 EasyLoading.show(status: 'wait');
 
                                 await ref

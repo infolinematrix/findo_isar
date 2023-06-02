@@ -71,7 +71,8 @@ class AccountsParentScreen extends ConsumerWidget {
                                 subtitle: Text(
                                   data[index].description ??
                                       "No description found..",
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: TextStyle(
+                                      color: Theme.of(context).disabledColor),
                                 ),
                                 trailing: const Icon(Iconsax.arrow_21),
                                 onTap: () => GoRouter.of(context).pushNamed(

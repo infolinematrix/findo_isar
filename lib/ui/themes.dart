@@ -17,6 +17,7 @@ final lightTheme = FlexThemeData.light(
     inputDecoratorRadius: 8.0,
     inputDecoratorUnfocusedHasBorder: false,
     inputDecoratorFocusedHasBorder: false,
+    inputDecoratorBorderWidth: 0,
   ),
   keyColors: const FlexKeyColors(
     useSecondary: true,
@@ -35,9 +36,11 @@ final darkTheme = FlexThemeData.dark(
   subThemesData: const FlexSubThemesData(
     useTextTheme: true,
     useM2StyleDividerInM3: true,
-    inputDecoratorRadius: 16.0,
+    inputDecoratorRadius: 8.0,
     inputDecoratorUnfocusedHasBorder: false,
     inputDecoratorFocusedHasBorder: false,
+    inputDecoratorBorderWidth: 0,
+    inputDecoratorFillColor: Color.fromARGB(255, 42, 42, 42),
   ),
   keyColors: const FlexKeyColors(
     useSecondary: true,
@@ -46,6 +49,26 @@ final darkTheme = FlexThemeData.dark(
   useMaterial3: true,
   swapLegacyOnMaterial3: true,
   textTheme: txtTheme,
+  // inputDecorationTheme: const InputDecorationTheme(
+  //   floatingLabelBehavior: FloatingLabelBehavior.never,
+  //   contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+  //   errorStyle: TextStyle(
+  //     color: Colors.transparent,
+  //     fontSize: 0.001,
+  //   ),
+  //   errorBorder: OutlineInputBorder(
+  //     borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+  //   ),
+  //   focusedBorder: OutlineInputBorder(
+  //     borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+  //   ),
+  //   enabledBorder: OutlineInputBorder(
+  //     borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+  //   ),
+  //   disabledBorder: OutlineInputBorder(
+  //     borderSide: BorderSide(color: Colors.transparent, width: 0.0),
+  //   ),
+  // ),
 );
 
 TextTheme txtTheme = const TextTheme(

@@ -46,9 +46,7 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                       Text(
                         txn.description!,
                         maxLines: 1,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Text(
                         txn.accountName!,
@@ -76,10 +74,10 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                           "${formatCurrency(txn.amount.toString())}",
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  // fontWeight: FontWeight.normal,
-                                  // color: txn.txnType == TxnType.CR
-                                  //     ? Theme.of(context).primaryColorDark
-                                  //     : Theme.of(context).primaryColorLight,
+                                    fontWeight: FontWeight.bold,
+                                    // color: txn.txnType == TxnType.CR
+                                    //     ? Theme.of(context).primaryColorDark
+                                    //     : Theme.of(context).colorScheme.onError,
                                   ),
                         ),
                       ],

@@ -102,10 +102,12 @@ class AccountsChildScreen extends StatelessWidget {
                               return Slidable(
                                 key: ValueKey(index),
                                 endActionPane: ActionPane(
-                                  extentRatio: .45,
+                                  extentRatio: .35,
                                   motion: const ScrollMotion(),
                                   children: [
                                     SlidableAction(
+                                      backgroundColor:
+                                          Theme.of(context).cardColor,
                                       icon: Iconsax.close_square,
                                       padding: const EdgeInsets.all(8),
                                       label: 'Delete',
@@ -125,6 +127,8 @@ class AccountsChildScreen extends StatelessWidget {
                                       },
                                     ),
                                     SlidableAction(
+                                      backgroundColor:
+                                          Theme.of(context).cardColor,
                                       icon: Iconsax.document_upload,
                                       padding: const EdgeInsets.all(8),
                                       borderRadius: BorderRadius.circular(10),
@@ -197,10 +201,12 @@ class AccountsChildScreen extends StatelessWidget {
                                           .headlineSmall,
                                     ),
                                     subtitle: Text(
-                                      data[index].description ??
-                                          "No description found..",
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
+                                      data[index].description != null
+                                          ? data[index].description.toString()
+                                          : 'No description',
+                                      style: TextStyle(
+                                          color:
+                                              Theme.of(context).disabledColor),
                                     ),
                                     trailing: data[index].hasChild == true
                                         ? const Icon(Iconsax.arrow_21)

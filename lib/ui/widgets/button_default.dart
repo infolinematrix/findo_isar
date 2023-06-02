@@ -5,7 +5,7 @@ class ButtonDefault extends StatelessWidget {
       {Key? key, required this.text, this.color, required this.onTap})
       : super(key: key);
 
-  final Widget text;
+  final String text;
   final Color? color;
   final Function? onTap;
 
@@ -17,26 +17,24 @@ class ButtonDefault extends StatelessWidget {
         onPressed: () => onTap!(),
         style: ButtonStyle(
           backgroundColor:
-              MaterialStateProperty.all(Theme.of(context).primaryColor),
+              MaterialStateProperty.all(Theme.of(context).primaryColorDark),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
           elevation: MaterialStateProperty.all<double>(0.25),
           textStyle: MaterialStateProperty.resolveWith((states) {
-            return TextStyle(
+            return const TextStyle(
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
-              fontSize: 15,
-              color: color ?? Theme.of(context).canvasColor,
             );
           }),
         ),
-        // style: ElevatedButton.styleFrom(
-        //   textStyle: const TextStyle(
-        //     fontSize: 16,
-        //     letterSpacing: 1.25,
-        //     height: 3.5,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        // ),
-        child: text,
+        child: Text(
+          text,
+          style: TextStyle(color: Theme.of(context).canvasColor),
+        ),
       ),
     );
   }

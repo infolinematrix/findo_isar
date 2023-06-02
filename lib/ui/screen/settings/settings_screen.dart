@@ -25,8 +25,9 @@ class SettingsScreen extends StatelessWidget {
                       "App Configuration",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    subtitle: const Text(
+                    subtitle: Text(
                       "Application settings",
+                      style: TextStyle(color: Theme.of(context).disabledColor),
                     ),
                     onTap: () => GoRouter.of(context).pushNamed('CONFIG'),
                   ),
@@ -38,8 +39,9 @@ class SettingsScreen extends StatelessWidget {
                       "Cash in Hand",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    subtitle: const Text(
+                    subtitle: Text(
                       "Update Opening balance of Cash in Hand",
+                      style: TextStyle(color: Theme.of(context).disabledColor),
                     ),
                     onTap: () => GoRouter.of(context).pushNamed('CASH-IN-HAND'),
                   ),
@@ -51,8 +53,9 @@ class SettingsScreen extends StatelessWidget {
                       "Consistency Check",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    subtitle: const Text(
+                    subtitle: Text(
                       "It will check transactions on selected account and update closing balance.",
+                      style: TextStyle(color: Theme.of(context).disabledColor),
                     ),
                     onTap: () =>
                         GoRouter.of(context).pushNamed('CONSISTENCY-CHECK'),
@@ -62,23 +65,12 @@ class SettingsScreen extends StatelessWidget {
                   elevation: .25,
                   child: ListTile(
                     title: Text(
-                      "Default Language",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    subtitle: const Text(
-                      "Application settings",
-                    ),
-                  ),
-                ),
-                Card(
-                  elevation: .25,
-                  child: ListTile(
-                    title: Text(
                       "Application Theme",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    subtitle: const Text(
+                    subtitle: Text(
                       "Set Theme more Dar / Light",
+                      style: TextStyle(color: Theme.of(context).disabledColor),
                     ),
                   ),
                 ),
@@ -89,8 +81,9 @@ class SettingsScreen extends StatelessWidget {
                       "Backup & Restore",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    subtitle: const Text(
+                    subtitle: Text(
                       "Application settings",
+                      style: TextStyle(color: Theme.of(context).disabledColor),
                     ),
                     onTap: () => GoRouter.of(context).pushNamed('BACKUP'),
                   ),

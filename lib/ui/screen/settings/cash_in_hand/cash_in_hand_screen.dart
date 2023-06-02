@@ -73,12 +73,7 @@ class CashInHandScreen extends ConsumerWidget {
                                   Expanded(
                                     flex: 4,
                                     child: ButtonDefault(
-                                      text: Text(
-                                        "SUBMIT",
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).canvasColor),
-                                      ),
+                                      text: "SUBMIT",
                                       onTap: () async {
                                         if (formKey.currentState
                                                 ?.saveAndValidate() ??
@@ -124,27 +119,6 @@ class CashInHandScreen extends ConsumerWidget {
                   loading: () => const LinearProgressIndicator(),
                 ),
                 UIHelper.verticalSpaceExtraLarge(),
-                Card(
-                  elevation: .25,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Text(
-                            "Consistency check program, It will update closing balance. It may use large memory & can take longer time."),
-                        UIHelper.verticalSpaceMedium(),
-                        ButtonDefault(
-                          text: Text("Run Consistency",
-                              style: TextStyle(
-                                  color: Theme.of(context).canvasColor)),
-                          onTap: null,
-                        )
-                      ],
-                    ),
-                  ),
-                )
               ],
             ),
           ),

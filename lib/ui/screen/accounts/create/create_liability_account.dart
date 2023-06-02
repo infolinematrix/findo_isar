@@ -51,7 +51,11 @@ class CreateLiabilityAccount extends StatelessWidget {
                           ),
                           Text(
                             "Add your Bank accounts with available balance, it will  help you to calculate & show the current balance.",
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: Theme.of(context).disabledColor),
                           ),
                           UIHelper.verticalSpaceLarge(),
                           FormBuilderTextField(
@@ -149,16 +153,18 @@ class CreateLiabilityAccount extends StatelessWidget {
                             name: 'isActive',
                             initialValue: true,
                             title: RichText(
-                              text: const TextSpan(
-                                children: [
+                              text: TextSpan(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(),
+                                children: const [
                                   TextSpan(
                                     text: 'Yes, Account is active. ',
-                                    style: TextStyle(color: Colors.black),
                                   ),
                                   TextSpan(
                                     text:
                                         'Inactive account does not allow transaction',
-                                    style: TextStyle(color: Colors.blue),
                                   ),
                                 ],
                               ),
@@ -171,12 +177,7 @@ class CreateLiabilityAccount extends StatelessWidget {
                           UIHelper.verticalSpaceExtraLarge(),
                           Consumer(
                             builder: (context, ref, child) => ButtonDefault(
-                              text: Text(
-                                "SUBMIT",
-                                style: TextStyle(
-                                  color: Theme.of(context).canvasColor,
-                                ),
-                              ),
+                              text: "SUBMIT",
                               onTap: () async {
                                 if (formKey.currentState?.saveAndValidate() ??
                                     false) {

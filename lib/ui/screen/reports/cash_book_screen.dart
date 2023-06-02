@@ -68,12 +68,7 @@ class CashBookScreen extends StatelessWidget {
                                   Expanded(
                                     flex: 2,
                                     child: ButtonDefault(
-                                        text: Text(
-                                          "Go",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .canvasColor),
-                                        ),
+                                        text: "GO",
                                         onTap: () async {
                                           if (formKey.currentState
                                                   ?.saveAndValidate() ??

@@ -111,7 +111,8 @@ class SelectableAccount extends StatelessWidget {
                                 data[index].description != null
                                     ? data[index].description!
                                     : 'No description found..',
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: TextStyle(
+                                    color: Theme.of(context).disabledColor),
                               ),
                               // trailing: const Icon(Iconsax.arrow_21),
                             ),

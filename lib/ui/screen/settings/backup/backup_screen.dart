@@ -38,11 +38,7 @@ class BackupScreen extends StatelessWidget {
                       Consumer(
                         builder: (context, ref, child) {
                           return ButtonDefault(
-                              text: Text(
-                                "BACKUP",
-                                style: TextStyle(
-                                    color: Theme.of(context).canvasColor),
-                              ),
+                              text: "SUBMIT",
                               onTap: () async {
                                 ref.watch(backupProvider);
                               });

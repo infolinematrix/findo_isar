@@ -244,12 +244,7 @@ class IncomeEntry extends StatelessWidget {
                               builder: (context, ref, child) => SizedBox(
                                 height: inputHeight,
                                 child: ButtonDefault(
-                                  text: Text("SUBMIT",
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .background,
-                                      )),
+                                  text: "SUBMIT",
                                   onTap: () async {
                                     if (formKey.currentState
                                             ?.saveAndValidate() ??

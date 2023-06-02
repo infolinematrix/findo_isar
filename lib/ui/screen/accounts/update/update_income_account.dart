@@ -50,7 +50,11 @@ class UpdateIncomeAccount extends StatelessWidget {
                               ),
                               Text(
                                 "Add your Bank accounts with available balance, it will  help you to calculate & show the current balance.",
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Theme.of(context).disabledColor),
                               ),
                             ],
                           ),
@@ -96,16 +100,18 @@ class UpdateIncomeAccount extends StatelessWidget {
                                     filled: false,
                                     contentPadding: EdgeInsets.all(0)),
                                 title: RichText(
-                                  text: const TextSpan(
-                                    children: [
+                                  text: TextSpan(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(),
+                                    children: const [
                                       TextSpan(
                                         text: 'Yes, Account is active. ',
-                                        style: TextStyle(color: Colors.black),
                                       ),
                                       TextSpan(
                                         text:
                                             'Inactive account does not allow transaction',
-                                        style: TextStyle(color: Colors.blue),
                                       ),
                                     ],
                                   ),
@@ -118,12 +124,7 @@ class UpdateIncomeAccount extends StatelessWidget {
                               ),
                               UIHelper.verticalSpaceExtraLarge(),
                               ButtonDefault(
-                                text: Text(
-                                  "SUBMIT",
-                                  style: TextStyle(
-                                    color: Theme.of(context).canvasColor,
-                                  ),
-                                ),
+                                text: "SUBMIT",
                                 onTap: () async {
                                   if (formKey.currentState?.saveAndValidate() ??
                                       false) {

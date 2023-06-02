@@ -75,6 +75,7 @@ class ConfigurationScreen extends StatelessWidget {
                                     style: inputStyle,
                                     decoration: const InputDecoration(
                                         hintText: 'Your Name',
+                                        isDense: true,
                                         suffixIcon: Icon(Iconsax.user)),
                                     validator: FormBuilderValidators.compose([
                                       FormBuilderValidators.required(),
@@ -98,8 +99,8 @@ class ConfigurationScreen extends StatelessWidget {
                                           dropdownColor: Theme.of(context)
                                               .scaffoldBackgroundColor,
                                           decoration: const InputDecoration(
-                                            hintText: 'Currency',
-                                          ),
+                                              hintText: 'Currency',
+                                              isDense: true),
                                           validator:
                                               FormBuilderValidators.compose([
                                             FormBuilderValidators.required()
@@ -132,7 +133,8 @@ class ConfigurationScreen extends StatelessWidget {
                                           dropdownColor: Theme.of(context)
                                               .scaffoldBackgroundColor,
                                           decoration: const InputDecoration(
-                                              hintText: 'Date Format'),
+                                              hintText: 'Date Format',
+                                              isDense: true),
                                           validator:
                                               FormBuilderValidators.compose([
                                             FormBuilderValidators.required()
@@ -171,7 +173,8 @@ class ConfigurationScreen extends StatelessWidget {
                                           dropdownColor: Theme.of(context)
                                               .scaffoldBackgroundColor,
                                           decoration: const InputDecoration(
-                                              hintText: 'Currency Format'),
+                                              hintText: 'Currency Format',
+                                              isDense: true),
                                           validator:
                                               FormBuilderValidators.compose([
                                             FormBuilderValidators.required()
@@ -205,7 +208,8 @@ class ConfigurationScreen extends StatelessWidget {
                                           dropdownColor: Theme.of(context)
                                               .scaffoldBackgroundColor,
                                           decoration: const InputDecoration(
-                                              hintText: 'Language'),
+                                              hintText: 'Language',
+                                              isDense: true),
                                           validator:
                                               FormBuilderValidators.compose([
                                             FormBuilderValidators.required()
@@ -235,17 +239,17 @@ class ConfigurationScreen extends StatelessWidget {
                                     title: InkWell(
                                       onTap: () {},
                                       child: RichText(
-                                        text: const TextSpan(
-                                          children: [
+                                        text: TextSpan(
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(),
+                                          children: const [
                                             TextSpan(
                                               text: 'Yes, I agree. ',
-                                              style: TextStyle(
-                                                  color: Colors.black),
                                             ),
                                             TextSpan(
                                               text: 'Terms & Conditions',
-                                              style:
-                                                  TextStyle(color: Colors.blue),
                                             ),
                                           ],
                                         ),
@@ -264,12 +268,7 @@ class ConfigurationScreen extends StatelessWidget {
                                   Consumer(
                                     builder: (context, ref, child) {
                                       return ButtonDefault(
-                                        text: Text(
-                                          "SUBMIT",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .canvasColor),
-                                        ),
+                                        text: "SUBMIT",
                                         onTap: () async {
                                           if (formKey.currentState
                                                   ?.saveAndValidate() ??

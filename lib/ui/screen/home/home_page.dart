@@ -237,7 +237,8 @@ class HomePage extends StatelessWidget {
   Widget _currentMonthOverView(
       BuildContext context, Map<String, dynamic> data) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).highlightColor,

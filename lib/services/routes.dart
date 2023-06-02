@@ -26,7 +26,7 @@ import '../ui/screen/accounts/update/update_liability_account.dart';
 import '../ui/screen/consistency_check/consistency_check_screen.dart';
 import '../ui/screen/settings/backup/backup_screen.dart';
 import '../ui/screen/settings/cash_in_hand/cash_in_hand_screen.dart';
-import '../ui/screen/settings/configuration_screen.dart';
+import '../ui/screen/settings/configuration/configuration_screen.dart';
 import '../ui/screen/statement/statement_screen.dart';
 import '../ui/screen/transactions/income_entry.dart';
 import '../ui/screen/transactions/selectable_account.dart';

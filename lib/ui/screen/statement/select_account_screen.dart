@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_wallet/models/accounts_model.dart';
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,7 +36,7 @@ class SelectAccountStatementScreen extends StatelessWidget {
                                   hintText: 'Search..',
                                   border: InputBorder.none,
                                   suffixIcon:
-                                      Icon(Iconsax.search_normal, size: 24)),
+                                      Icon(Iconsax.search_normal, size: 18)),
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
@@ -58,51 +59,8 @@ class SelectAccountStatementScreen extends StatelessWidget {
                               itemCount: accounts.length,
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    onTap: () => GoRouter.of(context).pushNamed(
-                                        'ACCOUNT-STATEMENT',
-                                        extra: {'account': accounts[index]}),
-                                    leading: Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          accounts[index].name![0],
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    title: Text(
-                                      accounts[index].name!,
-                                      maxLines: 1,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                    subtitle: Text(
-                                      accounts[index].description ??
-                                          'No description found',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ),
+                                return AccountItem(
+                                  account: accounts[index],
                                 );
                               },
                             ),
@@ -116,96 +74,50 @@ class SelectAccountStatementScreen extends StatelessWidget {
             ),
           ),
         ),
-        // body: SafeArea(
-        //   child: Padding(
-        //     padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-        //     child: Column(
-        //       mainAxisSize: MainAxisSize.max,
-        //       crossAxisAlignment: CrossAxisAlignment.stretch,
-        //       children: [
-        //         Container(
-        //           padding: const EdgeInsets.only(
-        //               left: 18, right: 18, top: 4, bottom: 4),
-        //           decoration: BoxDecoration(
-        //             borderRadius: BorderRadius.circular(10),
-        //             color: Theme.of(context).cardColor,
-        //           ),
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Expanded(
-        //                 child: TextField(
-        //                   decoration: const InputDecoration(
-        //                     hintText: 'Search..',
-        //                     border: InputBorder.none,
-        //                   ),
-        //                   style: Theme.of(context).textTheme.headlineMedium,
-        //                 ),
-        //               ),
-        //               Expanded(
-        //                 child: Align(
-        //                   alignment: Alignment.centerRight,
-        //                   child: InkWell(
-        //                     onTap: () => GoRouter.of(context).pop(),
-        //                     child:
-        //                         const Icon(Iconsax.close_circle, size: 32),
-        //                   ),
-        //                 ),
-        //               )
-        //             ],
-        //           ),
-        //         ),
-        //         const SizedBox(height: 16),
-        //         Expanded(
-        //           child: Container(
-        //             padding: const EdgeInsets.only(
-        //                 left: 0, right: 0, top: 18, bottom: 18),
-        //             decoration: BoxDecoration(
-        //               borderRadius: BorderRadius.circular(10),
-        //               color: Theme.of(context).cardColor,
-        //             ),
-        //             child: ListView.builder(
-        //               itemCount: 10,
-        //               shrinkWrap: true,
-        //               itemBuilder: (BuildContext context, int index) {
-        //                 return ListTile(
-        //                   onTap: () => GoRouter.of(context)
-        //                       .pushNamed('ACCOUNT-STATEMENT'),
-        //                   leading: Container(
-        //                     width: 50,
-        //                     height: 50,
-        //                     decoration: BoxDecoration(
-        //                       borderRadius: BorderRadius.circular(8),
-        //                       color: Theme.of(context).secondaryHeaderColor,
-        //                     ),
-        //                     child: Center(
-        //                       child: Text(
-        //                         "A",
-        //                         style: Theme.of(context)
-        //                             .textTheme
-        //                             .titleLarge!
-        //                             .copyWith(fontWeight: FontWeight.bold),
-        //                       ),
-        //                     ),
-        //                   ),
-        //                   title: Text(
-        //                     "Account Head",
-        //                     style: Theme.of(context).textTheme.titleMedium,
-        //                   ),
-        //                   subtitle: Text(
-        //                     "Short description of account",
-        //                     style: Theme.of(context).textTheme.bodySmall,
-        //                   ),
-        //                   trailing: const Icon(Iconsax.arrow_21),
-        //                 );
-        //               },
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+      ),
+    );
+  }
+}
+
+class AccountItem extends StatelessWidget {
+  final AccountsModel account;
+
+  const AccountItem({Key? key, required this.account}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: .25,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        onTap: () => GoRouter.of(context)
+            .pushNamed('ACCOUNT-STATEMENT', extra: {'account': account}),
+        leading: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Theme.of(context).secondaryHeaderColor,
+          ),
+          child: Center(
+            child: Text(
+              account.name![0],
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        title: Text(
+          account.name!,
+          maxLines: 1,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Text(
+          account.description ?? 'No description found',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
       ),
     );
   }

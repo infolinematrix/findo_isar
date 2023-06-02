@@ -11,23 +11,23 @@ class OnBoardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(inttAppProvider);
+    final appData = ref.watch(inttAppProvider);
 
     return Scaffold(
-      body: settings.when(
+      body: appData.when(
         error: (error, stackTrace) => ErrorWidget(error),
         loading: () => const SplashScreen(),
         data: (data) {
           if (data.hasSystemAccounts == false) {
-            //--Goto
             return const AccountsParentScreen(
               parent: 0,
               title: "CATEGORIES",
             );
-          } else {
-            //--Goto
-            return const HomePage();
           }
+
+          //--Goto Home
+          return const HomePage();
+          // return const SplashScreen();
         },
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_wallet/util/ui_helpers.dart';
 
 import 'package:intl/intl.dart';
@@ -20,17 +19,17 @@ class SignInPageState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const AnnotedAppRegion(
+    return AnnotedAppRegion(
       child: Scaffold(
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // _topContent(),
-                // _centerContent(),
-                // _bottomContent()
+                _topContent(),
+                _centerContent(),
+                _bottomContent()
               ],
             ),
           ),
@@ -82,13 +81,18 @@ class SignInPageState extends State<SplashScreen> {
   }
 
   Widget _centerContent() {
-    return Align(
-      alignment: Alignment.center,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 4,
       child: Column(
+        // mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          SizedBox.square(
-            dimension: 80,
-            child: SvgPicture.asset("assets/svg/logo.svg"),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Image.asset(
+              "assets/svg/icon.png",
+              height: 60.0,
+              width: 60.0,
+            ),
           ),
           Text(
             'Smart Money Manager',
@@ -108,35 +112,17 @@ class SignInPageState extends State<SplashScreen> {
     );
   }
 
-  // Widget _bottomContent() {
-  //   return Column(
-  //     children: <Widget>[
-  //       MaterialButton(
-  //         elevation: 0,
-  //         // color: const Color(0xFFFFAC30),
-  //         // height: 50.h,
-  //         // minWidth: 200.w,
-  //         // shape: RoundedRectangleBorder(
-  //         //     borderRadius: BorderRadius.circular(12.sp)),
-  //         onPressed: () {
-  //           // Navigator.push(
-  //           //   context,
-  //           //   MaterialPageRoute(
-  //           //     builder: (context) => const DrawerPage(),
-  //           //   ),
-  //           // );
-  //         },
-  //         // child: Text(
-  //         //   'Sign in',
-  //         //   style: Theme.of(context).textTheme.button,
-  //         // ),
-  //       ),
-  //       // UIHelper.verticalSpaceMedium(),
-  //       // Text(
-  //       //   'Create an Account',
-  //       //   style: Theme.of(context).textTheme.bodyText2,
-  //       // )
-  //     ],
-  //   );
-  // }
+  Widget _bottomContent() {
+    return Column(
+      children: <Widget>[
+        Text(
+          'Spent * Save * Budget',
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(color: Theme.of(context).disabledColor),
+        )
+      ],
+    );
+  }
 }

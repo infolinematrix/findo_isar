@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 
-import '../../../models/settings_model.dart';
-import '../../../services/isar_database.dart';
-import '../../../services/storage_service.dart';
+import '../../../../models/settings_model.dart';
+import '../../../../services/isar_database.dart';
+import '../../../../services/storage_service.dart';
 
 final configurationProvider = FutureProvider.autoDispose((ref) async {
   final settings = await IsarHelper.instance.db!.settingsModels

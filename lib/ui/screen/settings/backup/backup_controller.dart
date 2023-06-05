@@ -1,87 +1,106 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/services/isar_database.dart';
-import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-final backupProvider = FutureProvider.autoDispose((ref) async {
+import '../../../../services/isar_database.dart';
+import '../../../../util/functions.dart';
+
+final backupProvider = FutureProvider.autoDispose<bool>((ref) async {
+  Directory directory;
+
   try {
-    // final dir = await getApplicationDocumentsDirectory();
-    // final extDirecetory = await getExternalStorageDirectory();
-    // final dirPath = '${extDirecetory.path}/some_name' ;
-    //    await Directory(dirPath).create();
+    if (Platform.isAndroid) {
+      if (await getStoragePermission()) {
+        directory = (await getExternalStorageDirectory())!;
+        // directory = (await getDownloadsDirectory())!;
+        String newPath = "";
+        List<String> paths = directory.path.split("/");
 
-    Directory generalDownloadDir = Directory('/storage/emulated/0/Findo/');
-    if ((await Directory(generalDownloadDir.toString()).exists() == false)) {
-      Directory(generalDownloadDir.toString()).create();
-    }
+        for (int x = 1; x < paths.length; x++) {
+          String folder = paths[x];
+          if (folder != "Android") {
+            newPath += "/$folder";
+          } else {
+            break;
+          }
+        }
+        newPath = "$newPath/Findo";
+        directory = Directory(newPath);
 
-    String filePath = "${generalDownloadDir.path}/data.isar";
+        //--If Directory not exist, Create it
+        if (!await directory.exists()) {
+          await directory.create(recursive: true);
+        }
 
-    // if ((await File(filePath).exists() == true)) {
-    //   await File(filePath).delete();
-    // }
+        if (await directory.exists()) {
+          String filename = timeStampToFilename();
 
-    if (Isar.instanceNames.isNotEmpty) {
-      if (await File(filePath).exists() == true) {
-        await File(filePath).delete();
+          await IsarHelper.instance.db!
+              .copyToFile("${directory.path}/$filename")
+              .then((value) => value);
+        }
       } else {
-        await File(filePath).create();
+        return false;
       }
-      await IsarHelper.instance.db!.copyToFile(filePath);
     }
-    return;
+
+    return true;
   } catch (e) {
-    print(e.toString());
     rethrow;
   }
 });
 
-
-
-// Future<void> restore({required File file}) async {
-//     print('common restore ${file.path}');
-//     isar = await Isar.open([
-//       ExampleSchema1,
-//       ExampleSchema2,
-//     ], name: basename(file.path), inspector: true, directory: file.path);
+//--READ
+// Future readData(File file) async {
+//   try {
+//     final contents = await file.readAsString();
+//     return contents;
+//   } catch (e) {
+//     return null;
 //   }
+// }
 
-// uploadFileToGoogleDrive() async {  
-//    var client = GoogleHttpClient(await googleSignInAccount.authHeaders);  
-//    var drive = ga.DriveApi(client);  
-//    ga.File fileToUpload = ga.File();  
-//    var file = await FilePicker.getFile();  
-//    fileToUpload.parents = ["appDataFolder"];  
-//    fileToUpload.name = path.basename(file.absolute.path);  
-//    var response = await drive.files.create(  
-//      fileToUpload,  
-//      uploadMedia: ga.Media(file.openRead(), file.lengthSync()),  
-//    );  
-//    print(response);  
-//  } 
+//--WRITE
+// Future<File> writeData() async {
+//   final Directory appDocDir = await getApplicationDocumentsDirectory();
+//   final String appDocPath = appDocDir.path;
+//   try {
+//     if (Isar.instanceNames.isNotEmpty) {
+//       if (await File('$appDocPath/backup.data').exists() == true) {
+//         await File('$appDocPath/backup.data').delete();
+//       }
+//       await IsarHelper.instance.db!
+//           .copyToFile('$appDocPath/backup.data')
+//           .then((value) => value);
+//     }
 
-// Future<void> downloadGoogleDriveFile(String fName, String gdID) async {  
-//    var client = GoogleHttpClient(await googleSignInAccount.authHeaders);  
-//    var drive = ga.DriveApi(client);  
-//    ga.Media file = await drive.files  
-//        .get(gdID, downloadOptions: ga.DownloadOptions.FullMedia);  
-//    print(file.stream);  
-   
-//    final directory = await getExternalStorageDirectory();  
-//    print(directory.path);  
-//    final saveFile = File('${directory.path}/${new DateTime.now().millisecondsSinceEpoch}$fName');  
-//    List<int> dataStore = [];  
-//    file.stream.listen((data) {  
-//      print("DataReceived: ${data.length}");  
-//      dataStore.insertAll(dataStore.length, data);  
-//    }, onDone: () {  
-//      print("Task Done");  
-//      saveFile.writeAsBytes(dataStore);  
-//      print("File saved at ${saveFile.path}");  
-//    }, onError: (error) {  
-//      print("Some Error");  
-//    });  
-//  } 
+//     //---- SAVE TO
+//     final file = File('$appDocPath/findo_backup.data');
+//     file.writeAsString('$appDocPath/backup.data');
 
+//     return file;
+//   } catch (e) {
+//     rethrow;
+//   }
+// }
 
+//-- STORAGE PERMISSION
+Future getStoragePermission() async {
+  PermissionStatus status = await Permission.storage.request();
+  //PermissionStatus status1 = await Permission.accessMediaLocation.request();
+  PermissionStatus status2 = await Permission.manageExternalStorage.request();
+  // print('status $status   -> $status2');
+
+  //--
+  if (status.isGranted && status2.isGranted) {
+    return true;
+  } else if (status.isPermanentlyDenied || status2.isPermanentlyDenied) {
+    await openAppSettings();
+  } else if (status.isDenied) {
+    // print('Permission Denied');
+  }
+
+  return false;
+}

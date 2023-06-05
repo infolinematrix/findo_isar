@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
@@ -38,12 +39,24 @@ class BackupScreen extends StatelessWidget {
                       Consumer(
                         builder: (context, ref, child) {
                           return ButtonDefault(
-                              text: "SUBMIT",
-                              onTap: () async {
-                                ref.watch(backupProvider);
+                            text: "SUBMIT",
+                            onTap: () async {
+                              EasyLoading.showInfo("Wait");
+                              await ref
+                                  .watch(backupProvider.future)
+                                  .then((value) {
+                                if (value == true) {
+                                  EasyLoading.dismiss();
+                                  EasyLoading.showToast("Successfull");
+                                } else {
+                                  EasyLoading.dismiss();
+                                  EasyLoading.showToast("Failed");
+                                }
                               });
+                            },
+                          );
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),

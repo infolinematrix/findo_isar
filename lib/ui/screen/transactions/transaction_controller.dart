@@ -29,36 +29,84 @@ final getScrollNoProvider = FutureProvider.autoDispose<int>((ref) async {
 });
 
 //--SELECTABLE ACCOUNTS
+
+final searchStringProvider = StateProvider.autoDispose<String>((ref) {
+  return '';
+});
+//---------------
 final selectableAccountsProvider =
     FutureProvider.family.autoDispose((ref, String accountType) async {
   List<AccountsModel>? accounts;
   try {
+    final String sStr = ref.watch(searchStringProvider);
+
     switch (accountType) {
       case 'EXPENDITURE': //-- PAYMENT
-        accounts = await IsarHelper.instance.db!.accountsModels
-            .filter()
-            .statusEqualTo(51)
-            .and()
-            .accountTypeEqualTo(accountType)
-            .and()
-            .hasChildEqualTo(false)
-            .and()
-            .isSystemEqualTo(false)
-            .findAll();
+
+        if (sStr != '') {
+          accounts = await IsarHelper.instance.db!.accountsModels
+              .filter()
+              .statusEqualTo(51)
+              .and()
+              .accountTypeEqualTo(accountType)
+              .not()
+              .accountTypeEqualTo("INCOME")
+              .and()
+              .hasChildEqualTo(false)
+              .and()
+              .isSystemEqualTo(false)
+              .and()
+              .nameStartsWith(sStr, caseSensitive: false)
+              .findAll();
+        } else {
+          accounts = await IsarHelper.instance.db!.accountsModels
+              .filter()
+              .statusEqualTo(51)
+              .and()
+              .accountTypeEqualTo(accountType)
+              .not()
+              .accountTypeEqualTo("INCOME")
+              .and()
+              .hasChildEqualTo(false)
+              .and()
+              .isSystemEqualTo(false)
+              .findAll();
+        }
 
         break;
 
       case 'INCOME': //-- RECEIVE
-        accounts = await IsarHelper.instance.db!.accountsModels
-            .filter()
-            .statusEqualTo(51)
-            .and()
-            .accountTypeEqualTo(accountType)
-            .and()
-            .hasChildEqualTo(false)
-            .and()
-            .isSystemEqualTo(false)
-            .findAll();
+
+        if (sStr != '') {
+          accounts = await IsarHelper.instance.db!.accountsModels
+              .filter()
+              .statusEqualTo(51)
+              .and()
+              .accountTypeEqualTo(accountType)
+              .not()
+              .accountTypeEqualTo("EXPENDITURE")
+              .and()
+              .hasChildEqualTo(false)
+              .and()
+              .isSystemEqualTo(false)
+              .and()
+              .nameStartsWith(sStr, caseSensitive: false)
+              .findAll();
+        } else {
+          accounts = await IsarHelper.instance.db!.accountsModels
+              .filter()
+              .statusEqualTo(51)
+              .and()
+              .accountTypeEqualTo(accountType)
+              .not()
+              .accountTypeEqualTo("EXPENDITURE")
+              .and()
+              .hasChildEqualTo(false)
+              .and()
+              .isSystemEqualTo(false)
+              .findAll();
+        }
+
         break;
     }
 

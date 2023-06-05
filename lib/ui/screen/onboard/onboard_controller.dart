@@ -196,6 +196,7 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
         ..id = 7
         ..hasChild = true
         ..name = "Investments"
+        ..description = "Fixed Deposit, Stock, Mutual funds, etc"
         ..parent = 0
         ..openingBalance = 0.00
         ..status = 51
@@ -206,7 +207,41 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
         ..id = 8
         ..hasChild = false
         ..name = "Other (Not classified)"
+        ..description = "Miscellaneous expenses which are not clasiified"
         ..parent = 5
+        ..openingBalance = 0.00
+        ..status = 51
+        ..isSystem = false;
+
+      final assets = AccountsModel()
+        ..accountType = 'ASSETS'
+        ..id = 9
+        ..hasChild = true
+        ..name = "Assets"
+        ..description = "Sundry debtors, others receivable etc."
+        ..parent = 0
+        ..openingBalance = 0.00
+        ..status = 51
+        ..isSystem = true;
+
+      final debtors = AccountsModel()
+        ..accountType = 'ASSETS'
+        ..id = 10
+        ..hasChild = true
+        ..name = "Sundry Debtors"
+        ..description = "Amount receivable from party"
+        ..parent = 9
+        ..openingBalance = 0.00
+        ..status = 51
+        ..isSystem = false;
+
+      final creditors = AccountsModel()
+        ..accountType = 'LIABILITIES'
+        ..id = 10
+        ..hasChild = true
+        ..name = "Sundry Creditors"
+        ..description = "Amount payable to party"
+        ..parent = 9
         ..openingBalance = 0.00
         ..status = 51
         ..isSystem = false;
@@ -220,7 +255,10 @@ final hasSystemAccountsProvider = Provider.autoDispose((ref) async {
           expenses,
           liabilities,
           investments,
-          others
+          others,
+          assets,
+          debtors,
+          creditors
         ]);
       });
     }

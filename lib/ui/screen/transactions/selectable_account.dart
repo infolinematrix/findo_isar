@@ -27,30 +27,37 @@ class SelectableAccount extends StatelessWidget {
                 stretch: true,
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
-                  padding:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            hintText: 'Search..',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 16),
-                            suffixIcon: Icon(
-                              Iconsax.search_normal,
-                              size: 24,
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: const InputDecoration(
+                                  hintText: 'Search..',
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 16),
+                                  suffixIcon: Icon(
+                                    Iconsax.search_normal,
+                                    size: 24,
+                                  ),
+                                ),
+                                style: Theme.of(context).textTheme.titleMedium,
+                                onChanged: (value) {
+                                  ref
+                                      .watch(searchStringProvider.notifier)
+                                      .update((state) => value);
+                                },
+                              ),
                             ),
-                          ),
-                          style: Theme.of(context).textTheme.titleMedium,
-                          onChanged: (value) {},
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                          ],
+                        );
+                      },
+                    )),
               ),
               // SliverToBoxAdapter(child: UIHelper.verticalSpaceMedium()),
               Consumer(

@@ -59,10 +59,15 @@ dependencies:
   #
   isar: ^3.0.5
   isar_flutter_libs: ^3.0.5
+  #
   path_provider: ^2.0.15
+  permission_handler: ^10.2.0
+
+  #
   fl_chart: ^0.62.0
   flex_color_scheme: ^7.1.2
-  permission_handler: ^10.2.0
+
+  
   
 
 dev_dependencies:

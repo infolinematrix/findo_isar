@@ -61,36 +61,41 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
         .onAccountEqualTo(acctId)
         .filter()
         .statusEqualTo(51)
-        .sortByCreatedAt()
+        .sortByScrollSlNo()
         .findAll();
 
     for (var i = 0; i < txns.length; i++) {
       if (i == 0) {
         final txn = txns[i];
-        if (txn.txnType == TxnType.DR) {
-          final cbal = account!.openingBalance + txn.amount;
-          txn.onAccountCurrentBalance = cbal;
-          await IsarHelper.instance.db!.writeTxn(() async {
-            await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
-          });
-        }
-        if (txn.txnType == TxnType.CR) {
+        if (txn.scrollType == ScrollType.HD ||
+            txn.scrollType == ScrollType.TD) {
           final cbal = account!.openingBalance - txn.amount;
           txn.onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
             await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
           });
         }
+        if (txn.scrollType == ScrollType.HC ||
+            txn.scrollType == ScrollType.TC) {
+          final cbal = account!.openingBalance + txn.amount;
+          txn.onAccountCurrentBalance = cbal;
+          await IsarHelper.instance.db!.writeTxn(() async {
+            await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+          });
+        }
       } else {
-        if (txns[i].txnType == TxnType.DR) {
-          final cbal = txns[i - 1].onAccountCurrentBalance + txns[i].amount;
+        TransactionsModel txnC = txns[i - 1];
+        if (txns[i].scrollType == ScrollType.HD ||
+            txns[i].scrollType == ScrollType.TD) {
+          final cbal = txnC.onAccountCurrentBalance - txns[i].amount;
           txns[i].onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
             await IsarHelper.instance.db?.transactionsModels.putAll([txns[i]]);
           });
         }
-        if (txns[i].txnType == TxnType.CR) {
-          final cbal = txns[i - 1].onAccountCurrentBalance - txns[i].amount;
+        if (txns[i].scrollType == ScrollType.HC ||
+            txns[i].scrollType == ScrollType.TC) {
+          final cbal = txnC.onAccountCurrentBalance + txns[i].amount;
           txns[i].onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
             await IsarHelper.instance.db?.transactionsModels.putAll([txns[i]]);

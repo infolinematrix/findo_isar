@@ -56,8 +56,8 @@ class CashBookScreen extends StatelessWidget {
                                       style: inputStyle,
                                       format: DateFormat('dd-MM-yyyy'),
                                       decoration: const InputDecoration(
-                                        labelText: 'Date Range',
-                                        iconColor: Colors.red,
+                                        hintText: 'Date Range',
+                                        isDense: true,
                                         prefixIcon: Icon(Iconsax.calendar),
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
@@ -110,7 +110,7 @@ class CashBookScreen extends StatelessWidget {
                         final txns = ref.watch(cashBookProvider);
                         return Expanded(
                           child: txns.when(
-                            loading: () => const CircularProgressIndicator(),
+                            loading: () => const LinearProgressIndicator(),
                             error: (error, stackTrace) => const Text("Error"),
                             data: (data) {
                               return ListView.builder(

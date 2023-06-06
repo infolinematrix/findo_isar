@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
                         _shotcut1(context),
 
                         UIHelper.verticalSpaceMedium(),
-                        _todaysSummary(context, data.monthIncomeExpenditure),
+                        _currentBalance(context, data.currentBalance),
 
                         //--UTILITIES
                         UIHelper.verticalSpaceMedium(),
@@ -399,7 +399,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _todaysSummary(BuildContext context, Map<String, dynamic> data) {
+  Widget _currentBalance(BuildContext context, Map<String, dynamic> data) {
     return Card(
       elevation: .25,
       child: Container(
@@ -412,6 +412,7 @@ class HomePage extends StatelessWidget {
               "CURRENT BALANCE",
               style: Theme.of(context).textTheme.headlineSmall,
             ),
+            UIHelper.verticalSpaceMedium(),
             IntrinsicHeight(
               child: Padding(
                 padding:
@@ -436,20 +437,12 @@ class HomePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                formatCurrency(
-                                    data['totalDebitDay'].toString()),
+                                formatCurrency(data['cashBalance'].toString()),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
-                              // const SizedBox(
-                              //   width: 16,
-                              // ),
-                              // const Icon(
-                              //   Iconsax.export_1,
-                              //   color: Colors.red,
-                              // )
                             ],
                           ),
                         ],
@@ -459,9 +452,6 @@ class HomePage extends StatelessWidget {
                       fit: FlexFit.loose,
                       child: SizedBox(
                         width: 50,
-                        // child: DateWidget(
-                        //   strDate: DateTime.now().toString(),
-                        // ),
                         child: VerticalDivider(
                           thickness: 0.8,
                         ),
@@ -483,14 +473,8 @@ class HomePage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              // const Icon(
-                              //   Iconsax.import_1,
-                              //   color: Colors.green,
-                              // ),
-                              // UIHelper.horizontalSpaceSmall(),
                               Text(
-                                formatCurrency(
-                                    data['totalCreditDay'].toString()),
+                                formatCurrency(data['bankBalance'].toString()),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!

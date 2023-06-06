@@ -181,26 +181,29 @@ final expenditureEntryProvider = FutureProvider.family
 
     if (formData['txnMode'] == 'Cash') {
       //--Closing Balance (CASH)
-      final cbal = await ref.watch(cashBalanceProvider);
+      final cbal = await ref.watch(cashBalanceProvider.future);
 
       final txn = TransactionsModel()
-        ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.HC
-        ..txnType = TxnType.DR
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
+        ..txnType = TxnType.DR
+        //--
+        ..onAccount = 1
+        ..onAccountName = 'CASH'
+        ..onAccountCurrentBalance = cbal +
+            double.parse(formData['data']['amount'].toString()).toDouble()
+        ..scrollType = ScrollType.HC
+        //--
+        ..txnDate = formData['data']['txnDate']
+
+        //--
         ..scrollNo = updatedScroll
         ..scrollSlNo = 1
         ..amount =
             double.parse(formData['data']['amount'].toString()).toDouble()
         ..description = formData['data']['description'].toString().trim()
-        ..narration = "Cash"
-        ..narration = formData['account']['accountName'].toString().trim()
-        ..status = 51
-        ..onAccount = 1
-        ..onAccountCurrentBalance = cbal +
-            double.parse(formData['data']['amount'].toString()).toDouble()
-        ..onAccountName = 'CASH';
+        ..narration = "Expenses by Cash"
+        ..status = 51;
 
       final scrollUpdate = await IsarHelper.instance.db!.scrollModels
           .filter()
@@ -218,22 +221,31 @@ final expenditureEntryProvider = FutureProvider.family
           .filter()
           .idEqualTo(formData['data']['bank'])
           .findFirst();
+
+      final cbal = await ref.watch(bankBalanceProvider(bank!.id).future);
+
       final txn = TransactionsModel()
-        ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.HC
-        ..txnType = TxnType.DR
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
+        ..txnType = TxnType.DR
+        //--
+        ..onAccount = bank.id
+        ..onAccountName = bank.name.toString().trim()
+        ..onAccountCurrentBalance = cbal +
+            double.parse(formData['data']['amount'].toString()).toDouble()
+        ..scrollType = ScrollType.HC
+        //--
+        ..txnDate = formData['data']['txnDate']
+        //-
+
+        //--
         ..scrollNo = updatedScroll
         ..scrollSlNo = 1
         ..amount =
             double.parse(formData['data']['amount'].toString()).toDouble()
         ..description = formData['data']['description'].toString().trim()
-        ..narration = "Paid.."
-        ..narration = "By ${bank!.name.toString().trim()}"
-        ..status = 51
-        ..onAccount = bank.id
-        ..onAccountName = bank.name.toString().trim();
+        ..narration = "Expenses by Cash"
+        ..status = 51;
 
       final scrollUpdate = await IsarHelper.instance.db!.scrollModels
           .filter()
@@ -346,27 +358,49 @@ final cashWithdrawalProvider = FutureProvider.family
     final bank =
         await IsarHelper.instance.db!.accountsModels.get(formData['bank']);
 
-    final txn = TransactionsModel()
-      ..txnDate = formData['txnDate']
-      ..scrollType = ScrollType.TC
+    final txnTD = TransactionsModel()
+      ..accountNo = 1 //--CASH
+      ..accountName = 'CASH'
       ..txnType = TxnType.DR
-      ..accountNo = formData['bank'] //--CASH
-      ..accountName = bank!.name
+      //--
+      ..onAccount = bank!.id
+      ..onAccountName = bank.name
+      ..scrollType = ScrollType.TC
+      //--
+      ..txnDate = formData['txnDate']
+      //--
       ..scrollNo = updatedScroll
       ..scrollSlNo = 1
       ..amount = double.parse(formData['amount'].toString()).toDouble()
       ..description = formData['description'].toString().trim()
       ..narration = "Cash Withdrawal"
-      ..status = 51
+      ..status = 51;
+
+    final txnTC = TransactionsModel()
+      ..accountNo = bank.id //--CASH
+      ..accountName = bank.name
+      ..txnType = TxnType.CR
+      //--
       ..onAccount = 1
-      ..onAccountName = 'CASH';
+      ..onAccountName = 'CASH'
+      ..scrollType = ScrollType.TD
+      //--
+      ..txnDate = formData['txnDate']
+      //--
+      ..scrollNo = updatedScroll
+      ..scrollSlNo = 2
+      ..amount = double.parse(formData['amount'].toString()).toDouble()
+      ..description = formData['description'].toString().trim()
+      ..narration = "Cash Withdrawal"
+      ..status = 51;
 
     final scrollUpdate = await IsarHelper.instance.db!.scrollModels
         .filter()
         .idEqualTo(1)
         .findFirst();
+
     await IsarHelper.instance.db!.writeTxn(() async {
-      await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+      await IsarHelper.instance.db?.transactionsModels.putAll([txnTC, txnTD]);
       await IsarHelper.instance.db!.scrollModels.put(
         scrollUpdate!..scrollNo = updatedScroll,
       );
@@ -432,7 +466,7 @@ final deleteTxnProvider = FutureProvider.family((ref, int txnId) async {
 
 //--CLOCING BALANCE - CASH
 
-final cashBalanceProvider = Provider.autoDispose((ref) async {
+final cashBalanceProvider = FutureProvider.autoDispose((ref) async {
   final txn = await IsarHelper.instance.db!.transactionsModels
       .filter()
       .onAccountEqualTo(1)
@@ -443,6 +477,26 @@ final cashBalanceProvider = Provider.autoDispose((ref) async {
     final ac = await IsarHelper.instance.db!.accountsModels
         .where()
         .idEqualTo(1)
+        .findFirst();
+
+    return ac!.openingBalance;
+  }
+
+  return txn.onAccountCurrentBalance;
+});
+
+//--CLOSING BALANCE - BANK
+final bankBalanceProvider = FutureProvider.family((ref, int bankId) async {
+  final txn = await IsarHelper.instance.db!.transactionsModels
+      .filter()
+      .onAccountEqualTo(bankId)
+      .sortByCreatedAtDesc()
+      .findFirst();
+
+  if (txn == null) {
+    final ac = await IsarHelper.instance.db!.accountsModels
+        .where()
+        .idEqualTo(bankId)
         .findFirst();
 
     return ac!.openingBalance;

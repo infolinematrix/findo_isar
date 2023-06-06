@@ -48,17 +48,29 @@ final bankBookProvider = FutureProvider.autoDispose((ref) async {
     final accountNo = ref.read(selectedAccount);
     final sDate = ref.read(startDateProvider);
     final eDate = ref.read(endDateProvider);
+    // final data = await IsarHelper.instance.db!.transactionsModels
+    //     .where()
+    //     .idEqualTo(accountNo)
+    //     .filter()
+    //     .group(
+    //       (q) => q
+    //           .statusEqualTo(51)
+    //           .txnDateBetween(sDate, eDate)
+    //           .not()
+    //           .onAccountEqualTo(1),
+    //     )
+    //     .sortByCreatedAtDesc()
+    //     .findAll();
+    // return data;
+
     final data = await IsarHelper.instance.db!.transactionsModels
         .where()
-        .idEqualTo(accountNo)
+        .txnDateBetween(sDate, eDate)
         .filter()
         .group(
-          (q) => q
-              .statusEqualTo(51)
-              .txnDateBetween(sDate, eDate)
-              .not()
-              .onAccountEqualTo(1),
+          (q) => q.statusEqualTo(51).and().onAccountEqualTo(accountNo),
         )
+        .sortByCreatedAtDesc()
         .findAll();
     return data;
   } catch (e) {
@@ -79,6 +91,7 @@ final cashBookProvider = FutureProvider.autoDispose((ref) async {
         .group(
           (q) => q.statusEqualTo(51).and().onAccountEqualTo(1),
         )
+        .sortByCreatedAtDesc()
         .findAll();
     return data;
   } catch (e) {

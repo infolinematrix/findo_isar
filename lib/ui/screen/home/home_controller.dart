@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_wallet/models/accounts_model.dart';
 import 'package:flutter_wallet/util/date_utils.dart';
 import 'package:isar/isar.dart';
 
@@ -11,10 +12,12 @@ class InitHomeModel {
   final List<TransactionsModel> recentTransactions;
   final Map<String, dynamic> settings;
   final Map<String, dynamic> monthIncomeExpenditure;
+  final Map<String, dynamic> currentBalance;
 
   InitHomeModel(
       {required this.recentTransactions,
       required this.monthIncomeExpenditure,
+      required this.currentBalance,
       required this.settings});
 }
 
@@ -22,11 +25,13 @@ final inttHomeProvider = FutureProvider.autoDispose<InitHomeModel>((ref) async {
   try {
     final txnRecent = await ref.watch(recentTransactionsProvider.future);
     final settingsData = await ref.watch(settingsProvider.future);
+    final cBal = await ref.watch(currentBalanceProvider.future);
     final monthIncomeExpenditure =
         await ref.watch(currentMonthSummaryProvider.future);
 
     return InitHomeModel(
         recentTransactions: txnRecent,
+        currentBalance: cBal,
         monthIncomeExpenditure: monthIncomeExpenditure,
         settings: settingsData);
   } catch (e) {
@@ -116,7 +121,7 @@ final recentTransactionsProvider = FutureProvider.autoDispose((ref) async {
 });
 
 //-- Settings
-final settingsProvider = FutureProvider((ref) async {
+final settingsProvider = FutureProvider.autoDispose((ref) async {
   try {
     final Map<String, dynamic> settings =
         await Storage.instance.box.read('settings') as Map<String, dynamic>;
@@ -124,4 +129,53 @@ final settingsProvider = FutureProvider((ref) async {
   } catch (e) {
     rethrow;
   }
+});
+
+//--CURRENT BALANCE (CASH/BANK)
+
+final currentBalanceProvider = FutureProvider.autoDispose((ref) async {
+  final Map<String, dynamic> data = {};
+
+  //--cash
+  final txn = await IsarHelper.instance.db!.transactionsModels
+      .where()
+      .onAccountEqualTo(1)
+      .filter()
+      .statusEqualTo(51)
+      .sortByScrollNoDesc()
+      .limit(1)
+      .findFirst();
+
+  data['cashBalance'] = txn!.onAccountCurrentBalance;
+
+  //--all bank
+  double bankBalance = 0.00;
+
+  final banks = await IsarHelper.instance.db!.accountsModels
+      .where()
+      .accountTypeEqualTo('BANK')
+      .filter()
+      .statusEqualTo(51)
+      .and()
+      .hasChildEqualTo(false)
+      .findAll();
+
+  for (var acct in banks) {
+    final txn = await IsarHelper.instance.db!.transactionsModels
+        .where()
+        .onAccountEqualTo(acct.id)
+        .filter()
+        .statusEqualTo(51)
+        .sortByScrollNoDesc()
+        .limit(1)
+        .findFirst();
+
+    if (txn != null) {
+      bankBalance += txn.onAccountCurrentBalance;
+    }
+  }
+
+  data['bankBalance'] = bankBalance;
+
+  return data;
 });

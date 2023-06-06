@@ -56,35 +56,6 @@ class DateWidget extends StatelessWidget {
             ),
           ],
         ),
-        // txnData.txnType == TxnType.CR
-        //     ? const Positioned(
-        //         right: 15,
-        //         top: 0,
-        //         // child: SvgPicture.asset(
-        //         //   "assets/svg/income.svg",
-        //         //   colorFilter:
-        //         //       const ColorFilter.mode(Colors.green, BlendMode.srcIn),
-        //         //   width: 18,
-        //         // ),
-        //         child: Icon(
-        //           Iconsax.import_25,
-        //           color: Colors.green,
-        //         ),
-        //       )
-        //     : const Positioned(
-        //         right: 15,
-        //         top: 0,
-        //         // child: SvgPicture.asset("assets/svg/payment.svg",
-        //         //     width: 18,
-        //         //     colorFilter:
-        //         //         const ColorFilter.mode(Colors.red, BlendMode.srcIn)),
-        //         child: Icon(
-        //           Iconsax.export_25,
-        //           color: Colors.red,
-        //           size: 18,
-        //         ),
-        //       ),
-
         if (txnData.scrollType == ScrollType.HC)
           const Positioned(
             right: 30,
@@ -107,7 +78,7 @@ class DateWidget extends StatelessWidget {
           )
         else if (txnData.scrollType == ScrollType.TD)
           const Positioned(
-            right: 10,
+            right: 20,
             top: 0,
             child: Icon(
               Iconsax.arrange_square_25,
@@ -117,7 +88,7 @@ class DateWidget extends StatelessWidget {
           )
         else if (txnData.scrollType == ScrollType.TC)
           const Positioned(
-            right: 10,
+            right: 20,
             top: 0,
             child: Icon(
               Iconsax.arrange_square_25,

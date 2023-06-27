@@ -47,8 +47,8 @@ final selectableAccountsProvider =
           accounts = await IsarHelper.instance.db!.accountsModels
               .filter()
               .statusEqualTo(51)
-              .and()
-              .accountTypeEqualTo(accountType)
+              // .and()
+              // .accountTypeEqualTo(accountType)
               .not()
               .accountTypeEqualTo("INCOME")
               .and()
@@ -57,19 +57,21 @@ final selectableAccountsProvider =
               .isSystemEqualTo(false)
               .and()
               .nameStartsWith(sStr, caseSensitive: false)
+              .sortByName()
               .findAll();
         } else {
           accounts = await IsarHelper.instance.db!.accountsModels
               .filter()
               .statusEqualTo(51)
-              .and()
-              .accountTypeEqualTo(accountType)
+              // .and()
+              // .accountTypeEqualTo(accountType)
               .not()
               .accountTypeEqualTo("INCOME")
               .and()
               .hasChildEqualTo(false)
               .and()
               .isSystemEqualTo(false)
+              .sortByName()
               .findAll();
         }
 

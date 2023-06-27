@@ -20,9 +20,9 @@ class DateWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               clipBehavior: Clip.hardEdge,
-              width: 60,
-              height: 60,
-              padding: const EdgeInsets.all(10),
+              width: 50,
+              height: 50,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Theme.of(context).highlightColor,
@@ -33,7 +33,8 @@ class DateWidget extends StatelessWidget {
                 children: [
                   Text(
                     date['day'],
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(),
+                    style:
+                        Theme.of(context).textTheme.headlineSmall!.copyWith(),
                   ),
                   Text(
                     date['month'],
@@ -56,9 +57,9 @@ class DateWidget extends StatelessWidget {
             ),
           ],
         ),
-        if (txnData.scrollType == ScrollType.HC)
+        if (txnData.scrollType == ScrollType.hc)
           const Positioned(
-            right: 30,
+            right: 15,
             top: 0,
             child: Icon(
               Iconsax.minus_square5,
@@ -66,9 +67,9 @@ class DateWidget extends StatelessWidget {
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.HD)
+        else if (txnData.scrollType == ScrollType.hd)
           const Positioned(
-            right: 30,
+            right: 15,
             top: 0,
             child: Icon(
               Iconsax.add_square5,
@@ -76,9 +77,9 @@ class DateWidget extends StatelessWidget {
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.TD)
+        else if (txnData.scrollType == ScrollType.td)
           const Positioned(
-            right: 20,
+            right: 5,
             top: 0,
             child: Icon(
               Iconsax.arrange_square_25,
@@ -86,7 +87,7 @@ class DateWidget extends StatelessWidget {
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.TC)
+        else if (txnData.scrollType == ScrollType.tc)
           const Positioned(
             right: 20,
             top: 0,

@@ -95,6 +95,7 @@ class CreateIncomeAccount extends StatelessWidget {
                                     style: inputStyle,
                                     isExpanded: false,
                                     itemHeight: null,
+                                    initialValue: false,
                                     dropdownColor: Theme.of(context)
                                         .scaffoldBackgroundColor,
                                     decoration: const InputDecoration(
@@ -159,8 +160,8 @@ class CreateIncomeAccount extends StatelessWidget {
                                 EasyLoading.show(status: 'wait');
 
                                 await ref
-                                    .watch(
-                                        accountsProvider(account.id).notifier)
+                                    .watch(childAccountsProvider(account.id)
+                                        .notifier)
                                     .create(
                                         parent: account,
                                         formData: formKey.currentState!.value)

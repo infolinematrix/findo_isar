@@ -67,16 +67,16 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
     for (var i = 0; i < txns.length; i++) {
       if (i == 0) {
         final txn = txns[i];
-        if (txn.scrollType == ScrollType.HD ||
-            txn.scrollType == ScrollType.TD) {
+        if (txn.scrollType == ScrollType.hd ||
+            txn.scrollType == ScrollType.td) {
           final cbal = account!.openingBalance - txn.amount;
           txn.onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
             await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
           });
         }
-        if (txn.scrollType == ScrollType.HC ||
-            txn.scrollType == ScrollType.TC) {
+        if (txn.scrollType == ScrollType.hc ||
+            txn.scrollType == ScrollType.tc) {
           final cbal = account!.openingBalance + txn.amount;
           txn.onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
@@ -85,16 +85,16 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
         }
       } else {
         TransactionsModel txnC = txns[i - 1];
-        if (txns[i].scrollType == ScrollType.HD ||
-            txns[i].scrollType == ScrollType.TD) {
+        if (txns[i].scrollType == ScrollType.hd ||
+            txns[i].scrollType == ScrollType.td) {
           final cbal = txnC.onAccountCurrentBalance - txns[i].amount;
           txns[i].onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
             await IsarHelper.instance.db?.transactionsModels.putAll([txns[i]]);
           });
         }
-        if (txns[i].scrollType == ScrollType.HC ||
-            txns[i].scrollType == ScrollType.TC) {
+        if (txns[i].scrollType == ScrollType.hc ||
+            txns[i].scrollType == ScrollType.tc) {
           final cbal = txnC.onAccountCurrentBalance + txns[i].amount;
           txns[i].onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {

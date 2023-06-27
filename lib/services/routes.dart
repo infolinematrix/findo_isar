@@ -115,15 +115,14 @@ final GoRouter router = GoRouter(
 
     //==ACCOUNTS
     GoRoute(
-      path: '/accounts',
-      name: 'ACCOUNTS',
+      path: '/root_accounts',
+      name: 'ROOT_ACCOUNTS',
       pageBuilder: (context, state) {
         Map extra = state.extra! as Map;
         return buildPageWithDefaultTransition<void>(
           context: context,
           state: state,
           child: AccountsParentScreen(
-            parent: extra['parent'],
             title: extra['title'],
           ),
         );

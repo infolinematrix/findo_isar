@@ -1,4 +1,7 @@
 //-------------------------------------------------------------------
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
@@ -9,11 +12,141 @@ import '../../../services/isar_database.dart';
 //--Has Child
 final hasChildProvider = StateProvider.autoDispose<bool>((ref) => false);
 
+//--SEARCH STRING ACCOUNT
+final searchStringProvider = StateProvider.autoDispose<String>((ref) {
+  return '';
+});
+
+//--Account Async Notifier
+final childAccountsProvider = AsyncNotifierProvider.family
+    .autoDispose<ChildAccountsNotifier, List<AccountsModel>, int>(() {
+  return ChildAccountsNotifier();
+});
+
+class ChildAccountsNotifier
+    extends AutoDisposeFamilyAsyncNotifier<List<AccountsModel>, int> {
+  @override
+  FutureOr<List<AccountsModel>> build(int arg) async {
+    return await getAccounts();
+  }
+
+  getAccounts() async {
+    final String sStr = ref.watch(searchStringProvider);
+
+    if (sStr != '') {
+      final data = await IsarHelper.instance.db!.accountsModels
+          .filter()
+          .parentEqualTo(arg)
+          .and()
+          .idGreaterThan(1)
+          .and()
+          .nameIsNotEmpty()
+          .and()
+          .nameStartsWith(sStr, caseSensitive: false)
+          .sortByName()
+          .findAll();
+
+      return data;
+    } else {
+      final data = await IsarHelper.instance.db!.accountsModels
+          .filter()
+          .parentEqualTo(arg)
+          .and()
+          .idGreaterThan(1)
+          .and()
+          .nameIsNotEmpty()
+          .sortByName()
+          .findAll();
+
+      return data;
+    }
+  }
+
+  //--CREATE
+  Future<bool> create(
+      {required AccountsModel parent,
+      required Map<String, dynamic> formData}) async {
+    try {
+      switch (parent.accountType) {
+        case 'BANK': //--BANK
+          await createBankAccount(formData: formData, parentAccount: parent);
+          ref.invalidate(childAccountsProvider(arg));
+          break;
+
+        case 'INCOME': //--Income Account
+          await createIncomeAccount(formData: formData, parentAccount: parent);
+          ref.invalidate(childAccountsProvider(arg));
+          break;
+
+        case 'EXPENDITURE': //--Expenses Account
+          await createExpensesAccount(
+              formData: formData, parentAccount: parent);
+          ref.invalidate(childAccountsProvider(arg));
+          break;
+
+        case 'LIABILITIES': //--Expenses Account
+          await createLiabilitiesAccount(
+              formData: formData, parentAccount: parent);
+          ref.invalidate(childAccountsProvider(arg));
+          break;
+      }
+      return true;
+    } catch (e) {
+      EasyLoading.dismiss();
+      rethrow;
+    }
+  }
+
+  //--DELETE ACCOUNT
+  Future<bool> delete({required int id}) async {
+    try {
+      final childCount = await IsarHelper.instance.db!.accountsModels
+          .where()
+          .parentEqualTo(id)
+          .count();
+      if (childCount > 0) {
+        EasyLoading.showToast("Can't Delete, Child account exist");
+        return false;
+      }
+      await IsarHelper.instance.db!.writeTxn(() async {
+        await IsarHelper.instance.db!.accountsModels.delete(id);
+        EasyLoading.showToast("Deleted");
+        ref.invalidate(childAccountsProvider(arg));
+      });
+
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+//---Root Account
+final rootAccountsProvider = FutureProvider.autoDispose((ref) async {
+  try {
+    final data = await IsarHelper.instance.db!.accountsModels
+        .where()
+        .parentEqualTo(0)
+        .filter()
+        .statusEqualTo(51)
+        .and()
+        .nameIsNotEmpty()
+        .sortByName()
+        .findAll();
+
+    return data;
+  } catch (e) {
+    rethrow;
+  }
+});
+
 //--Accounts
 final accountsProvider = StateNotifierProvider.autoDispose
     .family<AccountState, AsyncValue<List<AccountsModel>>, int>(
         (ref, parentId) {
-  return AccountState(parentId: parentId);
+  return AccountState(
+    parentId: parentId,
+  );
 });
 
 class AccountState extends StateNotifier<AsyncValue<List<AccountsModel>>> {
@@ -32,6 +165,7 @@ class AccountState extends StateNotifier<AsyncValue<List<AccountsModel>>> {
         .nameIsNotEmpty()
         .sortByName()
         .findAll();
+
     state = AsyncValue<List<AccountsModel>>.data(data);
   }
 
@@ -132,8 +266,10 @@ Future createIncomeAccount(
     {required Map<String, dynamic> formData,
     required AccountsModel parentAccount}) async {
   try {
+    EasyLoading.show(indicator: const CircularProgressIndicator());
+
     final accountExist = await IsarHelper.instance.db!.accountsModels
-        .filter()
+        .where()
         .nameEqualTo(formData['name'].toString().trim())
         .count();
 

@@ -31,6 +31,21 @@ List<String> months = [
   'December'
 ];
 
+List<String> monthsMap = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
 Map<String, dynamic> dateMap(DateTime dt) {
   final data = {
     'day': dt.day.toString(),
@@ -131,18 +146,7 @@ DateTime convertDateToLocal(String strDate) {
   return dateLocal;
 }
 
-DateTime dateTodayStart() {
-  final now = DateTime.now().toUtc();
-  final lastMidnight = now.subtract(Duration(
-    hours: now.hour,
-    minutes: now.minute,
-    seconds: now.second,
-    milliseconds: now.millisecond,
-    microseconds: now.microsecond,
-  ));
 
-  return lastMidnight;
-}
 
 DateTime firstDayOfWeek() {
   DateTime now = DateTime.now().toUtc().toLocal();
@@ -155,7 +159,7 @@ DateTime lastDayOfWeek() {
   DateTime now = DateTime.now().toUtc().toLocal();
   DateTime firstDayOfWeek =
       now.add(Duration(days: DateTime.daysPerWeek - now.weekday));
-  return firstDayOfWeek;
+  return dayEnd(firstDayOfWeek);
 }
 
 DateTime firstDayOfMonth(DateTime dt) {
@@ -165,7 +169,7 @@ DateTime firstDayOfMonth(DateTime dt) {
 
 DateTime lastDayOfMonth(DateTime dt) {
   final lastDayOfMonth = DateTime(dt.year, dt.month + 1, 0);
-  return lastDayOfMonth;
+  return dayEnd(lastDayOfMonth);
 }
 
 DateTime firstDayOfYear() {
@@ -175,5 +179,12 @@ DateTime firstDayOfYear() {
 
 DateTime lastDayOfYear() {
   DateTime now = DateTime.now().toUtc();
-  return DateTime(now.year, 12, 31);
+  return dayEnd(DateTime(now.year, 12, 31));
+}
+
+DateTime dayEnd(DateTime dt) {
+  DateTime nextDay = dt.add(const Duration(days: 1));
+  final lastMidnight = nextDay.subtract(const Duration(milliseconds: 1));
+
+  return lastMidnight;
 }

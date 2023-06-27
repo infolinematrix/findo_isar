@@ -288,12 +288,12 @@ TransactionsModel _transactionsModelDeserialize(
   object.scrollSlNo = reader.readLong(offsets[10]);
   object.scrollType = _TransactionsModelscrollTypeValueEnumMap[
           reader.readByteOrNull(offsets[11])] ??
-      ScrollType.HC;
+      ScrollType.hc;
   object.status = reader.readLong(offsets[12]);
   object.txnDate = reader.readDateTimeOrNull(offsets[13]);
   object.txnType = _TransactionsModeltxnTypeValueEnumMap[
           reader.readByteOrNull(offsets[14])] ??
-      TxnType.DR;
+      TxnType.dr;
   return object;
 }
 
@@ -329,7 +329,7 @@ P _transactionsModelDeserializeProp<P>(
     case 11:
       return (_TransactionsModelscrollTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
-          ScrollType.HC) as P;
+          ScrollType.hc) as P;
     case 12:
       return (reader.readLong(offset)) as P;
     case 13:
@@ -337,7 +337,7 @@ P _transactionsModelDeserializeProp<P>(
     case 14:
       return (_TransactionsModeltxnTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
-          TxnType.DR) as P;
+          TxnType.dr) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -352,20 +352,20 @@ const _TransactionsModelscrollTypeEnumValueMap = {
   'TD': 5,
 };
 const _TransactionsModelscrollTypeValueEnumMap = {
-  0: ScrollType.HC,
-  1: ScrollType.BC,
-  2: ScrollType.HD,
-  3: ScrollType.BD,
-  4: ScrollType.TC,
-  5: ScrollType.TD,
+  0: ScrollType.hc,
+  1: ScrollType.bc,
+  2: ScrollType.hd,
+  3: ScrollType.bd,
+  4: ScrollType.tc,
+  5: ScrollType.td,
 };
 const _TransactionsModeltxnTypeEnumValueMap = {
   'DR': 0,
   'CR': 1,
 };
 const _TransactionsModeltxnTypeValueEnumMap = {
-  0: TxnType.DR,
-  1: TxnType.CR,
+  0: TxnType.dr,
+  1: TxnType.cr,
 };
 
 Id _transactionsModelGetId(TransactionsModel object) {

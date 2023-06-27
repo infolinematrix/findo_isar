@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
+import 'package:flutter_wallet/ui/screen/statement/statement_controller.dart';
 import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-
-import 'statement_controller.dart';
 
 class SelectAccountStatementScreen extends StatelessWidget {
   const SelectAccountStatementScreen({Key? key}) : super(key: key);
@@ -22,53 +21,62 @@ class SelectAccountStatementScreen extends StatelessWidget {
                 SliverAppBar(
                   pinned: false,
                   stretch: true,
+                  automaticallyImplyLeading: false,
                   flexibleSpace: Container(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, top: 4, bottom: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 32),
-                            child: TextField(
-                              decoration: const InputDecoration(
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: const InputDecoration(
                                   hintText: 'Search..',
                                   border: InputBorder.none,
-                                  suffixIcon:
-                                      Icon(Iconsax.search_normal, size: 18)),
-                              style: Theme.of(context).textTheme.headlineMedium,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 16),
+                                  suffixIcon: Icon(
+                                    Iconsax.search_normal,
+                                    size: 24,
+                                  ),
+                                ),
+                                style: Theme.of(context).textTheme.titleMedium,
+                                onChanged: (value) {
+                                  ref
+                                      .watch(searchStringProvider.notifier)
+                                      .update((state) => value);
+                                },
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Consumer(
-                    builder: (context, ref, child) {
-                      final data = ref.watch(accountsProvider);
-                      return data.when(
-                        error: (error, stackTrace) => ErrorWidget(error),
-                        loading: () => const LinearProgressIndicator(),
-                        data: (accounts) {
-                          return Container(
-                            margin: const EdgeInsets.only(top: 16),
-                            child: ListView.builder(
-                              itemCount: accounts.length,
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                return AccountItem(
-                                  account: accounts[index],
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final data = ref.watch(accountsProvider);
+                    return data.when(
+                      error: (error, stackTrace) =>
+                          SliverToBoxAdapter(child: ErrorWidget(error)),
+                      loading: () => const SliverToBoxAdapter(
+                          child: LinearProgressIndicator()),
+                      data: (accounts) {
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                            return AccountItem(
+                              account: accounts[index],
+                            );
+                          }, childCount: accounts.length // 1000 list items
+                              ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),

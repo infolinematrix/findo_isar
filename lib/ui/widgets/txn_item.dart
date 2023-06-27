@@ -26,7 +26,7 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                   flex: 2,
                   child: DateWidget(txnData: txn),
                 ),
-                UIHelper.verticalSpaceMedium(),
+                // UIHelper.horizontalSpaceMedium(),
                 Flexible(
                   fit: FlexFit.tight,
                   flex: 4,
@@ -62,7 +62,7 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                 UIHelper.verticalSpaceMedium(),
                 Flexible(
                   fit: FlexFit.tight,
-                  flex: 2,
+                  flex: 4,
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Column(
@@ -75,7 +75,7 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    // color: txn.txnType == TxnType.CR
+                                    // color: txn.txnType == TxnType.cr
                                     //     ? Theme.of(context).primaryColorDark
                                     //     : Theme.of(context).colorScheme.onError,
                                   ),

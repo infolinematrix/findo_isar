@@ -34,4 +34,4 @@ class AccountsModel {
   int status = 51;
 }
 
-enum AccountType { CAPITAL, INCOME, EXPENDITURE, INVESTMENT }
+enum AccountType { capital, income, expenditure, investment }

@@ -28,12 +28,12 @@ final getScrollNoProvider = FutureProvider.autoDispose<int>((ref) async {
   }
 });
 
-//--SELECTABLE ACCOUNTS
-
+//--SEARCH STRING ACCOUNT
 final searchStringProvider = StateProvider.autoDispose<String>((ref) {
   return '';
 });
-//---------------
+
+//--SELECTABLE ACCOUNTS
 final selectableAccountsProvider =
     FutureProvider.family.autoDispose((ref, String accountType) async {
   List<AccountsModel>? accounts;
@@ -83,8 +83,8 @@ final selectableAccountsProvider =
           accounts = await IsarHelper.instance.db!.accountsModels
               .filter()
               .statusEqualTo(51)
-              .and()
-              .accountTypeEqualTo(accountType)
+              // .and()
+              // .accountTypeEqualTo(accountType)
               .not()
               .accountTypeEqualTo("EXPENDITURE")
               .and()
@@ -98,8 +98,8 @@ final selectableAccountsProvider =
           accounts = await IsarHelper.instance.db!.accountsModels
               .filter()
               .statusEqualTo(51)
-              .and()
-              .accountTypeEqualTo(accountType)
+              // .and()
+              // .accountTypeEqualTo(accountType)
               .not()
               .accountTypeEqualTo("EXPENDITURE")
               .and()
@@ -135,12 +135,12 @@ final accountStatusOftheMonth =
 
   for (var txn in txn) {
     //--EXPENSES -- CASH DEBITING HERE
-    if (txn.scrollType == ScrollType.HD) {
+    if (txn.scrollType == ScrollType.hd) {
       totDr += txn.amount;
     }
 
     //--INCOME -- CASH CREDITING HERE
-    if (txn.scrollType == ScrollType.HC) {
+    if (txn.scrollType == ScrollType.hc) {
       totCr += txn.amount;
     }
   }
@@ -188,13 +188,13 @@ final expenditureEntryProvider = FutureProvider.family
       final txn = TransactionsModel()
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
-        ..txnType = TxnType.DR
+        ..txnType = TxnType.dr
         //--
         ..onAccount = 1
         ..onAccountName = 'CASH'
         ..onAccountCurrentBalance = cbal +
             double.parse(formData['data']['amount'].toString()).toDouble()
-        ..scrollType = ScrollType.HC
+        ..scrollType = ScrollType.hc
         //--
         ..txnDate = formData['data']['txnDate']
 
@@ -229,13 +229,13 @@ final expenditureEntryProvider = FutureProvider.family
       final txn = TransactionsModel()
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
-        ..txnType = TxnType.DR
+        ..txnType = TxnType.dr
         //--
         ..onAccount = bank.id
         ..onAccountName = bank.name.toString().trim()
         ..onAccountCurrentBalance = cbal +
             double.parse(formData['data']['amount'].toString()).toDouble()
-        ..scrollType = ScrollType.HC
+        ..scrollType = ScrollType.hc
         //--
         ..txnDate = formData['data']['txnDate']
         //-
@@ -282,8 +282,8 @@ final incomeEntryProvider = FutureProvider.family
     if (formData['txnMode'] == 'Cash') {
       final txn = TransactionsModel()
         ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.HD
-        ..txnType = TxnType.CR
+        ..scrollType = ScrollType.hd
+        ..txnType = TxnType.cr
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
         ..scrollNo = updatedScroll
@@ -315,8 +315,8 @@ final incomeEntryProvider = FutureProvider.family
           .findFirst();
       final txn = TransactionsModel()
         ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.HD
-        ..txnType = TxnType.CR
+        ..scrollType = ScrollType.hd
+        ..txnType = TxnType.cr
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
         ..scrollNo = updatedScroll
@@ -350,7 +350,6 @@ final incomeEntryProvider = FutureProvider.family
 });
 
 //--CASH WITHDRAWAL
-
 final cashWithdrawalProvider = FutureProvider.family
     .autoDispose((ref, Map<String, dynamic> formData) async {
   try {
@@ -363,11 +362,11 @@ final cashWithdrawalProvider = FutureProvider.family
     final txnTD = TransactionsModel()
       ..accountNo = 1 //--CASH
       ..accountName = 'CASH'
-      ..txnType = TxnType.DR
+      ..txnType = TxnType.dr
       //--
       ..onAccount = bank!.id
       ..onAccountName = bank.name
-      ..scrollType = ScrollType.TC
+      ..scrollType = ScrollType.tc
       //--
       ..txnDate = formData['txnDate']
       //--
@@ -381,11 +380,11 @@ final cashWithdrawalProvider = FutureProvider.family
     final txnTC = TransactionsModel()
       ..accountNo = bank.id //--CASH
       ..accountName = bank.name
-      ..txnType = TxnType.CR
+      ..txnType = TxnType.cr
       //--
       ..onAccount = 1
       ..onAccountName = 'CASH'
-      ..scrollType = ScrollType.TD
+      ..scrollType = ScrollType.td
       //--
       ..txnDate = formData['txnDate']
       //--
@@ -413,7 +412,6 @@ final cashWithdrawalProvider = FutureProvider.family
 });
 
 //--CASH DEPOSIT
-
 final cashDepositProvider = FutureProvider.family
     .autoDispose((ref, Map<String, dynamic> formData) async {
   try {
@@ -425,8 +423,8 @@ final cashDepositProvider = FutureProvider.family
 
     final txn = TransactionsModel()
       ..txnDate = formData['txnDate']
-      ..scrollType = ScrollType.TD
-      ..txnType = TxnType.CR
+      ..scrollType = ScrollType.td
+      ..txnType = TxnType.cr
       ..accountNo = formData['bank'] //--CASH
       ..accountName = bank!.name
       ..scrollNo = updatedScroll
@@ -454,7 +452,6 @@ final cashDepositProvider = FutureProvider.family
 });
 
 //--DELETE TXN
-
 final deleteTxnProvider = FutureProvider.family((ref, int txnId) async {
   try {
     await IsarHelper.instance.db!.writeTxn(() async {
@@ -467,7 +464,6 @@ final deleteTxnProvider = FutureProvider.family((ref, int txnId) async {
 });
 
 //--CLOCING BALANCE - CASH
-
 final cashBalanceProvider = FutureProvider.autoDispose((ref) async {
   final txn = await IsarHelper.instance.db!.transactionsModels
       .filter()

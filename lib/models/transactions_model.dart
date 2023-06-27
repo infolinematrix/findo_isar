@@ -14,14 +14,14 @@ class TransactionsModel {
   DateTime createdAt = DateTime.now();
 
   @enumerated
-  ScrollType scrollType = ScrollType.HD;
+  ScrollType scrollType = ScrollType.hd;
   int scrollNo = 0;
   @Index(composite: [CompositeIndex('scrollType'), CompositeIndex('scrollNo')])
   int scrollSlNo = 0;
 
   @Index()
   @enumerated
-  TxnType txnType = TxnType.DR;
+  TxnType txnType = TxnType.dr;
 
   @Index()
   int accountNo = 0;
@@ -40,6 +40,6 @@ class TransactionsModel {
   double onAccountCurrentBalance = 0.00;
 }
 
-enum TxnType { DR, CR }
+enum TxnType { dr, cr }
 
-enum ScrollType { HC, BC, HD, BD, TC, TD }
+enum ScrollType { hc, bc, hd, bd, tc, td }

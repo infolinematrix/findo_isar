@@ -780,7 +780,7 @@ class HomePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                GoRouter.of(context).pushNamed('ACCOUNTS', extra: {
+                GoRouter.of(context).pushNamed('ROOT_ACCOUNTS', extra: {
                   'parent': 0,
                   'title': "ACCOUNT GROUP",
                 });

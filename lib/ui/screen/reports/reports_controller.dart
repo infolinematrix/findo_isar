@@ -1,4 +1,5 @@
 //-- BANK BOOK
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
 import 'package:flutter_wallet/models/transactions_model.dart';
@@ -14,12 +15,12 @@ final selectedAccount = StateProvider.autoDispose<int>((ref) {
 
 //--START DATE
 final startDateProvider = StateProvider.autoDispose<DateTime>((ref) {
-  return firstDayOfMonth(DateTime.now());
+  return dayStart(firstDayOfMonth(DateTime.now()));
 });
 
 //--END DATE
 final endDateProvider = StateProvider.autoDispose<DateTime>((ref) {
-  return lastDayOfMonth(DateTime.now());
+  return dayEnd(lastDayOfMonth(DateTime.now()));
 });
 
 //--BANK ACOOUNT PROVIDER
@@ -45,9 +46,9 @@ final bankAccountsProvider = FutureProvider.autoDispose((ref) async {
 //--BANK BOOK
 final bankBookProvider = FutureProvider.autoDispose((ref) async {
   try {
-    final accountNo = ref.read(selectedAccount);
-    final sDate = ref.read(startDateProvider);
-    final eDate = ref.read(endDateProvider);
+    final accountNo = ref.watch(selectedAccount);
+    final sDate = ref.watch(startDateProvider);
+    final eDate = ref.watch(endDateProvider);
 
     final data = await IsarHelper.instance.db!.transactionsModels
         .where()
@@ -64,11 +65,56 @@ final bankBookProvider = FutureProvider.autoDispose((ref) async {
   }
 });
 
+//--PAYMENT BOOK
+final paymentBookProvider = FutureProvider.autoDispose((ref) async {
+  try {
+    final sDate = ref.watch(startDateProvider);
+    final eDate = ref.watch(endDateProvider);
+
+    final data = await IsarHelper.instance.db!.transactionsModels
+        .where()
+        .txnDateBetween(sDate, eDate)
+        .filter()
+        .group((q) => q
+            .statusEqualTo(51)
+            .and()
+            .scrollTypeEqualTo(ScrollType.hc)
+            .or()
+            .scrollTypeEqualTo(ScrollType.bc))
+        .sortByTxnDateDesc()
+        .findAll();
+    return data;
+  } catch (e) {
+    rethrow;
+  }
+});
+
+//--PAYMENT BOOK
+final receivedBookProvider = FutureProvider.autoDispose((ref) async {
+  try {
+    final sDate = ref.watch(startDateProvider);
+    final eDate = ref.watch(endDateProvider);
+
+    final data = await IsarHelper.instance.db!.transactionsModels
+        .where()
+        .txnDateBetween(sDate, eDate)
+        .filter()
+        .statusEqualTo(51)
+        .and()
+        .scrollTypeEqualTo(ScrollType.hd)
+        .sortByTxnDateDesc()
+        .findAll();
+    return data;
+  } catch (e) {
+    rethrow;
+  }
+});
+
 //--CASH BOOK
 final cashBookProvider = FutureProvider.autoDispose((ref) async {
   try {
-    final sDate = ref.read(startDateProvider);
-    final eDate = ref.read(endDateProvider);
+    final sDate = ref.watch(startDateProvider);
+    final eDate = ref.watch(endDateProvider);
 
     final data = await IsarHelper.instance.db!.transactionsModels
         .where()
@@ -79,6 +125,71 @@ final cashBookProvider = FutureProvider.autoDispose((ref) async {
         )
         .sortByTxnDateDesc()
         .findAll();
+    return data;
+  } catch (e) {
+    rethrow;
+  }
+});
+
+//--ACCOUNTS SUMMARY
+final accountsSummaryProvider = FutureProvider.autoDispose((ref) async {
+  try {
+    final startDate = ref.watch(startDateProvider);
+    final endDate = dayEnd(ref.watch(endDateProvider));
+
+    final accounts = await IsarHelper.instance.db!.accountsModels
+        .where()
+        .statusEqualTo(51)
+        .filter()
+        .hasChildEqualTo(false)
+        .not()
+        .accountTypeEqualTo('CASH')
+        .not()
+        .accountTypeEqualTo('BANK')
+        .sortByName()
+        .findAll();
+
+    List<Map<String, dynamic>> data = [];
+
+    for (var account in accounts) {
+      final txns = await IsarHelper.instance.db!.transactionsModels
+          .where()
+          .accountNoEqualTo(account.id)
+          .filter()
+          .txnDateBetween(startDate, endDate)
+          .and()
+          .statusEqualTo(51)
+          .findAll();
+
+      double totalDr = 0.00, totalCr = 0.00, total = 0.00;
+
+      for (var txn in txns) {
+        if (txn.scrollType == ScrollType.hc ||
+            txn.scrollType == ScrollType.bc) {
+          totalDr += txn.amount;
+        } else if (txn.scrollType == ScrollType.hd ||
+            txn.scrollType == ScrollType.bd) {
+          totalCr += txn.amount;
+        }
+      }
+
+      total = totalCr - totalDr;
+      if (total != 0) {
+        data.addAll([
+          {
+            'account': account.name.toString().capitalize,
+            'account_description': account.description != null
+                ? account.description.toString().capitalize
+                : 'No description found',
+            'account_budget': account.budget,
+            'total_debit': totalDr,
+            'total_credit': totalCr,
+            'total': total < 0 ? total.abs() : total
+          }
+        ]);
+      }
+    }
+
     return data;
   } catch (e) {
     rethrow;

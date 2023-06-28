@@ -146,8 +146,6 @@ DateTime convertDateToLocal(String strDate) {
   return dateLocal;
 }
 
-
-
 DateTime firstDayOfWeek() {
   DateTime now = DateTime.now().toUtc().toLocal();
   int currentDay = now.weekday;
@@ -187,4 +185,9 @@ DateTime dayEnd(DateTime dt) {
   final lastMidnight = nextDay.subtract(const Duration(milliseconds: 1));
 
   return lastMidnight;
+}
+
+DateTime dayStart(DateTime dt) {
+  DateTime fromTime = DateTime(dt.year, dt.month, dt.day);
+  return fromTime;
 }

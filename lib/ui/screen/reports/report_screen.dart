@@ -85,7 +85,7 @@ class ReportScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // GoRouter.of(context).pushNamed('REPORTS');
+                        GoRouter.of(context).pushNamed('RECEIVED-BOOK');
                       },
                       child: Card(
                         elevation: .25,
@@ -101,7 +101,7 @@ class ReportScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // GoRouter.of(context).pushNamed('REPORTS');
+                        GoRouter.of(context).pushNamed('PAYMENT-BOOK');
                       },
                       child: Card(
                         elevation: .25,
@@ -133,13 +133,13 @@ class ReportScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // GoRouter.of(context).pushNamed('REPORTS');
+                        GoRouter.of(context).pushNamed('ACCOUNTS-SUMMARY');
                       },
                       child: Card(
                         elevation: .25,
                         child: ListTile(
                           title: Text(
-                            "Loan & Liabilities",
+                            "Account Summary",
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           subtitle:

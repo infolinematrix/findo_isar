@@ -11,8 +11,8 @@ import '../../../util/format_currency.dart';
 import '../../../util/ui_helpers.dart';
 import '../../widgets/txn_item.dart';
 
-class PaymentBook extends StatelessWidget {
-  const PaymentBook({Key? key}) : super(key: key);
+class ReceivedBook extends StatelessWidget {
+  const ReceivedBook({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class PaymentBook extends StatelessWidget {
                 snap: false,
                 floating: true,
                 title: const Text(
-                  "PAYMENT BOOK",
+                  "RECEIVED BOOK",
                 ),
                 bottom: AppBar(
                   automaticallyImplyLeading: false,
@@ -152,7 +152,7 @@ class PaymentBook extends StatelessWidget {
           ),
           Consumer(
             builder: (context, ref, child) {
-              final txns = ref.watch(paymentBookProvider);
+              final txns = ref.watch(receivedBookProvider);
 
               return txns.when(
                 error: (error, stackTrace) => ErrorWidget(error),

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../../util/constant.dart';
+import '../../../util/format_currency.dart';
 import '../../../util/ui_helpers.dart';
-import '../../widgets/button_default.dart';
 import '../../widgets/txn_item.dart';
 import 'reports_controller.dart';
 
@@ -18,120 +16,269 @@ class CashBookScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormBuilderState>();
-    return AnnotedAppRegion(
-      child: Scaffold(
-        body: AnnotedAppRegion(
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text("CASH BOOK"),
-            ),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FormBuilder(
-                      key: formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Consumer(
-                            builder: (context, ref, child) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    flex: 8,
-                                    child: FormBuilderDateRangePicker(
-                                      name: 'date_range',
-                                      firstDate: DateTime(2023),
-                                      lastDate: DateTime(2024),
-                                      initialValue: DateTimeRange(
-                                          start: ref.watch(startDateProvider),
-                                          end: ref.watch(endDateProvider)),
-                                      style: inputStyle,
-                                      format: DateFormat('dd-MM-yyyy'),
-                                      decoration: const InputDecoration(
-                                        hintText: 'Date Range',
-                                        isDense: true,
-                                        prefixIcon: Icon(Iconsax.calendar),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                      ),
-                                    ),
-                                  ),
-                                  UIHelper.horizontalSpaceSmall(),
-                                  Expanded(
-                                    flex: 2,
-                                    child: ButtonDefault(
-                                        text: "GO",
-                                        onTap: () async {
-                                          if (formKey.currentState
-                                                  ?.saveAndValidate() ??
-                                              false) {
-                                            final DateTimeRange? dtr =
-                                                await formKey.currentState!
-                                                    .value['date_range'];
+    return CustomScrollView(
+      slivers: [
+        Consumer(builder: (context, ref, child) {
+          return FormBuilder(
+            key: formKey,
+            child: SliverAppBar(
+              backgroundColor: Theme.of(context).secondaryHeaderColor,
+              expandedHeight: 100.0,
+              pinned: true,
+              snap: false,
+              floating: true,
+              title: const Text(
+                "CASH BOOK",
+              ),
+              bottom: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: Theme.of(context).secondaryHeaderColor,
+                title: SizedBox(
+                  height: 40,
+                  child: FormBuilderDateRangePicker(
+                    name: 'date_range',
+                    firstDate: DateTime(2023),
+                    lastDate: DateTime.now().add(const Duration(days: 1)),
+                    initialValue: DateTimeRange(
+                      start: ref.watch(startDateProvider),
+                      end: DateTime.now(),
+                    ),
+                    style: inputStyle,
+                    format: DateFormat('dd-MMM-yyyy'),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      labelText: 'Date Range',
+                      iconColor: Colors.red,
+                      filled: true,
+                      fillColor: Theme.of(context).canvasColor,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 16),
+                      prefixIcon: const Icon(
+                        Iconsax.calendar,
+                        size: 24,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                    ),
+                  ),
+                ),
+                actions: <Widget>[
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      if (formKey.currentState?.saveAndValidate() ?? false) {
+                        DateTimeRange dateRange =
+                            formKey.currentState!.value['date_range'];
 
-                                            ref
-                                                .watch(
-                                                    startDateProvider.notifier)
-                                                .update((state) => dtr!.start);
+                        ref
+                            .watch(startDateProvider.notifier)
+                            .update((state) => dateRange.start);
 
-                                            ref
-                                                .watch(endDateProvider.notifier)
-                                                .update((state) => dtr!.end.add(
-                                                    const Duration(days: 1)));
-
-                                            ref.invalidate(cashBookProvider);
-
-                                            // print(dtr!.start);
-                                          } else {
-                                            EasyLoading.dismiss();
-                                            EasyLoading.showToast(
-                                                "Validation fail");
-                                          }
-                                        }),
-                                  )
-                                ],
-                              );
-                            },
-                          ),
-                        ],
+                        ref
+                            .watch(endDateProvider.notifier)
+                            .update((state) => dateRange.end);
+                      }
+                    },
+                    icon: const Icon(Iconsax.filter),
+                    label: const Text("Filter"),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
                       ),
                     ),
-                    UIHelper.verticalSpaceMedium(),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final txns = ref.watch(cashBookProvider);
-                        return Expanded(
-                          child: txns.when(
-                            loading: () => const LinearProgressIndicator(),
-                            error: (error, stackTrace) => const Text("Error"),
-                            data: (data) {
-                              return ListView.builder(
-                                itemCount: data.length,
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return txnItem(context, data[index]);
-                                },
-                              );
-                            },
-                          ),
-                        );
-                      },
+                  ),
+                  UIHelper.horizontalSpaceMedium()
+                ],
+              ),
+            ),
+          );
+        }),
+        SliverToBoxAdapter(
+          child: Consumer(
+            builder: (context, ref, child) {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                color: Theme.of(context).secondaryHeaderColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Total",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    UIHelper.horizontalSpaceMedium(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
+                          "CREDIT",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(4587.45.toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    UIHelper.horizontalSpaceLarge(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
+                          "DEBIT",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(7847.52.toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
-      ),
+        Consumer(
+          builder: (context, ref, child) {
+            final txns = ref.watch(cashBookProvider);
+
+            return txns.when(
+              error: (error, stackTrace) => ErrorWidget(error),
+              loading: () => const SliverToBoxAdapter(
+                child: LinearProgressIndicator(),
+              ),
+              data: (data) {
+                return SliverList.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return txnItem(context, data[index]);
+                  },
+                );
+              },
+            );
+          },
+        ),
+      ],
     );
+    // return Scaffold(
+    //   body: Scaffold(
+    //     appBar: AppBar(
+    //       title: const Text("CASH BOOK"),
+    //     ),
+    //     body: SafeArea(
+    //       child: Padding(
+    //         padding: const EdgeInsets.only(left: 16, right: 16, top: 0),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.max,
+    //           crossAxisAlignment: CrossAxisAlignment.stretch,
+    //           children: [
+    //             FormBuilder(
+    //               key: formKey,
+    //               child: Column(
+    //                 mainAxisSize: MainAxisSize.min,
+    //                 crossAxisAlignment: CrossAxisAlignment.stretch,
+    //                 children: [
+    //                   Consumer(
+    //                     builder: (context, ref, child) {
+    //                       return Row(
+    //                         mainAxisAlignment:
+    //                             MainAxisAlignment.spaceBetween,
+    //                         children: [
+    //                           Expanded(
+    //                             flex: 8,
+    //                             child: FormBuilderDateRangePicker(
+    //                               name: 'date_range',
+    //                               firstDate: DateTime(2023),
+    //                               lastDate: DateTime(2024),
+    //                               initialValue: DateTimeRange(
+    //                                   start: ref.watch(startDateProvider),
+    //                                   end: ref.watch(endDateProvider)),
+    //                               style: inputStyle,
+    //                               format: DateFormat('dd-MM-yyyy'),
+    //                               decoration: const InputDecoration(
+    //                                 hintText: 'Date Range',
+    //                                 isDense: true,
+    //                                 prefixIcon: Icon(Iconsax.calendar),
+    //                                 floatingLabelBehavior:
+    //                                     FloatingLabelBehavior.never,
+    //                               ),
+    //                             ),
+    //                           ),
+    //                           UIHelper.horizontalSpaceSmall(),
+    //                           Expanded(
+    //                             flex: 2,
+    //                             child: ButtonDefault(
+    //                                 text: "GO",
+    //                                 onTap: () async {
+    //                                   if (formKey.currentState
+    //                                           ?.saveAndValidate() ??
+    //                                       false) {
+    //                                     final DateTimeRange? dtr =
+    //                                         await formKey.currentState!
+    //                                             .value['date_range'];
+
+    //                                     ref
+    //                                         .watch(
+    //                                             startDateProvider.notifier)
+    //                                         .update((state) => dtr!.start);
+
+    //                                     ref
+    //                                         .watch(endDateProvider.notifier)
+    //                                         .update((state) => dtr!.end.add(
+    //                                             const Duration(days: 1)));
+
+    //                                     ref.invalidate(cashBookProvider);
+
+    //                                     // print(dtr!.start);
+    //                                   } else {
+    //                                     EasyLoading.dismiss();
+    //                                     EasyLoading.showToast(
+    //                                         "Validation fail");
+    //                                   }
+    //                                 }),
+    //                           )
+    //                         ],
+    //                       );
+    //                     },
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //             UIHelper.verticalSpaceMedium(),
+    //             Consumer(
+    //               builder: (context, ref, child) {
+    //                 final txns = ref.watch(cashBookProvider);
+    //                 return Expanded(
+    //                   child: txns.when(
+    //                     loading: () => const LinearProgressIndicator(),
+    //                     error: (error, stackTrace) => const Text("Error"),
+    //                     data: (data) {
+    //                       return ListView.builder(
+    //                         itemCount: data.length,
+    //                         shrinkWrap: true,
+    //                         itemBuilder: (BuildContext context, int index) {
+    //                           return txnItem(context, data[index]);
+    //                         },
+    //                       );
+    //                     },
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

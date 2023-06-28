@@ -8,8 +8,11 @@ import 'package:flutter_wallet/ui/screen/accounts/create/create_liability_accoun
 import 'package:flutter_wallet/ui/screen/onboard/onboard_screen.dart';
 import 'package:flutter_wallet/ui/screen/pages/about_screen.dart';
 import 'package:flutter_wallet/ui/screen/pages/pages_screen.dart';
+import 'package:flutter_wallet/ui/screen/reports/account_summary.dart';
 import 'package:flutter_wallet/ui/screen/reports/bank_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/cash_book_screen.dart';
+import 'package:flutter_wallet/ui/screen/reports/payment_book.dart';
+import 'package:flutter_wallet/ui/screen/reports/receive_book.dart';
 import 'package:flutter_wallet/ui/screen/reports/report_screen.dart';
 
 import 'package:flutter_wallet/ui/screen/settings/settings_screen.dart';
@@ -407,6 +410,33 @@ final GoRouter router = GoRouter(
             context: context,
             state: state,
             child: const BankBookScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'received-book',
+          name: 'RECEIVED-BOOK',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context,
+            state: state,
+            child: const ReceivedBook(),
+          ),
+        ),
+        GoRoute(
+          path: 'payment-book',
+          name: 'PAYMENT-BOOK',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context,
+            state: state,
+            child: const PaymentBook(),
+          ),
+        ),
+        GoRoute(
+          path: 'accounts-summary',
+          name: 'ACCOUNTS-SUMMARY',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context,
+            state: state,
+            child: const AccountsSummary(),
           ),
         ),
       ],

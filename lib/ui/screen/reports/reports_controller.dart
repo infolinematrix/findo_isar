@@ -23,6 +23,14 @@ final endDateProvider = StateProvider.autoDispose<DateTime>((ref) {
   return dayEnd(lastDayOfMonth(DateTime.now()));
 });
 
+//--TOTAL DR/CR
+final totalDebitProvider = StateProvider.autoDispose<double>((ref) {
+  return 0.00;
+});
+final totalCreditProvider = StateProvider.autoDispose<double>((ref) {
+  return 0.00;
+});
+
 //--BANK ACOOUNT PROVIDER
 final bankAccountsProvider = FutureProvider.autoDispose((ref) async {
   try {
@@ -50,7 +58,7 @@ final bankBookProvider = FutureProvider.autoDispose((ref) async {
     final sDate = ref.watch(startDateProvider);
     final eDate = ref.watch(endDateProvider);
 
-    final data = await IsarHelper.instance.db!.transactionsModels
+    final txns = await IsarHelper.instance.db!.transactionsModels
         .where()
         .txnDateBetween(sDate, eDate)
         .filter()
@@ -59,7 +67,25 @@ final bankBookProvider = FutureProvider.autoDispose((ref) async {
         )
         .sortByTxnDateDesc()
         .findAll();
-    return data;
+
+    double totalDr = 0.00, totalCr = 0.00;
+
+    for (var txn in txns) {
+      if (txn.scrollType == ScrollType.HC ||
+          txn.scrollType == ScrollType.BC ||
+          txn.scrollType == ScrollType.TC) {
+        totalCr += txn.amount;
+      } else if (txn.scrollType == ScrollType.HD ||
+          txn.scrollType == ScrollType.BD ||
+          txn.scrollType == ScrollType.TD) {
+        totalDr += txn.amount;
+      }
+    }
+
+    ref.watch(totalCreditProvider.notifier).update((state) => totalCr);
+    ref.watch(totalDebitProvider.notifier).update((state) => totalDr);
+
+    return txns;
   } catch (e) {
     rethrow;
   }
@@ -71,19 +97,37 @@ final paymentBookProvider = FutureProvider.autoDispose((ref) async {
     final sDate = ref.watch(startDateProvider);
     final eDate = ref.watch(endDateProvider);
 
-    final data = await IsarHelper.instance.db!.transactionsModels
+    final txns = await IsarHelper.instance.db!.transactionsModels
         .where()
         .txnDateBetween(sDate, eDate)
         .filter()
         .group((q) => q
             .statusEqualTo(51)
             .and()
-            .scrollTypeEqualTo(ScrollType.hc)
+            .scrollTypeEqualTo(ScrollType.HC)
             .or()
-            .scrollTypeEqualTo(ScrollType.bc))
+            .scrollTypeEqualTo(ScrollType.BC))
         .sortByTxnDateDesc()
         .findAll();
-    return data;
+
+    double totalDr = 0.00, totalCr = 0.00;
+
+    for (var txn in txns) {
+      if (txn.scrollType == ScrollType.HC ||
+          txn.scrollType == ScrollType.BC ||
+          txn.scrollType == ScrollType.TC) {
+        totalCr += txn.amount;
+      } else if (txn.scrollType == ScrollType.HD ||
+          txn.scrollType == ScrollType.BD ||
+          txn.scrollType == ScrollType.TD) {
+        totalDr += txn.amount;
+      }
+    }
+
+    ref.watch(totalCreditProvider.notifier).update((state) => totalCr);
+    ref.watch(totalDebitProvider.notifier).update((state) => totalDr);
+
+    return txns;
   } catch (e) {
     rethrow;
   }
@@ -95,16 +139,37 @@ final receivedBookProvider = FutureProvider.autoDispose((ref) async {
     final sDate = ref.watch(startDateProvider);
     final eDate = ref.watch(endDateProvider);
 
-    final data = await IsarHelper.instance.db!.transactionsModels
+    final txns = await IsarHelper.instance.db!.transactionsModels
         .where()
         .txnDateBetween(sDate, eDate)
         .filter()
-        .statusEqualTo(51)
-        .and()
-        .scrollTypeEqualTo(ScrollType.hd)
+        .group((q) => q
+            .statusEqualTo(51)
+            .and()
+            .scrollTypeEqualTo(ScrollType.HD)
+            .or()
+            .scrollTypeEqualTo(ScrollType.BD))
         .sortByTxnDateDesc()
         .findAll();
-    return data;
+
+    double totalDr = 0.00, totalCr = 0.00;
+
+    for (var txn in txns) {
+      if (txn.scrollType == ScrollType.HC ||
+          txn.scrollType == ScrollType.BC ||
+          txn.scrollType == ScrollType.TC) {
+        totalCr += txn.amount;
+      } else if (txn.scrollType == ScrollType.HD ||
+          txn.scrollType == ScrollType.BD ||
+          txn.scrollType == ScrollType.TD) {
+        totalDr += txn.amount;
+      }
+    }
+
+    ref.watch(totalCreditProvider.notifier).update((state) => totalCr);
+    ref.watch(totalDebitProvider.notifier).update((state) => totalDr);
+
+    return txns;
   } catch (e) {
     rethrow;
   }
@@ -116,7 +181,7 @@ final cashBookProvider = FutureProvider.autoDispose((ref) async {
     final sDate = ref.watch(startDateProvider);
     final eDate = ref.watch(endDateProvider);
 
-    final data = await IsarHelper.instance.db!.transactionsModels
+    final txns = await IsarHelper.instance.db!.transactionsModels
         .where()
         .txnDateBetween(sDate, eDate)
         .filter()
@@ -125,7 +190,25 @@ final cashBookProvider = FutureProvider.autoDispose((ref) async {
         )
         .sortByTxnDateDesc()
         .findAll();
-    return data;
+
+    double totalDr = 0.00, totalCr = 0.00;
+
+    for (var txn in txns) {
+      if (txn.scrollType == ScrollType.HC ||
+          txn.scrollType == ScrollType.BC ||
+          txn.scrollType == ScrollType.TC) {
+        totalCr += txn.amount;
+      } else if (txn.scrollType == ScrollType.HD ||
+          txn.scrollType == ScrollType.BD ||
+          txn.scrollType == ScrollType.TD) {
+        totalDr += txn.amount;
+      }
+    }
+
+    ref.watch(totalCreditProvider.notifier).update((state) => totalCr);
+    ref.watch(totalDebitProvider.notifier).update((state) => totalDr);
+
+    return txns;
   } catch (e) {
     rethrow;
   }
@@ -164,11 +247,11 @@ final accountsSummaryProvider = FutureProvider.autoDispose((ref) async {
       double totalDr = 0.00, totalCr = 0.00, total = 0.00;
 
       for (var txn in txns) {
-        if (txn.scrollType == ScrollType.hc ||
-            txn.scrollType == ScrollType.bc) {
+        if (txn.scrollType == ScrollType.HC ||
+            txn.scrollType == ScrollType.BC) {
           totalDr += txn.amount;
-        } else if (txn.scrollType == ScrollType.hd ||
-            txn.scrollType == ScrollType.bd) {
+        } else if (txn.scrollType == ScrollType.HD ||
+            txn.scrollType == ScrollType.BD) {
           totalCr += txn.amount;
         }
       }

@@ -113,33 +113,35 @@ class ReceivedBook extends StatelessWidget {
                         ),
                       ),
                       UIHelper.horizontalSpaceMedium(),
-                      Wrap(
-                        direction: Axis.vertical,
-                        crossAxisAlignment: WrapCrossAlignment.end,
-                        children: [
-                          Text(
-                            "CREDIT",
-                            textAlign: TextAlign.right,
-                            style: Theme.of(context).textTheme.labelSmall,
-                          ),
-                          Text(
-                            formatCurrency(4587.45.toString()),
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
+                      // Wrap(
+                      //   direction: Axis.vertical,
+                      //   crossAxisAlignment: WrapCrossAlignment.end,
+                      //   children: [
+                      //     Text(
+                      //       "CREDIT",
+                      //       textAlign: TextAlign.right,
+                      //       style: Theme.of(context).textTheme.labelSmall,
+                      //     ),
+                      //     Text(
+                      //       formatCurrency(
+                      //           ref.watch(totalCreditProvider).toString()),
+                      //       style: Theme.of(context).textTheme.titleLarge,
+                      //     ),
+                      //   ],
+                      // ),
                       UIHelper.horizontalSpaceLarge(),
                       Wrap(
                         direction: Axis.vertical,
                         crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
                           Text(
-                            "DEBIT",
+                            "Amount",
                             textAlign: TextAlign.right,
                             style: Theme.of(context).textTheme.labelSmall,
                           ),
                           Text(
-                            formatCurrency(7847.52.toString()),
+                            formatCurrency(
+                                ref.watch(totalDebitProvider).toString()),
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],

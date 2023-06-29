@@ -75,7 +75,7 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    // color: txn.txnType == TxnType.cr
+                                    // color: txn.txnType == TxnType.CR
                                     //     ? Theme.of(context).primaryColorDark
                                     //     : Theme.of(context).colorScheme.onError,
                                   ),

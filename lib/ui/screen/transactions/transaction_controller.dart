@@ -85,8 +85,8 @@ final selectableAccountsProvider =
               .statusEqualTo(51)
               // .and()
               // .accountTypeEqualTo(accountType)
-              .not()
-              .accountTypeEqualTo("EXPENDITURE")
+              .and()
+              .accountTypeEqualTo("INCOME")
               .and()
               .hasChildEqualTo(false)
               .and()
@@ -100,8 +100,8 @@ final selectableAccountsProvider =
               .statusEqualTo(51)
               // .and()
               // .accountTypeEqualTo(accountType)
-              .not()
-              .accountTypeEqualTo("EXPENDITURE")
+              .and()
+              .accountTypeEqualTo("INCOME")
               .and()
               .hasChildEqualTo(false)
               .and()
@@ -135,12 +135,12 @@ final accountStatusOftheMonth =
 
   for (var txn in txn) {
     //--EXPENSES -- CASH DEBITING HERE
-    if (txn.scrollType == ScrollType.hd) {
+    if (txn.scrollType == ScrollType.HD) {
       totDr += txn.amount;
     }
 
     //--INCOME -- CASH CREDITING HERE
-    if (txn.scrollType == ScrollType.hc) {
+    if (txn.scrollType == ScrollType.HC) {
       totCr += txn.amount;
     }
   }
@@ -188,13 +188,13 @@ final expenditureEntryProvider = FutureProvider.family
       final txn = TransactionsModel()
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
-        ..txnType = TxnType.dr
+        ..txnType = TxnType.DR
         //--
         ..onAccount = 1
         ..onAccountName = 'CASH'
         ..onAccountCurrentBalance = cbal +
             double.parse(formData['data']['amount'].toString()).toDouble()
-        ..scrollType = ScrollType.hc
+        ..scrollType = ScrollType.HC
         //--
         ..txnDate = formData['data']['txnDate']
 
@@ -229,13 +229,13 @@ final expenditureEntryProvider = FutureProvider.family
       final txn = TransactionsModel()
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
-        ..txnType = TxnType.dr
+        ..txnType = TxnType.DR
         //--
         ..onAccount = bank.id
         ..onAccountName = bank.name.toString().trim()
         ..onAccountCurrentBalance = cbal +
             double.parse(formData['data']['amount'].toString()).toDouble()
-        ..scrollType = ScrollType.hc
+        ..scrollType = ScrollType.HC
         //--
         ..txnDate = formData['data']['txnDate']
         //-
@@ -282,8 +282,8 @@ final incomeEntryProvider = FutureProvider.family
     if (formData['txnMode'] == 'Cash') {
       final txn = TransactionsModel()
         ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.hd
-        ..txnType = TxnType.cr
+        ..scrollType = ScrollType.HD
+        ..txnType = TxnType.CR
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
         ..scrollNo = updatedScroll
@@ -315,8 +315,8 @@ final incomeEntryProvider = FutureProvider.family
           .findFirst();
       final txn = TransactionsModel()
         ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.hd
-        ..txnType = TxnType.cr
+        ..scrollType = ScrollType.HD
+        ..txnType = TxnType.CR
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
         ..scrollNo = updatedScroll
@@ -362,11 +362,11 @@ final cashWithdrawalProvider = FutureProvider.family
     final txnTD = TransactionsModel()
       ..accountNo = 1 //--CASH
       ..accountName = 'CASH'
-      ..txnType = TxnType.dr
+      ..txnType = TxnType.DR
       //--
       ..onAccount = bank!.id
       ..onAccountName = bank.name
-      ..scrollType = ScrollType.tc
+      ..scrollType = ScrollType.TC
       //--
       ..txnDate = formData['txnDate']
       //--
@@ -380,11 +380,11 @@ final cashWithdrawalProvider = FutureProvider.family
     final txnTC = TransactionsModel()
       ..accountNo = bank.id //--CASH
       ..accountName = bank.name
-      ..txnType = TxnType.cr
+      ..txnType = TxnType.CR
       //--
       ..onAccount = 1
       ..onAccountName = 'CASH'
-      ..scrollType = ScrollType.td
+      ..scrollType = ScrollType.TD
       //--
       ..txnDate = formData['txnDate']
       //--
@@ -423,8 +423,8 @@ final cashDepositProvider = FutureProvider.family
 
     final txn = TransactionsModel()
       ..txnDate = formData['txnDate']
-      ..scrollType = ScrollType.td
-      ..txnType = TxnType.cr
+      ..scrollType = ScrollType.TD
+      ..txnType = TxnType.CR
       ..accountNo = formData['bank'] //--CASH
       ..accountName = bank!.name
       ..scrollNo = updatedScroll

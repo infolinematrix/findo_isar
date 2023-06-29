@@ -11,6 +11,7 @@ import 'package:flutter_wallet/ui/screen/pages/pages_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/account_summary.dart';
 import 'package:flutter_wallet/ui/screen/reports/bank_book_screen.dart';
 import 'package:flutter_wallet/ui/screen/reports/cash_book_screen.dart';
+import 'package:flutter_wallet/ui/screen/reports/my_savings.dart';
 import 'package:flutter_wallet/ui/screen/reports/payment_book.dart';
 import 'package:flutter_wallet/ui/screen/reports/receive_book.dart';
 import 'package:flutter_wallet/ui/screen/reports/report_screen.dart';
@@ -437,6 +438,15 @@ final GoRouter router = GoRouter(
             context: context,
             state: state,
             child: const AccountsSummary(),
+          ),
+        ),
+        GoRoute(
+          path: 'my-savings',
+          name: 'MY-SAVINGS',
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+            context: context,
+            state: state,
+            child: const MySavingsScreen(),
           ),
         ),
       ],

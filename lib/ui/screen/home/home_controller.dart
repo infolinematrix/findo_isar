@@ -54,9 +54,9 @@ final currentMonthSummaryProvider =
         .statusEqualTo(51)
         .and()
         .group((q) => q
-            .scrollTypeEqualTo(ScrollType.hc)
+            .scrollTypeEqualTo(ScrollType.HC)
             .or()
-            .scrollTypeEqualTo(ScrollType.hd))
+            .scrollTypeEqualTo(ScrollType.HD))
         .findAll();
 
     double totaldrMonth = 0.00;
@@ -65,7 +65,7 @@ final currentMonthSummaryProvider =
     double totalcrDay = 0.00;
 
     for (var txn in data) {
-      if (txn.txnType == TxnType.dr) {
+      if (txn.txnType == TxnType.DR) {
         totaldrMonth += txn.amount;
         if (txn.txnDate!.day == DateTime.now().day) {
           totaldrDay += txn.amount;

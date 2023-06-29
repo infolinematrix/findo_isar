@@ -118,32 +118,34 @@ class PaymentBook extends StatelessWidget {
                         crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
                           Text(
-                            "CREDIT",
+                            "Amount",
                             textAlign: TextAlign.right,
                             style: Theme.of(context).textTheme.labelSmall,
                           ),
                           Text(
-                            formatCurrency(4587.45.toString()),
+                            formatCurrency(
+                                ref.watch(totalCreditProvider).toString()),
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
                       ),
-                      UIHelper.horizontalSpaceLarge(),
-                      Wrap(
-                        direction: Axis.vertical,
-                        crossAxisAlignment: WrapCrossAlignment.end,
-                        children: [
-                          Text(
-                            "DEBIT",
-                            textAlign: TextAlign.right,
-                            style: Theme.of(context).textTheme.labelSmall,
-                          ),
-                          Text(
-                            formatCurrency(7847.52.toString()),
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
+                      // UIHelper.horizontalSpaceLarge(),
+                      // Wrap(
+                      //   direction: Axis.vertical,
+                      //   crossAxisAlignment: WrapCrossAlignment.end,
+                      //   children: [
+                      //     Text(
+                      //       "DEBIT",
+                      //       textAlign: TextAlign.right,
+                      //       style: Theme.of(context).textTheme.labelSmall,
+                      //     ),
+                      //     Text(
+                      //       formatCurrency(
+                      //           ref.watch(totalDebitProvider).toString()),
+                      //       style: Theme.of(context).textTheme.titleLarge,
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 );

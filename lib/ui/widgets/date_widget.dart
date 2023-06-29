@@ -57,7 +57,8 @@ class DateWidget extends StatelessWidget {
             ),
           ],
         ),
-        if (txnData.scrollType == ScrollType.hc)
+        if (txnData.scrollType == ScrollType.HC ||
+            txnData.scrollType == ScrollType.BC)
           const Positioned(
             right: 15,
             top: 0,
@@ -67,7 +68,8 @@ class DateWidget extends StatelessWidget {
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.hd)
+        else if (txnData.scrollType == ScrollType.HD ||
+            txnData.scrollType == ScrollType.BD)
           const Positioned(
             right: 15,
             top: 0,
@@ -77,17 +79,17 @@ class DateWidget extends StatelessWidget {
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.td)
+        else if (txnData.scrollType == ScrollType.TD)
           const Positioned(
             right: 5,
             top: 0,
             child: Icon(
               Iconsax.arrange_square_25,
-              color: Colors.green,
+              color: Colors.blue,
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.tc)
+        else if (txnData.scrollType == ScrollType.TC)
           const Positioned(
             right: 20,
             top: 0,

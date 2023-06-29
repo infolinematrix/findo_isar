@@ -11,6 +11,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../util/theme_mode.dart';
 import '../../../util/double_back_to_close_app.dart';
 import '../../widgets/annotated_region.dart';
+import '../../widgets/bar_chart.dart';
 import '../../widgets/pie_chart2.dart';
 import '../../widgets/txn_item.dart';
 import 'home_controller.dart';
@@ -43,8 +44,14 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _contentHeader(context),
-
                         _userHeader(context, data.settings),
+
+                        UIHelper.verticalSpaceMedium(),
+                        const SizedBox(
+                          height: 300,
+                          width: double.infinity,
+                          child: BarChart1(),
+                        ),
 
                         UIHelper.verticalSpaceMedium(),
                         _currentMonthOverView(

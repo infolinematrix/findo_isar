@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../../util/constant.dart';
+import '../../../util/format_currency.dart';
 import '../../../util/ui_helpers.dart';
 import '../../widgets/txn_item.dart';
 import 'reports_controller.dart';
@@ -145,6 +146,62 @@ class BankBookScreen extends StatelessWidget {
                 UIHelper.horizontalSpaceMedium(),
               ],
             ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Consumer(
+            builder: (context, ref, child) {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                color: Theme.of(context).secondaryHeaderColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Total",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    UIHelper.horizontalSpaceMedium(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
+                          "CREDIT",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(
+                              ref.watch(totalCreditProvider).toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    UIHelper.horizontalSpaceLarge(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
+                          "DEBIT",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(
+                              ref.watch(totalDebitProvider).toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
         Consumer(

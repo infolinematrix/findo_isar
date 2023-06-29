@@ -93,11 +93,11 @@ final transactionsProvider =
         .findAll();
 
     for (var txn in txns) {
-      if (txn.txnType == TxnType.dr) {
+      if (txn.txnType == TxnType.DR) {
         totalDr += txn.amount;
       }
 
-      if (txn.txnType == TxnType.cr) {
+      if (txn.txnType == TxnType.CR) {
         totalCr += txn.amount;
       }
     }

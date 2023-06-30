@@ -6,8 +6,8 @@ class PicChart extends StatelessWidget {
   final Map<String, dynamic> chartData;
   @override
   Widget build(BuildContext context) {
-    return Placeholder(
-      color: Colors.transparent,
+    return AspectRatio(
+      aspectRatio: 1.3,
       child: PieChart(
         PieChartData(
           centerSpaceRadius: 5,
@@ -16,22 +16,22 @@ class PicChart extends StatelessWidget {
           sections: [
             PieChartSectionData(
               value: chartData['expenditure'],
-              color: chartData['totalDebitDay'] != 0
+              color: chartData['expenditurePercentage'] != 0
                   ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).canvasColor,
+                  : Theme.of(context).colorScheme.error,
               radius: 50,
               titleStyle: TextStyle(
-                  color: Theme.of(context).canvasColor,
+                  color: Theme.of(context).colorScheme.inverseSurface,
                   fontWeight: FontWeight.bold),
             ),
             PieChartSectionData(
               value: chartData['savings'],
-              color: chartData['totalCreditDay'] != 0
-                  ? Theme.of(context).primaryColorLight
-                  : Theme.of(context).canvasColor,
+              color: chartData['savingsPercentage'] != 0
+                  ? Theme.of(context).colorScheme.inversePrimary
+                  : Theme.of(context).colorScheme.error,
               radius: 50,
               titleStyle: TextStyle(
-                  color: Theme.of(context).canvasColor,
+                  color: Theme.of(context).colorScheme.inverseSurface,
                   fontWeight: FontWeight.bold),
             ),
           ],

@@ -43,8 +43,8 @@ final inttHomeProvider = FutureProvider.autoDispose<InitHomeModel>((ref) async {
 final currentMonthSummaryProvider =
     FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   try {
-    final startDate = firstDayOfMonth(DateTime.now());
-    final endDate = lastDayOfMonth(DateTime.now());
+    final startDate = dayStart(firstDayOfMonth(DateTime.now()));
+    final endDate = dayEnd(lastDayOfMonth(DateTime.now()));
 
     List<TransactionsModel> data = await IsarHelper
         .instance.db!.transactionsModels
@@ -59,40 +59,38 @@ final currentMonthSummaryProvider =
             .scrollTypeEqualTo(ScrollType.HD))
         .findAll();
 
-    double totaldrMonth = 0.00;
-    double totaldrDay = 0.00;
-    double totalcrMonth = 0.00;
-    double totalcrDay = 0.00;
+    double totalDebit = 0.00;
+    double totalCredit = 0.00;
 
     for (var txn in data) {
-      if (txn.txnType == TxnType.DR) {
-        totaldrMonth += txn.amount;
-        if (txn.txnDate!.day == DateTime.now().day) {
-          totaldrDay += txn.amount;
-        }
-      } else {
-        totalcrMonth += txn.amount;
-        if (txn.txnDate!.day == DateTime.now().day) {
-          totalcrDay += txn.amount;
-        }
+      if (txn.scrollType == ScrollType.HC || txn.scrollType == ScrollType.BC) {
+        totalDebit += txn.amount;
+      } else if (txn.scrollType == ScrollType.HD ||
+          txn.scrollType == ScrollType.BD) {
+        totalCredit += txn.amount;
       }
     }
 
     double exp = 100;
     double save = 0;
-    if (totalcrMonth != 0) {
-      exp = totaldrMonth / totalcrMonth * 100;
-      save = 100 - exp;
+
+    if (totalDebit != 0) {
+      if (totalDebit >= totalCredit) {
+        exp = 100;
+      } else {
+        exp = totalDebit / totalCredit * 100;
+        save = 100 - exp;
+      }
     }
 
-    return {
-      'totalDebitMonth': totaldrMonth,
-      'totalCreditMonth': totalcrMonth,
-      'totalDebitDay': totaldrDay,
-      'totalCreditDay': totalcrDay,
+    final mappedData = {
+      'totalDebitMonth': totalDebit,
+      'totalCreditMonth': totalCredit,
       'expenditurePercentage': exp.roundToDouble(),
       'savingsPercentage': save.roundToDouble()
     };
+
+    return mappedData;
   } catch (e) {
     rethrow;
   }

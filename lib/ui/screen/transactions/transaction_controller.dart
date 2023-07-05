@@ -51,6 +51,10 @@ final selectableAccountsProvider =
               // .accountTypeEqualTo(accountType)
               .not()
               .accountTypeEqualTo("INCOME")
+              .not()
+              .accountTypeEqualTo("CASH")
+              .not()
+              .accountTypeEqualTo("BANK")
               .and()
               .hasChildEqualTo(false)
               .and()
@@ -67,6 +71,10 @@ final selectableAccountsProvider =
               // .accountTypeEqualTo(accountType)
               .not()
               .accountTypeEqualTo("INCOME")
+              .not()
+              .accountTypeEqualTo("CASH")
+              .not()
+              .accountTypeEqualTo("BANK")
               .and()
               .hasChildEqualTo(false)
               .and()
@@ -188,13 +196,14 @@ final expenditureEntryProvider = FutureProvider.family
       final txn = TransactionsModel()
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
-        ..txnType = TxnType.DR
+
         //--
         ..onAccount = 1
         ..onAccountName = 'CASH'
         ..onAccountCurrentBalance = cbal +
             double.parse(formData['data']['amount'].toString()).toDouble()
         ..scrollType = ScrollType.HC
+        ..txnType = TxnType.DR
         //--
         ..txnDate = formData['data']['txnDate']
 
@@ -229,18 +238,18 @@ final expenditureEntryProvider = FutureProvider.family
       final txn = TransactionsModel()
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
-        ..txnType = TxnType.DR
+
         //--
         ..onAccount = bank.id
         ..onAccountName = bank.name.toString().trim()
         ..onAccountCurrentBalance = cbal +
             double.parse(formData['data']['amount'].toString()).toDouble()
-        ..scrollType = ScrollType.HC
+        ..scrollType = ScrollType.BC
+        ..txnType = TxnType.DR
         //--
         ..txnDate = formData['data']['txnDate']
         //-
 
-        //--
         ..scrollNo = updatedScroll
         ..scrollSlNo = 1
         ..amount =
@@ -315,7 +324,7 @@ final incomeEntryProvider = FutureProvider.family
           .findFirst();
       final txn = TransactionsModel()
         ..txnDate = formData['data']['txnDate']
-        ..scrollType = ScrollType.HD
+        ..scrollType = ScrollType.BD
         ..txnType = TxnType.CR
         ..accountNo = formData['account']['accountNo'] //--CASH
         ..accountName = formData['account']['accountName'].toString().trim()
@@ -363,10 +372,11 @@ final cashWithdrawalProvider = FutureProvider.family
       ..accountNo = 1 //--CASH
       ..accountName = 'CASH'
       ..txnType = TxnType.DR
+      ..scrollType = ScrollType.TD
       //--
       ..onAccount = bank!.id
       ..onAccountName = bank.name
-      ..scrollType = ScrollType.TC
+
       //--
       ..txnDate = formData['txnDate']
       //--
@@ -381,10 +391,11 @@ final cashWithdrawalProvider = FutureProvider.family
       ..accountNo = bank.id //--CASH
       ..accountName = bank.name
       ..txnType = TxnType.CR
+      ..scrollType = ScrollType.TC
       //--
       ..onAccount = 1
       ..onAccountName = 'CASH'
-      ..scrollType = ScrollType.TD
+
       //--
       ..txnDate = formData['txnDate']
       //--
@@ -421,10 +432,10 @@ final cashDepositProvider = FutureProvider.family
     final bank =
         await IsarHelper.instance.db!.accountsModels.get(formData['bank']);
 
-    final txn = TransactionsModel()
+    final txnTD = TransactionsModel()
       ..txnDate = formData['txnDate']
       ..scrollType = ScrollType.TD
-      ..txnType = TxnType.CR
+      ..txnType = TxnType.DR
       ..accountNo = formData['bank'] //--CASH
       ..accountName = bank!.name
       ..scrollNo = updatedScroll
@@ -436,12 +447,27 @@ final cashDepositProvider = FutureProvider.family
       ..onAccount = 1
       ..onAccountName = 'CASH';
 
+    final txnTC = TransactionsModel()
+      ..txnDate = formData['txnDate']
+      ..scrollType = ScrollType.TC
+      ..txnType = TxnType.CR
+      ..accountNo = 1 //--CASH
+      ..accountName = "CASH"
+      ..scrollNo = updatedScroll
+      ..scrollSlNo = 2
+      ..amount = double.parse(formData['amount'].toString()).toDouble()
+      ..description = formData['description'].toString().trim()
+      ..narration = "Cash Deposit"
+      ..status = 51
+      ..onAccount = formData['bank']
+      ..onAccountName = bank.name;
+
     final scrollUpdate = await IsarHelper.instance.db!.scrollModels
         .filter()
         .idEqualTo(1)
         .findFirst();
     await IsarHelper.instance.db!.writeTxn(() async {
-      await IsarHelper.instance.db?.transactionsModels.putAll([txn]);
+      await IsarHelper.instance.db?.transactionsModels.putAll([txnTC, txnTD]);
       await IsarHelper.instance.db!.scrollModels.put(
         scrollUpdate!..scrollNo = updatedScroll,
       );

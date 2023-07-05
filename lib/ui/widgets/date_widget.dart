@@ -26,8 +26,6 @@ class DateWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Theme.of(context).highlightColor,
-                // color: Color(randomColor[
-                //     randomNumber(min: 0, max: randomColor.length - 1)]),
               ),
               child: Column(
                 children: [
@@ -79,19 +77,10 @@ class DateWidget extends StatelessWidget {
               size: 18,
             ),
           )
-        else if (txnData.scrollType == ScrollType.TD)
+        else if (txnData.scrollType == ScrollType.TD ||
+            txnData.scrollType == ScrollType.TC)
           const Positioned(
             right: 5,
-            top: 0,
-            child: Icon(
-              Iconsax.arrange_square_25,
-              color: Colors.blue,
-              size: 18,
-            ),
-          )
-        else if (txnData.scrollType == ScrollType.TC)
-          const Positioned(
-            right: 20,
             top: 0,
             child: Icon(
               Iconsax.arrange_square_25,

@@ -31,6 +31,19 @@ final totalCreditProvider = StateProvider.autoDispose<double>((ref) {
   return 0.00;
 });
 
+//--YEARS
+final yearsProvider = StateProvider<List>((ref) {
+  int currentYear = DateTime.now().year;
+  int startingYear = 2000;
+
+  List years = [];
+  int count = currentYear - startingYear;
+  for (var i = 0; i < count; i++) {
+    years.add([startingYear + i]);
+  }
+  return years;
+});
+
 //--BANK ACOOUNT PROVIDER
 final bankAccountsProvider = FutureProvider.autoDispose((ref) async {
   try {
@@ -274,6 +287,15 @@ final accountsSummaryProvider = FutureProvider.autoDispose((ref) async {
     }
 
     return data;
+  } catch (e) {
+    rethrow;
+  }
+});
+
+//--MY SAVINGS
+final mySavingsProvider = FutureProvider.autoDispose((ref) async {
+  try {
+    return {};
   } catch (e) {
     rethrow;
   }

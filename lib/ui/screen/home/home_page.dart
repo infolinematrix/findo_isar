@@ -402,155 +402,155 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _currentMonthOverView(
-      BuildContext context, Map<String, dynamic> data) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            // Flexible(
-            //   flex: 2,
-            //   child: Container(
-            //     padding: const EdgeInsets.only(
-            //       top: 16,
-            //       left: 16,
-            //     ),
-            //     child: SizedBox.square(
-            //       dimension: 80,
-            //       child: PicChart(
-            //         chartData: {
-            //           'expenditure': data['expenditurePercentage'],
-            //           'savings': data['savingsPercentage'],
-            //           'totalDebitMonth': data['totalDebitMonth'],
-            //           'totalCreditMonth': data['totalCreditMonth'],
-            //         },
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            UIHelper.verticalSpaceSmall(),
-            Flexible(
-              flex: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        formatCurrency(data['totalCreditMonth'].toString()),
-                        style:
-                            Theme.of(context).textTheme.displaySmall!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                      ),
-                      Text(
-                        'Income',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).primaryColorDark),
-                      )
-                    ],
-                  ),
-                  UIHelper.verticalSpaceMedium(),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        formatCurrency(data['totalDebitMonth'].toString()),
-                        style:
-                            Theme.of(context).textTheme.displaySmall!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                      ),
-                      Text(
-                        'Expenditure',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).primaryColorDark),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        UIHelper.verticalSpaceLarge(),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     // Text(
-            //     //     "${data['totalCreditDay'] > 0 ? data['expenditurePercentage'] : '0'}% SPENDINGS",
-            //     //     style: Theme.of(context)
-            //     //         .textTheme
-            //     //         .bodySmall!
-            //     //         .copyWith(color: Theme.of(context).primaryColorDark)),
-            //     // Text(
-            //     //     "${data['totalDebitDay'] > 0 ? data['savingsPercentage'] : '0'}% SAVINGS",
-            //     //     style: Theme.of(context)
-            //     //         .textTheme
-            //     //         .bodySmall!
-            //     //         .copyWith(color: Theme.of(context).primaryColorDark))
+  // Widget _currentMonthOverView(
+  //     BuildContext context, Map<String, dynamic> data) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.stretch,
+  //     children: [
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: <Widget>[
+  //           // Flexible(
+  //           //   flex: 2,
+  //           //   child: Container(
+  //           //     padding: const EdgeInsets.only(
+  //           //       top: 16,
+  //           //       left: 16,
+  //           //     ),
+  //           //     child: SizedBox.square(
+  //           //       dimension: 80,
+  //           //       child: PicChart(
+  //           //         chartData: {
+  //           //           'expenditure': data['expenditurePercentage'],
+  //           //           'savings': data['savingsPercentage'],
+  //           //           'totalDebitMonth': data['totalDebitMonth'],
+  //           //           'totalCreditMonth': data['totalCreditMonth'],
+  //           //         },
+  //           //       ),
+  //           //     ),
+  //           //   ),
+  //           // ),
+  //           UIHelper.verticalSpaceSmall(),
+  //           Flexible(
+  //             flex: 4,
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.end,
+  //               children: <Widget>[
+  //                 Column(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   crossAxisAlignment: CrossAxisAlignment.end,
+  //                   children: [
+  //                     Text(
+  //                       formatCurrency(data['totalCreditMonth'].toString()),
+  //                       style:
+  //                           Theme.of(context).textTheme.displaySmall!.copyWith(
+  //                                 fontWeight: FontWeight.bold,
+  //                               ),
+  //                     ),
+  //                     Text(
+  //                       'Income',
+  //                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+  //                           fontWeight: FontWeight.w400,
+  //                           color: Theme.of(context).primaryColorDark),
+  //                     )
+  //                   ],
+  //                 ),
+  //                 UIHelper.verticalSpaceMedium(),
+  //                 Column(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   crossAxisAlignment: CrossAxisAlignment.end,
+  //                   children: [
+  //                     Text(
+  //                       formatCurrency(data['totalDebitMonth'].toString()),
+  //                       style:
+  //                           Theme.of(context).textTheme.displaySmall!.copyWith(
+  //                                 fontWeight: FontWeight.bold,
+  //                               ),
+  //                     ),
+  //                     Text(
+  //                       'Expenditure',
+  //                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+  //                           fontWeight: FontWeight.w400,
+  //                           color: Theme.of(context).primaryColorDark),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       UIHelper.verticalSpaceLarge(),
+  //       Column(
+  //         mainAxisSize: MainAxisSize.max,
+  //         children: [
+  //           // Row(
+  //           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           //   children: [
+  //           //     // Text(
+  //           //     //     "${data['totalCreditDay'] > 0 ? data['expenditurePercentage'] : '0'}% SPENDINGS",
+  //           //     //     style: Theme.of(context)
+  //           //     //         .textTheme
+  //           //     //         .bodySmall!
+  //           //     //         .copyWith(color: Theme.of(context).primaryColorDark)),
+  //           //     // Text(
+  //           //     //     "${data['totalDebitDay'] > 0 ? data['savingsPercentage'] : '0'}% SAVINGS",
+  //           //     //     style: Theme.of(context)
+  //           //     //         .textTheme
+  //           //     //         .bodySmall!
+  //           //     //         .copyWith(color: Theme.of(context).primaryColorDark))
 
-            //     Text("24% SPENDINGS",
-            //         style: Theme.of(context)
-            //             .textTheme
-            //             .bodySmall!
-            //             .copyWith(color: Theme.of(context).primaryColorDark)),
-            //     Text("32% SAVINGS",
-            //         style: Theme.of(context)
-            //             .textTheme
-            //             .bodySmall!
-            //             .copyWith(color: Theme.of(context).primaryColorDark))
-            //   ],
-            // ),
-            UIHelper.verticalSpaceSmall(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 12,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                      UIHelper.horizontalSpaceSmall(),
-                      const Text("Expenditure")
-                    ],
-                  ),
-                ),
-                UIHelper.horizontalSpaceMedium(),
-                SizedBox(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 12,
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
-                      UIHelper.horizontalSpaceSmall(),
-                      const Text("Savings")
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            UIHelper.verticalSpaceSmall(),
-          ],
-        ),
-      ],
-    );
-  }
+  //           //     Text("24% SPENDINGS",
+  //           //         style: Theme.of(context)
+  //           //             .textTheme
+  //           //             .bodySmall!
+  //           //             .copyWith(color: Theme.of(context).primaryColorDark)),
+  //           //     Text("32% SAVINGS",
+  //           //         style: Theme.of(context)
+  //           //             .textTheme
+  //           //             .bodySmall!
+  //           //             .copyWith(color: Theme.of(context).primaryColorDark))
+  //           //   ],
+  //           // ),
+  //           UIHelper.verticalSpaceSmall(),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             children: [
+  //               SizedBox(
+  //                 child: Row(
+  //                   children: [
+  //                     Container(
+  //                       width: 10,
+  //                       height: 12,
+  //                       color: Theme.of(context).colorScheme.error,
+  //                     ),
+  //                     UIHelper.horizontalSpaceSmall(),
+  //                     const Text("Expenditure")
+  //                   ],
+  //                 ),
+  //               ),
+  //               UIHelper.horizontalSpaceMedium(),
+  //               SizedBox(
+  //                 child: Row(
+  //                   children: [
+  //                     Container(
+  //                       width: 10,
+  //                       height: 12,
+  //                       color: Theme.of(context).colorScheme.inversePrimary,
+  //                     ),
+  //                     UIHelper.horizontalSpaceSmall(),
+  //                     const Text("Savings")
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //           UIHelper.verticalSpaceSmall(),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _currentBalance(BuildContext context, Map<String, dynamic> data) {
     return Card(
@@ -663,7 +663,6 @@ class HomePage extends StatelessWidget {
               ),
               SvgPicture.asset(
                 scan,
-                // color: Theme.of(context).iconTheme.color,
                 width: 18,
               ),
             ],

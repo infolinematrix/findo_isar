@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_wallet/util/date_utils.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../util/constant.dart';
@@ -34,7 +35,8 @@ class MySavingsScreen extends StatelessWidget {
                 title: SizedBox(
                   height: 40,
                   child: FormBuilderDropdown(
-                    name: 'gender',
+                    name: 'year',
+                    initialValue: DateTime.now().year,
                     decoration: InputDecoration(
                       labelText: 'Select',
                       isDense: true,
@@ -165,6 +167,105 @@ class MySavingsScreen extends StatelessWidget {
                 ),
               );
             },
+          ),
+        ),
+        // SliverToBoxAdapter(
+        //   child: ListView.builder(
+        //     itemCount: 12,
+        //     itemBuilder: (BuildContext context, int index) {
+        //       return const Card(
+        //         elevation: .25,
+        //         child: Row(
+        //           children: [
+        //             Expanded(
+        //               child: Wrap(
+        //                 direction: Axis.vertical,
+        //                 clipBehavior: Clip.hardEdge,
+        //                 children: [
+        //                   Text("January"),
+        //                   Text("2023"),
+        //                 ],
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                child: Card(
+                  elevation: .25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Wrap(
+                            direction: Axis.vertical,
+                            clipBehavior: Clip.hardEdge,
+                            children: [
+                              Text(
+                                months[index],
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const Text("2023"),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Wrap(
+                            direction: Axis.vertical,
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            clipBehavior: Clip.hardEdge,
+                            children: [
+                              const Text("Income"),
+                              Text(
+                                "2023",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Wrap(
+                            direction: Axis.vertical,
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            clipBehavior: Clip.hardEdge,
+                            children: [
+                              const Text("Expenditure"),
+                              Text(
+                                "2023",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Wrap(
+                          direction: Axis.vertical,
+                          crossAxisAlignment: WrapCrossAlignment.end,
+                          clipBehavior: Clip.hardEdge,
+                          children: [
+                            const Text("Savings"),
+                            Text(
+                              "2023",
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            // 40 list items
+            childCount: 12,
           ),
         ),
       ],

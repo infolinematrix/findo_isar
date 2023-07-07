@@ -54,10 +54,6 @@ final isLoggedInProvider = Provider.autoDispose((ref) async {
 //-- SETTINGS
 final settingsProvider = Provider.autoDispose((ref) async {
   try {
-    // String defaultDateFormat = dateFormat[0];
-    // String defaultCurrency = currencies[0]['code'];
-    // String defuldCurrencyFormat = currencyFormat[0];
-
     final hasSettings = await IsarHelper.instance.db!.settingsModels.count();
 
     if (hasSettings == 0) {
@@ -105,7 +101,7 @@ final settingsProvider = Provider.autoDispose((ref) async {
   }
 });
 
-//--SCROLL
+//--INITIAL SCROLL NUMBER
 final scrollProvider = Provider.autoDispose((ref) async {
   try {
     final scrollNo = await IsarHelper.instance.db!.scrollModels.count();

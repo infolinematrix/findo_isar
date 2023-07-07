@@ -6,6 +6,7 @@ import 'package:flutter_wallet/models/transactions_model.dart';
 import 'package:flutter_wallet/services/isar_database.dart';
 import 'package:isar/isar.dart';
 
+import '../../../application/closing_balance_provider.dart';
 import '../../../util/date_utils.dart';
 
 //-- SELECTED ACCOUNT
@@ -28,6 +29,11 @@ final totalDebitProvider = StateProvider.autoDispose<double>((ref) {
   return 0.00;
 });
 final totalCreditProvider = StateProvider.autoDispose<double>((ref) {
+  return 0.00;
+});
+
+//--OENING BALANCE
+final openingBalanceProvider = StateProvider.autoDispose<double>((ref) {
   return 0.00;
 });
 
@@ -72,31 +78,52 @@ final bankBookProvider = FutureProvider.autoDispose((ref) async {
     final eDate = ref.watch(endDateProvider);
 
     final txns = await IsarHelper.instance.db!.transactionsModels
-        .where()
+        .where(sort: Sort.desc)
         .txnDateBetween(sDate, eDate)
         .filter()
         .group(
           (q) => q.statusEqualTo(51).and().onAccountEqualTo(accountNo),
         )
-        .sortByTxnDateDesc()
         .findAll();
 
     double totalDr = 0.00, totalCr = 0.00;
 
+    //---Opening Balance
+    final oeningBalance = await ref.watch(
+        closingBalanceProvider({'date': sDate, 'account': accountNo}).future);
+
+    // for (var txn in txns) {
+    //   if (txn.scrollType == ScrollType.HC ||
+    //       txn.scrollType == ScrollType.BC ||
+    //       txn.scrollType == ScrollType.TC) {
+    //     totalCr += txn.amount;
+    //   } else if (txn.scrollType == ScrollType.HD ||
+    //       txn.scrollType == ScrollType.BD ||
+    //       txn.scrollType == ScrollType.TD) {
+    //     totalDr += txn.amount;
+    //   }
+    // }
+
     for (var txn in txns) {
-      if (txn.scrollType == ScrollType.HC ||
-          txn.scrollType == ScrollType.BC ||
-          txn.scrollType == ScrollType.TC) {
+      if (txn.scrollType == ScrollType.HC || txn.scrollType == ScrollType.BC) {
         totalCr += txn.amount;
-      } else if (txn.scrollType == ScrollType.HD ||
-          txn.scrollType == ScrollType.BD ||
-          txn.scrollType == ScrollType.TD) {
+      }
+      //If transfer it will be opposit
+      if (txn.scrollType == ScrollType.TC) {
         totalDr += txn.amount;
+      }
+      if (txn.scrollType == ScrollType.HD || txn.scrollType == ScrollType.BD) {
+        totalDr += txn.amount;
+      }
+      //If transfer it will be opposit
+      if (txn.scrollType == ScrollType.TD) {
+        totalCr += txn.amount;
       }
     }
 
     ref.watch(totalCreditProvider.notifier).update((state) => totalCr);
     ref.watch(totalDebitProvider.notifier).update((state) => totalDr);
+    ref.watch(openingBalanceProvider.notifier).update((state) => oeningBalance);
 
     return txns;
   } catch (e) {
@@ -195,31 +222,38 @@ final cashBookProvider = FutureProvider.autoDispose((ref) async {
     final eDate = ref.watch(endDateProvider);
 
     final txns = await IsarHelper.instance.db!.transactionsModels
-        .where()
+        .where(sort: Sort.desc)
         .txnDateBetween(sDate, eDate)
         .filter()
-        .group(
-          (q) => q.statusEqualTo(51).and().onAccountEqualTo(1),
-        )
-        .sortByTxnDateDesc()
+        .group((q) => q.statusEqualTo(51).and().onAccountEqualTo(1))
         .findAll();
 
     double totalDr = 0.00, totalCr = 0.00;
 
+    //---Opening Balance
+    final oeningBalance = await ref
+        .watch(closingBalanceProvider({'date': sDate, 'account': 1}).future);
+
     for (var txn in txns) {
-      if (txn.scrollType == ScrollType.HC ||
-          txn.scrollType == ScrollType.BC ||
-          txn.scrollType == ScrollType.TC) {
+      if (txn.scrollType == ScrollType.HC || txn.scrollType == ScrollType.BC) {
         totalCr += txn.amount;
-      } else if (txn.scrollType == ScrollType.HD ||
-          txn.scrollType == ScrollType.BD ||
-          txn.scrollType == ScrollType.TD) {
+      }
+      //If transfer it will be opposit
+      if (txn.scrollType == ScrollType.TC) {
         totalDr += txn.amount;
+      }
+      if (txn.scrollType == ScrollType.HD || txn.scrollType == ScrollType.BD) {
+        totalDr += txn.amount;
+      }
+      //If transfer it will be opposit
+      if (txn.scrollType == ScrollType.TD) {
+        totalCr += txn.amount;
       }
     }
 
     ref.watch(totalCreditProvider.notifier).update((state) => totalCr);
     ref.watch(totalDebitProvider.notifier).update((state) => totalDr);
+    ref.watch(openingBalanceProvider.notifier).update((state) => oeningBalance);
 
     return txns;
   } catch (e) {

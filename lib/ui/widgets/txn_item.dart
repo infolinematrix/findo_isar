@@ -80,6 +80,9 @@ Widget txnItem(BuildContext context, TransactionsModel txn) {
                                     //     : Theme.of(context).colorScheme.onError,
                                   ),
                         ),
+                        Text(
+                          "${formatCurrency(txn.onAccountCurrentBalance.toString())}",
+                        )
                       ],
                     ),
                   ),

@@ -170,6 +170,23 @@ class BankBookScreen extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.end,
                       children: [
                         Text(
+                          "OPENING",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(
+                              ref.watch(openingBalanceProvider).toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    UIHelper.horizontalSpaceMedium(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
                           "CREDIT",
                           textAlign: TextAlign.right,
                           style: Theme.of(context).textTheme.labelSmall,

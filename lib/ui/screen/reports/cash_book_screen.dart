@@ -93,8 +93,6 @@ class CashBookScreen extends StatelessWidget {
             ),
           );
         }),
-        
-        
         SliverToBoxAdapter(
           child: Consumer(
             builder: (context, ref, child) {
@@ -110,6 +108,23 @@ class CashBookScreen extends StatelessWidget {
                         "Total",
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
+                    ),
+                    UIHelper.horizontalSpaceMedium(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
+                          "OPENING",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(
+                              ref.watch(openingBalanceProvider).toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
                     ),
                     UIHelper.horizontalSpaceMedium(),
                     Wrap(

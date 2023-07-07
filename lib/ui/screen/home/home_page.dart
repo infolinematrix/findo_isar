@@ -49,10 +49,7 @@ class HomePage extends StatelessWidget {
                         const SizedBox(
                           height: 300,
                           width: double.infinity,
-                          child: Padding(
-                            padding: EdgeInsets.all(4.0),
-                            child: BarChart1(),
-                          ),
+                          child: BarChart1(),
                         ),
 
                         UIHelper.verticalSpaceSmall(),

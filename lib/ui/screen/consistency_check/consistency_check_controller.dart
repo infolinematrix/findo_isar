@@ -68,7 +68,8 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
       if (i == 0) {
         final txn = txns[i];
         if (txn.scrollType == ScrollType.HD ||
-            txn.scrollType == ScrollType.TD) {
+            txn.scrollType == ScrollType.TD ||
+            txn.scrollType == ScrollType.BD) {
           final cbal = account!.openingBalance - txn.amount;
           txn.onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
@@ -76,7 +77,8 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
           });
         }
         if (txn.scrollType == ScrollType.HC ||
-            txn.scrollType == ScrollType.TC) {
+            txn.scrollType == ScrollType.TC ||
+            txn.scrollType == ScrollType.BC) {
           final cbal = account!.openingBalance + txn.amount;
           txn.onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
@@ -86,7 +88,8 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
       } else {
         TransactionsModel txnC = txns[i - 1];
         if (txns[i].scrollType == ScrollType.HD ||
-            txns[i].scrollType == ScrollType.TD) {
+            txns[i].scrollType == ScrollType.TD ||
+            txns[i].scrollType == ScrollType.BD) {
           final cbal = txnC.onAccountCurrentBalance - txns[i].amount;
           txns[i].onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {
@@ -94,7 +97,8 @@ final calculateProvider = FutureProvider.autoDispose((ref) async {
           });
         }
         if (txns[i].scrollType == ScrollType.HC ||
-            txns[i].scrollType == ScrollType.TC) {
+            txns[i].scrollType == ScrollType.TC ||
+            txns[i].scrollType == ScrollType.BC) {
           final cbal = txnC.onAccountCurrentBalance + txns[i].amount;
           txns[i].onAccountCurrentBalance = cbal;
           await IsarHelper.instance.db!.writeTxn(() async {

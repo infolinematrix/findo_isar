@@ -52,11 +52,11 @@ final currentMonthSummaryProvider =
         .txnDateBetween(startDate, endDate)
         .filter()
         .statusEqualTo(51)
-        .and()
+        .not()
         .group((q) => q
-            .scrollTypeEqualTo(ScrollType.HC)
+            .scrollTypeEqualTo(ScrollType.TC)
             .or()
-            .scrollTypeEqualTo(ScrollType.HD))
+            .scrollTypeEqualTo(ScrollType.TD))
         .findAll();
 
     double totalDebit = 0.00;

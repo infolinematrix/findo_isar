@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/models/accounts_model.dart';
-import 'package:flutter_wallet/services/isar_database.dart';
+import '../../../../models/accounts_model.dart';
+import '../../../../services/isar_database.dart';
+
 import 'package:isar/isar.dart';
 
 final cashAccountProvider =

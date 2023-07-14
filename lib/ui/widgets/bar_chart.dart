@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+
 import 'package:iconsax/iconsax.dart';
+
+import '../../util/ui_helpers.dart';
 
 // class BarChart extends StatefulWidget {
 //   const BarChart({Key? key}) : super(key: key);

@@ -4,7 +4,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/models/accounts_model.dart';
+import '../../../models/accounts_model.dart';
+
 import 'package:isar/isar.dart';
 
 import '../../../services/isar_database.dart';

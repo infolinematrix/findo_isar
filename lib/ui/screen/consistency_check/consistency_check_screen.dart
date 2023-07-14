@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/models/accounts_model.dart';
-import 'package:flutter_wallet/ui/widgets/button_default.dart';
-import 'package:flutter_wallet/util/format_currency.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+
 import 'package:form_builder_validators/form_builder_validators.dart';
 
+import '../../../models/accounts_model.dart';
 import '../../../util/constant.dart';
+import '../../../util/format_currency.dart';
+import '../../../util/ui_helpers.dart';
+import '../../widgets/button_default.dart';
 import 'consistency_check_controller.dart';
 
 class ConsistencyCheckScreen extends StatelessWidget {

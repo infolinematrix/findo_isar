@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/models/transactions_model.dart';
-import 'package:flutter_wallet/util/date_utils.dart';
+import '../../models/transactions_model.dart';
+import '../../util/date_utils.dart';
 import 'package:iconsax/iconsax.dart';
 
 class DateWidget extends StatelessWidget {

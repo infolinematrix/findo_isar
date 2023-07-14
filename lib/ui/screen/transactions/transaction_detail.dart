@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/models/transactions_model.dart';
-import 'package:flutter_wallet/ui/screen/transactions/transaction_controller.dart';
-import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
-import 'package:flutter_wallet/util/format_currency.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+import '../../../models/transactions_model.dart';
+import '../../../util/format_currency.dart';
+import '../../../util/ui_helpers.dart';
+import '../../widgets/annotated_region.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../../../util/dialog.dart';
 import '../home/home_controller.dart';
 import '../statement/statement_controller.dart';
+import 'transaction_controller.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   const TransactionDetailScreen({Key? key, required this.txn})

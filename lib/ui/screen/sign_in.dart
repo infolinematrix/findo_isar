@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_wallet/ui/screen/drawer_page.dart';
-import 'package:flutter_wallet/util/file_path.dart';
+import '../../util/file_path.dart';
 import 'package:intl/intl.dart';
+
+import 'drawer_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);

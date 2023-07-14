@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/ui/screen/settings/configuration/configuration_controller.dart';
-import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+import '../../../../util/ui_helpers.dart';
+import '../../../widgets/annotated_region.dart';
+
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../util/constant.dart';
 import '../../../widgets/button_default.dart';
+import 'configuration_controller.dart';
 
 class ConfigurationScreen extends StatelessWidget {
   const ConfigurationScreen({Key? key}) : super(key: key);

@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/ui/screen/statement/statement_controller.dart';
-import '../../../models/accounts_model.dart';
-import '../../../util/ui_helpers.dart';
-
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../../util/constant.dart';
 import '../../../util/format_currency.dart';
+import '../../../util/ui_helpers.dart';
 import '../../widgets/txn_item.dart';
+import 'reports_controller.dart';
 
-class StatementScreen extends StatelessWidget {
-  const StatementScreen({Key? key, required this.account}) : super(key: key);
-
-  final AccountsModel account;
+class IncomeExpenditureScreen extends StatelessWidget {
+  const IncomeExpenditureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormBuilderState>();
-
     return CustomScrollView(
       slivers: [
         Consumer(builder: (context, ref, child) {
@@ -32,8 +27,8 @@ class StatementScreen extends StatelessWidget {
               pinned: true,
               snap: false,
               floating: true,
-              title: Text(
-                account.name.toString().toUpperCase(),
+              title: const Text(
+                "INCOME & EXPENDITURE",
               ),
               bottom: AppBar(
                 automaticallyImplyLeading: false,
@@ -120,6 +115,23 @@ class StatementScreen extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.end,
                       children: [
                         Text(
+                          "OPENING",
+                          textAlign: TextAlign.right,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Text(
+                          formatCurrency(
+                              ref.watch(openingBalanceProvider).toString()),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    UIHelper.horizontalSpaceMedium(),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      children: [
+                        Text(
                           "CREDIT",
                           textAlign: TextAlign.right,
                           style: Theme.of(context).textTheme.labelSmall,
@@ -156,9 +168,9 @@ class StatementScreen extends StatelessWidget {
         ),
         Consumer(
           builder: (context, ref, child) {
-            final data = ref.watch(transactionsProvider(account.id));
+            final txns = ref.watch(cashBookProvider);
 
-            return data.when(
+            return txns.when(
               error: (error, stackTrace) => ErrorWidget(error),
               loading: () => const SliverToBoxAdapter(
                 child: LinearProgressIndicator(),

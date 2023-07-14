@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
+import '../../widgets/annotated_region.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 

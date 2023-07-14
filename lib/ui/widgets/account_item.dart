@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/models/accounts_model.dart';
+import '../../models/accounts_model.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 

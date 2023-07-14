@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/models/transactions_model.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../models/transactions_model.dart';
 import '../../util/format_currency.dart';
+import '../../util/ui_helpers.dart';
 import 'date_widget.dart';
 
 Widget txnItem(BuildContext context, TransactionsModel txn) {

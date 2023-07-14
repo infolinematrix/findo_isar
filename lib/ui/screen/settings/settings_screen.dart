@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
+import '../../widgets/annotated_region.dart';
+
 import 'package:go_router/go_router.dart';
+
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);

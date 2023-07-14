@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/scroll_model.dart';
-import 'package:flutter_wallet/models/transactions_model.dart';
+
 import 'package:isar/isar.dart';
 
 import '../../../models/accounts_model.dart';
+import '../../../models/transactions_model.dart';
 import '../../../services/isar_database.dart';
 import '../../../util/date_utils.dart';
 

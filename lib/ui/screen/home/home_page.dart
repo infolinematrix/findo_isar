@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_wallet/models/transactions_model.dart';
-import 'package:flutter_wallet/util/file_path.dart';
-import 'package:flutter_wallet/util/format_currency.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+import '../../../models/transactions_model.dart';
+import '../../../util/file_path.dart';
+import '../../../util/format_currency.dart';
+import '../../../util/ui_helpers.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 

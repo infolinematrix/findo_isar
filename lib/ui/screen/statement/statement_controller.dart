@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
 import 'package:flutter_wallet/models/transactions_model.dart';
-import 'package:flutter_wallet/services/isar_database.dart';
 import 'package:isar/isar.dart';
+import '../../../services/isar_database.dart';
 
 import '../../../util/date_utils.dart';
 

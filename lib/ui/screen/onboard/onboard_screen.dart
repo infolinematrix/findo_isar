@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/ui/screen/home/home_page.dart';
 import 'package:flutter_wallet/ui/screen/onboard/settings_screen.dart';
+import '../home/home_page.dart';
 
 import 'onboard_controller.dart';
 import 'splash_screen.dart';

@@ -2,8 +2,9 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
-import 'package:flutter_wallet/models/transactions_model.dart';
-import 'package:flutter_wallet/services/isar_database.dart';
+import '../../../models/transactions_model.dart';
+import '../../../services/isar_database.dart';
+
 import 'package:isar/isar.dart';
 
 import '../../../application/closing_balance_provider.dart';

@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_wallet/models/accounts_model.dart';
 import 'package:flutter_wallet/models/scroll_model.dart';
-import 'package:flutter_wallet/models/settings_model.dart';
+import '../../../models/settings_model.dart';
+
 import 'package:isar/isar.dart';
 
 import '../../../services/isar_database.dart';

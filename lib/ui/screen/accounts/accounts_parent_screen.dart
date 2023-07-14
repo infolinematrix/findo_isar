@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_wallet/ui/widgets/account_item.dart';
-import 'package:flutter_wallet/ui/widgets/annotated_region.dart';
 
+import '../../widgets/account_item.dart';
+import '../../widgets/annotated_region.dart';
 import 'accounts_controller.dart';
 
 class AccountsParentScreen extends ConsumerWidget {

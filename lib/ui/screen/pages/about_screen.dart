@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet/util/ui_helpers.dart';
+import '../../../util/ui_helpers.dart';
 
 import '../../widgets/annotated_region.dart';
 

@@ -327,10 +327,82 @@ final accountsSummaryProvider = FutureProvider.autoDispose((ref) async {
   }
 });
 
-//--MY SAVINGS
-final mySavingsProvider = FutureProvider.autoDispose((ref) async {
+//--MY SAVINGS ---------------------//
+final yearsListProvider = StateProvider.autoDispose((ref) {
+  int currentYear = DateTime.now().year;
+  int startingYear = 2022;
+  List yearList = List.generate(
+      (currentYear - startingYear) + 1, (index) => startingYear + index);
+  return yearList;
+});
+final selectedYearProvider = StateProvider.autoDispose<int>((ref) {
+  return DateTime.now().year;
+});
+
+final totalIncomeProvider = StateProvider<double>((ref) {
+  return 0.00;
+});
+
+final totalExpenditureProvider = StateProvider<double>((ref) {
+  return 0.00;
+});
+
+final mySavingsProvider =
+    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
   try {
-    return {};
+    int selectedyear = ref.watch(selectedYearProvider);
+    
+
+    List<Map<String, dynamic>> data = [];
+    for (var i = 0; i < 12; i++) {
+      DateTime startDate =
+          dayStart(firstDayOfMonth(DateTime(selectedyear, i + 1)));
+      DateTime endDate = dayEnd(lastDayOfMonth(DateTime(selectedyear, i + 1)));
+      double income = 0, expenditure = 0, savings = 0;
+      final txns = await IsarHelper.instance.db!.transactionsModels
+          .where()
+          .txnDateBetween(startDate, endDate)
+          .filter()
+          .group((q) => q
+              .statusEqualTo(51)
+              .not()
+              .scrollTypeEqualTo(ScrollType.TC)
+              .not()
+              .scrollTypeEqualTo(ScrollType.TD))
+          .findAll();
+
+      for (var txn in txns) {
+        if (txn.scrollType == ScrollType.BD ||
+            txn.scrollType == ScrollType.HD) {
+          income += txn.amount;
+        }
+        if (txn.scrollType == ScrollType.BC ||
+            txn.scrollType == ScrollType.HC) {
+          expenditure += txn.amount;
+        }
+      }
+
+      savings = income - expenditure;
+      data.addAll([
+        {
+          'year': selectedyear,
+          'month': i,
+          'income': income,
+          'expenditure': expenditure,
+          'savings': savings,
+        },
+      ]);
+
+      ref
+          .watch(totalIncomeProvider.notifier)
+          .update((state) => ref.read(totalIncomeProvider) + income);
+
+      ref
+          .watch(totalExpenditureProvider.notifier)
+          .update((state) => ref.read(totalExpenditureProvider) + expenditure);
+    }
+
+    return data;
   } catch (e) {
     rethrow;
   }

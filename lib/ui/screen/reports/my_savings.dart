@@ -52,11 +52,12 @@ class MySavingsScreen extends StatelessWidget {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                     ),
                     style: inputStyle,
-                    items: [2021, 2022, 2023]
-                        .map((year) => DropdownMenuItem(
+                    items: ref
+                        .read(yearsListProvider)
+                        .map((year) => DropdownMenuItem<int>(
                               value: year,
                               child: Text(
-                                "$year (January-December)",
+                                "$year  # January ~ December",
                                 style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.primary),
@@ -68,18 +69,10 @@ class MySavingsScreen extends StatelessWidget {
                 actions: <Widget>[
                   ElevatedButton.icon(
                     onPressed: () {
-                      // if (formKey.currentState?.saveAndValidate() ?? false) {
-                      //   DateTimeRange dateRange =
-                      //       formKey.currentState!.value['date_range'];
-
-                      //   ref
-                      //       .watch(startDateProvider.notifier)
-                      //       .update((state) => dateRange.start);
-
-                      //   ref
-                      //       .watch(endDateProvider.notifier)
-                      //       .update((state) => dateRange.end);
-                      // }
+                      if (formKey.currentState?.saveAndValidate() ?? false) {
+                        ref.watch(selectedYearProvider.notifier).update(
+                            (state) => formKey.currentState!.value['year']);
+                      }
                     },
                     icon: const Icon(Iconsax.filter),
                     label: const Text("Filter"),
@@ -125,8 +118,8 @@ class MySavingsScreen extends StatelessWidget {
                         ),
                         Text(
                           formatCurrency(
-                              ref.watch(totalCreditProvider).toString()),
-                          style: Theme.of(context).textTheme.titleLarge,
+                              ref.watch(totalIncomeProvider).toString()),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -142,133 +135,141 @@ class MySavingsScreen extends StatelessWidget {
                         ),
                         Text(
                           formatCurrency(
-                              ref.watch(totalCreditProvider).toString()),
-                          style: Theme.of(context).textTheme.titleLarge,
+                              ref.watch(totalExpenditureProvider).toString()),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
-                    UIHelper.horizontalSpaceLarge(),
-                    Wrap(
-                      direction: Axis.vertical,
-                      crossAxisAlignment: WrapCrossAlignment.end,
-                      children: [
-                        Text(
-                          "SAVINGS",
-                          textAlign: TextAlign.right,
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                        Text(
-                          formatCurrency(
-                              ref.watch(totalDebitProvider).toString()),
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ],
-                    ),
+                    // UIHelper.horizontalSpaceLarge(),
+                    // Wrap(
+                    //   direction: Axis.vertical,
+                    //   crossAxisAlignment: WrapCrossAlignment.end,
+                    //   children: [
+                    //     Text(
+                    //       "SAVINGS",
+                    //       textAlign: TextAlign.right,
+                    //       style: Theme.of(context).textTheme.labelSmall,
+                    //     ),
+                    //     Text(
+                    //       formatCurrency(
+                    //           ref.watch(totalDebitProvider).toString()),
+                    //       style: Theme.of(context).textTheme.titleLarge,
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               );
             },
           ),
         ),
-        // SliverToBoxAdapter(
-        //   child: ListView.builder(
-        //     itemCount: 12,
-        //     itemBuilder: (BuildContext context, int index) {
-        //       return const Card(
-        //         elevation: .25,
-        //         child: Row(
-        //           children: [
-        //             Expanded(
-        //               child: Wrap(
-        //                 direction: Axis.vertical,
-        //                 clipBehavior: Clip.hardEdge,
-        //                 children: [
-        //                   Text("January"),
-        //                   Text("2023"),
-        //                 ],
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                child: Card(
-                  elevation: .25,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Wrap(
-                            direction: Axis.vertical,
-                            clipBehavior: Clip.hardEdge,
-                            children: [
-                              Text(
-                                months[index],
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              const Text("2023"),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Wrap(
-                            direction: Axis.vertical,
-                            crossAxisAlignment: WrapCrossAlignment.end,
-                            clipBehavior: Clip.hardEdge,
-                            children: [
-                              const Text("Income"),
-                              Text(
-                                "2023",
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Wrap(
-                            direction: Axis.vertical,
-                            crossAxisAlignment: WrapCrossAlignment.end,
-                            clipBehavior: Clip.hardEdge,
-                            children: [
-                              const Text("Expenditure"),
-                              Text(
-                                "2023",
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Wrap(
-                          direction: Axis.vertical,
-                          crossAxisAlignment: WrapCrossAlignment.end,
-                          clipBehavior: Clip.hardEdge,
-                          children: [
-                            const Text("Savings"),
-                            Text(
-                              "2023",
-                              style: Theme.of(context).textTheme.titleSmall,
+        Consumer(
+          builder: (context, ref, child) {
+            final data = ref.watch(mySavingsProvider);
+
+            return data.when(
+              error: (error, stackTrace) => ErrorWidget(error),
+              loading: () => const SliverToBoxAdapter(
+                child: LinearProgressIndicator(),
+              ),
+              data: (data) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 0),
+                        child: Card(
+                          elevation: .25,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Wrap(
+                                    direction: Axis.vertical,
+                                    clipBehavior: Clip.hardEdge,
+                                    children: [
+                                      Text(
+                                        months[data[index]['month']],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                      Text(data[index]['year'].toString()),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Wrap(
+                                    direction: Axis.vertical,
+                                    crossAxisAlignment: WrapCrossAlignment.end,
+                                    clipBehavior: Clip.hardEdge,
+                                    children: [
+                                      const Text("Income"),
+                                      Text(
+                                        formatCurrency(
+                                            data[index]['income'].toString()),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Wrap(
+                                    direction: Axis.vertical,
+                                    crossAxisAlignment: WrapCrossAlignment.end,
+                                    clipBehavior: Clip.hardEdge,
+                                    children: [
+                                      const Text("Expenditure"),
+                                      Text(
+                                        formatCurrency(data[index]
+                                                ['expenditure']
+                                            .toString()),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Wrap(
+                                  direction: Axis.vertical,
+                                  crossAxisAlignment: WrapCrossAlignment.end,
+                                  clipBehavior: Clip.hardEdge,
+                                  children: [
+                                    const Text("Savings"),
+                                    Text(
+                                      formatCurrency(
+                                          data[index]['savings'].toString()),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: data[index]['savings'] < 0
+                                                  ? Colors.red
+                                                  : Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ],
-                    ),
+                      );
+                    },
+                    // 40 list items
+                    childCount: data.length,
                   ),
-                ),
-              );
-            },
-            // 40 list items
-            childCount: 12,
-          ),
-        ),
+                );
+              },
+            );
+          },
+        )
       ],
     );
   }

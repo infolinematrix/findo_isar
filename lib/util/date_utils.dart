@@ -31,9 +31,7 @@ List<String> months = [
   'December'
 ];
 
-List<String> monthsMap = [
- 
-];
+List<String> monthsMap = [];
 
 Map<String, dynamic> dateMap(DateTime dt) {
   final data = {
@@ -159,15 +157,15 @@ DateTime lastDayOfMonth(DateTime dt) {
   return dayEnd(lastDayOfMonth);
 }
 
-DateTime firstDayOfYear() {
-  DateTime now = DateTime.now().toUtc();
-  return DateTime(now.year, 1, 1);
-}
+// DateTime firstDayOfYear() {
+//   DateTime now = DateTime.now().toUtc();
+//   return DateTime(now.year, 1, 1);
+// }
 
-DateTime lastDayOfYear() {
-  DateTime now = DateTime.now().toUtc();
-  return dayEnd(DateTime(now.year, 12, 31));
-}
+// DateTime lastDayOfYear() {
+//   DateTime now = DateTime.now().toUtc();
+//   return dayEnd(DateTime(now.year, 12, 31));
+// }
 
 DateTime dayEnd(DateTime dt) {
   DateTime nextDay = dt.add(const Duration(days: 1));

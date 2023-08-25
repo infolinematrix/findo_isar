@@ -20,7 +20,7 @@ class BarChart1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double barWidth = 14;
-    int touchedIndex = -1;
+    // int touchedIndex = -1;
     return AspectRatio(
       aspectRatio: 1,
       child: Card(

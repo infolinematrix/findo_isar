@@ -20,7 +20,6 @@ class BarChart1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double barWidth = 14;
-    // int touchedIndex = -1;
     return AspectRatio(
       aspectRatio: 1,
       child: Card(
@@ -73,11 +72,8 @@ class BarChart1 extends StatelessWidget {
                             if (!event.isInterestedForInteractions ||
                                 barTouchResponse == null ||
                                 barTouchResponse.spot == null) {
-                              touchedIndex = -1;
                               return;
                             }
-                            touchedIndex =
-                                barTouchResponse.spot!.touchedBarGroupIndex;
                           },
                         ),
                         titlesData: const FlTitlesData(

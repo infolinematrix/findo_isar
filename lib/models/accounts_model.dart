@@ -28,7 +28,11 @@ class AccountsModel {
   double openingBalance = 0.00;
 
   @Index()
+<<<<<<< HEAD:lib/models/accounts_model.dart
   bool isSystem = false;
+=======
+  bool isSystem = true;
+>>>>>>> 9e0f143 (Subha):lib/data/models/accounts_model.dart
 
   @Index()
   int status = 51;
